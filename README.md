@@ -25,7 +25,7 @@ In this game you encanate Death himself in his daily job of recolecting the soul
 ## Developers
 
  - Pol Celaya - Programer
- - Biel Liñán - Designer/Artist
+ - Biel Liñán - Designer/Artist - https://github.com/Drauguer
 
 ## License
 

@@ -1,0 +1,41 @@
+<!-- Config file for the game -->
+<!-- L01: DONE 1: Create configuration file-->
+<config>
+	<app>
+		<title>My video game</title>
+		<maxFrameDuration value="16"/>
+	</app>
+
+	<renderer>
+		<vsync value="flase"/>
+	</renderer>
+
+	<window>
+		<resolution width="1280" height="600" scale="2"/>
+		<fullscreen value="false"/>
+		<borderless value="false"/>
+		<resizable value="false"/>
+		<fullscreen_window value="flase"/>
+	</window>
+
+	<scene>
+		<player x="20" y="250" speed="0.2f" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg"/>
+		<textureAnimation>
+			<animation x="13" y="8"/>
+			<animation x="13" y="59"/>
+			<animation x="13" y="108"/>
+			<animation x="14" y="154"/>
+			<animation x="14" y="201"/>
+			<animation x="13" y="252"/>
+			<animation x="13" y="300"/>
+			<animation x="14" y="346"/>
+		</textureAnimation>
+		<map path="Assets/Maps/" name="Map_level1.tmx"/>
+		<item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>
+		<item x="400" y="250" texturepath="Assets/Textures/goldCoin.png"/>
+		<item x="500" y="90" texturepath="Assets/Textures/goldCoin.png"/>
+		<item x="600" y="200" texturepath="Assets/Textures/goldCoin.png"/>
+		<item x="900" y="90" texturepath="Assets/Textures/goldCoin.png"/>
+	</scene>
+
+</config>

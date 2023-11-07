@@ -58,8 +58,8 @@ bool Scene::Start()
 	textPosX = (float)windowW / 2 - (float)texW / 2;
 	textPosY = (float)windowH / 2 - (float)texH / 2;
 
-	app->render->camera.y = ((player->position.y - player->texH / 2) - (app->scene->windowH / 2)) * -1 - 60;
-	app->render->camera.x = ((player->position.x - player->texW / 2) - (app->scene->windowW / 2)) * -1 - 630;
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 
 	return true;
 }
@@ -75,10 +75,10 @@ bool Scene::Update(float dt)
 {
 	float camSpeed = 1; 
 	
-	if (player->position.x > app->render->camera.w / 2)
-	{
-		app->render->camera.x = (((player->position.x - player->texW / 2) - (app->scene->windowW / 2)) * -1 - 630) * 2;
-	}
+	float limitCamera = player->position.x - windowW / 2;
+	if (limitCamera > 0 && limitCamera < (app->map->getMapWidth() - windowW))
+		app->render->camera.x = (player->position.x - windowW / 2) * -1;  //(((player->position.x - player->currentAnimation->GetCurrentFrame().w / 2) - (app->scene->windowW / 2)) * -1);
+	
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += (int)ceil(camSpeed * dt);

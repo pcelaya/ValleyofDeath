@@ -75,6 +75,8 @@ bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 
+	cout << position.x << " " << position.y << endl;
+
 	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		respawn();
 
@@ -247,8 +249,12 @@ void Player::respawn()
 	b2Vec2 initPos = b2Vec2(PIXEL_TO_METERS(initPosition.x), PIXEL_TO_METERS(initPosition.y));
 	pbody->body->SetTransform(initPos, 0);
 	position = initPosition;
-	app->render->camera.y = ((position.y - texH / 2) - (app->scene->windowH / 2)) * -1 - 90;
-	app->render->camera.x = ((position.x - texW / 2) - (app->scene->windowW / 2)) * -1 - 810;
 
+	if (app->render->camera.x < 0)
+		app->render->camera.x = 0;
+
+	if (app->render->camera.y < 0)
+		app->render->camera.y = 0;
+	
 	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
 }

@@ -15,9 +15,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 	name.Create("Player");
 }
 
-Player::~Player() {
-
-}
+Player::~Player() {}
 
 bool Player::Awake() {
 
@@ -26,26 +24,22 @@ bool Player::Awake() {
 	initPosition = position;
 	speed = config.attribute("speed").as_int();
 
-	walkAnimation.PushBack({ 14,9,19,30 });
-	walkAnimation.PushBack({ 61,11,20,28 });
-	walkAnimation.PushBack({ 109,12,20,26 });
-	walkAnimation.PushBack({ 158,10, 19,29 });
-	walkAnimation.PushBack({ 206,9,19,29 });
-	walkAnimation.PushBack({ 253,12,20,27 });
-	walkAnimation.PushBack({ 350,10,19,29 });
-	walkAnimation.speed = 0.1f;
+	//Initialize Walk Animation
+	walkAnimation.speed = config.child("player").child("walkAnimation").attribute("speed").as_int();
+	for (pugi::xml_node animationNode = config.child("player").child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	{
+		walkAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+	}
 
-	dieAnimation.PushBack({14,9,19,28});
-	dieAnimation.PushBack({62,19,19,28});
-	dieAnimation.PushBack({110,9,19,28});
-	dieAnimation.PushBack({158,11,20,28});
-	dieAnimation.PushBack({206,16,27,23});
-	dieAnimation.PushBack({254,22,21,19});
-	dieAnimation.PushBack({300,28,26,11});
-	dieAnimation.PushBack({348,31,26,8});
-	dieAnimation.PushBack({394,33,30,6});
-	dieAnimation.loop = false;
-	dieAnimation.speed = 0.1f;
+	//Initialize Die Animation
+	dieAnimation.speed = config.child("player").child("dieAnimation").attribute("speed").as_int();
+	dieAnimation.loop = config.child("player").child("dieAnimation").attribute("loop").as_bool();
+	for (pugi::xml_node animationNode = config.child("player").child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	{
+		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+	}
+
+	currentAnimation = &walkAnimation;
 
 	return true;
 }
@@ -207,7 +201,6 @@ bool Player::CleanUp()
 	return true;
 }
 
-// L07 DONE 6: Define OnCollision function for the player. 
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) 
 {
 	b2ContactEdge* contact = pbody->body->GetContactList();

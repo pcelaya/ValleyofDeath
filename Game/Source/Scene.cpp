@@ -26,11 +26,12 @@ bool Scene::Awake(pugi::xml_node config)
 	LOG("Loading Scene");
 	bool ret = true;
 
-	//L03: DONE 3b: Instantiate the player using the entity manager
-	//L04 DONE 7: Get player paremeters
 	player = (Player*) app->entityManager->CreateEntity(EntityType::PLAYER);
 	//Assigns the XML node to a member in player
 	player->config = config.child("player");
+
+	enemy = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY);
+	enemy->config = config.child("enemy");
 
 	//Get the map name from the config file and assigns the value in the module
 	app->map->name = config.child("map").attribute("name").as_string();

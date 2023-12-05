@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Player.h"
+#include "Enemy.h"
 
 struct SDL_Texture;
 
@@ -39,6 +40,7 @@ public:
 	uint texW, texH;
 	uint windowW, windowH;
 	Player* player;
+	Enemy* enemy;
 };
 
 #endif // __SCENE_H__

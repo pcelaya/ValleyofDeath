@@ -52,6 +52,9 @@
     <ClCompile Include="Source\Render.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -130,6 +133,9 @@
       <Filter>Heathers</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
+      <Filter>Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
       <Filter>Heathers</Filter>
     </ClInclude>
   </ItemGroup>

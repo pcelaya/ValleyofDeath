@@ -1,5 +1,5 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __ENEMY_H__
+#define __ENEMY_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -9,13 +9,13 @@
 
 struct SDL_Texture;
 
-class Player : public Entity
+class Enemy : public Entity
 {
 public:
 
-	Player();
-	
-	virtual ~Player();
+	Enemy();
+
+	virtual ~Enemy();
 
 	bool Awake();
 
@@ -24,7 +24,7 @@ public:
 	bool Update(float dt);
 
 	bool CleanUp();
- 
+
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 	void respawn();
@@ -34,26 +34,16 @@ public:
 	SDL_Texture* texture = NULL;
 	pugi::xml_node config;
 	uint texW, texH;
-	bool god_mode = false;
-	
+
 	bool flip;
 	bool death;
 	iPoint initPosition;
 	PhysBody* pbody;
 
-	//Audio fx
-	int pickCoinFxId;
-
-	// jumping
-	int remainingJumpSteps = 0;
-	int jumpForceReduce = 0;
-	int maxJumpSteps = 20;
-
 	// ANIMATION
 	Animation* currentAnimation = nullptr;
 	Animation walkAnimation;
-	Animation jumpAnimation;
 	Animation dieAnimation;
 };
 
-#endif // __PLAYER_H__
+#endif // __ENEMY_H__

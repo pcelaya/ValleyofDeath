@@ -43,8 +43,8 @@ bool Window::Awake(pugi::xml_node config)
 		bool resizable = config.child("resizable").attribute("value").as_bool(false);
 		bool fullscreen_window = config.child("fullscreen_window").attribute("value").as_bool(true);
 
-		width = 640;
-		height = 320;
+		width = config.child("resolution").attribute("width").as_int();
+		height = config.child("resolution").attribute("height").as_int();
 		scale = config.child("resolution").attribute("scale").as_int(1);
 
 		if(fullscreen == true) flags |= SDL_WINDOW_FULLSCREEN;

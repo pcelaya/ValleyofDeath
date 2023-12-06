@@ -51,9 +51,11 @@ public:
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;
+	Animation idleAnimation;
 	Animation walkAnimation;
 	Animation jumpAnimation;
 	Animation dieAnimation;
+	Animation attackAnimation;
 };
 
 #endif // __PLAYER_H__

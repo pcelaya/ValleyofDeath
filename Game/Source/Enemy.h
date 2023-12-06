@@ -44,6 +44,7 @@ public:
 	Animation* currentAnimation = nullptr;
 	Animation walkAnimation;
 	Animation dieAnimation;
+	Animation attackAnimation;
 };
 
 #endif // __ENEMY_H__

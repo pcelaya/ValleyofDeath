@@ -17,29 +17,27 @@ Player::Player() : Entity(EntityType::PLAYER)
 
 Player::~Player() {}
 
-bool Player::Awake() {
-
+bool Player::Awake() 
+{
 	//Initialize Player parameters
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
 	initPosition = position;
-	speed = config.attribute("speed").as_int();
+	speed = config.attribute("speed").as_float();
 
 	//Initialize Walk Animation
-	walkAnimation.speed = config.child("player").child("walkAnimation").attribute("speed").as_int();
-	for (pugi::xml_node animationNode = config.child("player").child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	for (pugi::xml_node animationNode = config.child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
 		walkAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
+	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_float();
 
 	//Initialize Die Animation
-	dieAnimation.speed = config.child("player").child("dieAnimation").attribute("speed").as_int();
-	dieAnimation.loop = config.child("player").child("dieAnimation").attribute("loop").as_bool();
-	for (pugi::xml_node animationNode = config.child("player").child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
 		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
-
-	currentAnimation = &walkAnimation;
+	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
+	dieAnimation.loop = config.child("dieAnimation").attribute("loop").as_bool();
 
 	return true;
 }
@@ -50,7 +48,7 @@ bool Player::Start() {
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &walkAnimation;
-	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w-5, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -61,6 +59,7 @@ bool Player::Start() {
 
 	death = false;
 	flip = false;
+	god_mode = false;
 
 	return true;
 }
@@ -105,6 +104,7 @@ bool Player::Update(float dt)
 				jumpAnimation.Reset();
 			}
 		}
+
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && god_mode)
 		{
 			velocity.x = -0.2 * dt;
@@ -187,9 +187,9 @@ bool Player::Update(float dt)
 	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 
 	if (!flip) 
-		app->render->DrawTexture(texture, position.x + 12, position.y + 10, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
 	else 
-		app->render->DrawTexturePR(texture, position.x + 12, position.y + 10, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -249,5 +249,6 @@ void Player::respawn()
 	if (app->render->camera.y < 0)
 		app->render->camera.y = 0;
 	
+	death = false;
 	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
 }

@@ -23,6 +23,13 @@ bool Enemy::Awake()
 	initPosition = position;
 	speed = config.attribute("speed").as_int();
 
+	for (pugi::xml_node animationNode = config.child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	{
+		walkAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+	}
+	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_int();
+
+
 	return true;
 }
 
@@ -36,14 +43,29 @@ bool Enemy::Start()
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
-	pbody->ctype = ColliderType::PLAYER;
+	pbody->ctype = ColliderType::ENEMY;
 
+	flip = false;
 
 	return true;
 }
 
 bool Enemy::Update(float dt)
 {
+	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
+
+	b2Transform pbodyPos = pbody->body->GetTransform();
+	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
+	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
+
+
+	if (!flip)
+		app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+	else
+		app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+
+	currentAnimation->Update();
+
 	return true;
 }
 

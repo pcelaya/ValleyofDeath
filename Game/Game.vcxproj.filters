@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Source\Log.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External\PugiXml</Filter>
@@ -10,70 +10,73 @@
     <ClCompile Include="Source\App.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Audio.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Item.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
-      <Filter>Game</Filter>
+    <ClCompile Include="Source\Audio.cpp">
+      <Filter>Game\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PerfTimer.cpp">
-      <Filter>Game</Filter>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Game\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Player.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Textures.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Window.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Modules\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Render.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Textures.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Game\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Game\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Item.cpp">
+      <Filter>Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PerfTimer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PathFinding.cpp">
+      <Filter>Game\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\DynArray.h">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\List.h">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\Log.h">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\Point.h">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\SString.h">
-      <Filter>Utils</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
       <Filter>External\PugiXml</Filter>
@@ -82,78 +85,87 @@
       <Filter>External\PugiXml</Filter>
     </ClInclude>
     <ClInclude Include="Source\Queue.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\App.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Entity.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Item.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Map.h">
-      <Filter>Heathers</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source\Module.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PerfTimer.h">
-      <Filter>Heathers</Filter>
+    <ClInclude Include="Source\Audio.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics.h">
-      <Filter>Heathers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Render.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Modules\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Textures.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Heathers</Filter>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Game\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Window.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Heathers</Filter>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Game\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
-      <Filter>Heathers</Filter>
+      <Filter>Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item.h">
+      <Filter>Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\App.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PerfTimer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Game\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
       <UniqueIdentifier>{83a966c7-b4bb-4eff-9c2c-3ff3c7b55a60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{2cad778a-d356-48b0-9fee-587f1bbb187e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="External\PugiXml">
       <UniqueIdentifier>{2855ff7f-53a1-413d-a75b-18b4ade921dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Heathers">
-      <UniqueIdentifier>{8055bea6-a26e-4a90-9c62-6d1c6f934be6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{5663483e-e19a-4277-be64-10e6b6b19bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules">
+      <UniqueIdentifier>{2d668d91-7cdc-4fbc-8109-19b68ea1154d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Scene">
+      <UniqueIdentifier>{468c740a-ba0b-494e-aa2e-821f74e47f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entities">
+      <UniqueIdentifier>{b1273295-54f3-4913-8110-89e23a6295e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{2cad778a-d356-48b0-9fee-587f1bbb187e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

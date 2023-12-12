@@ -24,6 +24,14 @@ bool Player::Awake()
 	initPosition = position;
 	speed = config.attribute("speed").as_float();
 
+	//Initialize Idle Animation
+	for (pugi::xml_node animationNode = config.child("idleAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	{
+		idleAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+	}
+	idleAnimation.speed = config.child("idleAnimation").attribute("speed").as_float();
+
+
 	//Initialize Walk Animation
 	for (pugi::xml_node animationNode = config.child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
@@ -44,11 +52,11 @@ bool Player::Awake()
 
 bool Player::Start() {
 
-	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
+	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
 
 	app->tex->GetSize(texture, texW, texH);
-	currentAnimation = &walkAnimation;
-	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
+	currentAnimation = &idleAnimation;
+	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 3, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -89,7 +97,7 @@ bool Player::Update(float dt)
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();
-			currentAnimation = &walkAnimation;
+			currentAnimation = &idleAnimation;
 			respawn();
 			death = false;
 		}
@@ -105,33 +113,40 @@ bool Player::Update(float dt)
 			}
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && god_mode)
+		if (god_mode)
 		{
-			velocity.x = -0.2 * dt;
-			flip = true;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
-			velocity.x = -0.4 * dt;
-			flip = true;
-		}
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				velocity.x = -0.4 * dt;
+				flip = true;
+			}
 
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && god_mode)
-		{
-			velocity.x = 0.2 * dt;
-			flip = false;
-		}
-		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		{
-			velocity.x = 0.4 * dt;
-			flip = false;
-		}
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				velocity.x = 0.4 * dt;
+				flip = false;
+			}
 
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && god_mode)
-			velocity.y = -0.4 * dt;
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+				velocity.y = -0.4 * dt;
 
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && god_mode)
-			velocity.y = 0.4 * dt;
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				velocity.y = 0.4 * dt;
+		}
+		else
+		{
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				velocity.x = -0.2 * dt;
+				flip = true;
+			}
+			
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				velocity.x = 0.2 * dt;
+				flip = false;
+			}
+		}
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
 		{
@@ -250,5 +265,5 @@ void Player::respawn()
 		app->render->camera.y = 0;
 	
 	death = false;
-	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
+	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
 }

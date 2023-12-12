@@ -8,7 +8,7 @@
 class EntityManager : public Module
 {
 public:
-
+	
 	EntityManager();
 
 	// Destructor

@@ -19,49 +19,39 @@
 	</window>
 
 	<scene>
-		<player x="20" y="250" speed="0.2f" idletexturePath="Assets/Texture/IdleReaper.png" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" jumptexturePath="Assets/Textures/JumpingReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
-			<walkAnimation speed="0.1f" loop="true">
-				<animation x="14" y="9" w="19" h="30"/>
-				<animation x="61" y="11" w="20" h="28"/>
-				<animation x="109" y="12" w="20" h="26"/>
-				<animation x="158" y="10" w="19" h="29"/>
-				<animation x="206" y="9" w="19" h="29"/>
-				<animation x="253" y="12" w="20" h="27"/>
-				<animation x="350" y="10" w="20" h="27"/>
+		<player x="20" y="250" speed="0.2f" idletexturePath="Assets/Textures/IdleReaper.png" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" jumptexturePath="Assets/Textures/JumpingReaper.png" attacktexturePath="Assets/Textures/AttackingReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
+			<idleAnimation speed="0.06f" loop="true">
+				<animation x="14" y="6" w="19" h="34"/>
+				<animation x="45" y="6" w="19" h="34"/>
+			</idleAnimation>
+			<walkAnimation speed="0.08f" loop="true">
+				<animation x="14" y="9" w="19" h="31"/>
+				<animation x="61" y="9" w="20" h="31"/>
+				<animation x="109" y="9" w="20" h="31"/>
+				<animation x="158" y="9" w="19" h="31"/>
+				<animation x="206" y="9" w="19" h="31"/>
+				<animation x="253" y="9" w="20" h="31"/>
+				<animation x="350" y="9" w="20" h="31"/>
 			</walkAnimation>
 			<dieAnimation speed="0.1f" loop="false">
-				<animation x="14" y="9" w="19" h="28"/>
-				<animation x="62" y="19" w="19" h="28"/>
-				<animation x="110" y="9" w="19" h="28"/>
-				<animation x="158" y="11" w="20" h="28"/>
-				<animation x="206" y="16" w="27" h="23"/>
-				<animation x="254" y="22" w="21" h="19"/>
-				<animation x="300" y="28" w="26" h="11"/>
-				<animation x="348" y="31" w="26" h="8"/>
-				<animation x="394" y="33" w="30" h="6"/>
+				<animation x="14" y="9" w="19" h="31"/>
+				<animation x="62" y="9" w="19" h="31"/>
+				<animation x="110" y="9" w="19" h="31"/>
+				<animation x="157" y="9" w="20" h="31"/>
+				<animation x="206" y="9" w="21" h="31"/>
+				<animation x="254" y="9" w="21" h="31"/>
+				<animation x="300" y="9" w="26" h="31"/>
+				<animation x="348" y="9" w="26" h="31"/>
+				<animation x="394" y="9" w="30" h="31"/>
 			</dieAnimation>
 			<jumpAnimation>	</jumpAnimation>
 		</player>
-		<enemy x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/DyingReaper.png">
+		<enemy x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png" attacktexturePath="Assets/Textures/">
 			<walkAnimation speed="0.1f" loop="true">
 				<animation x="14" y="9" w="19" h="30"/>
-				<animation x="61" y="11" w="20" h="28"/>
-				<animation x="109" y="12" w="20" h="26"/>
-				<animation x="158" y="10" w="19" h="29"/>
-				<animation x="206" y="9" w="19" h="29"/>
-				<animation x="253" y="12" w="20" h="27"/>
-				<animation x="350" y="10" w="20" h="27"/>
 			</walkAnimation>
 			<dieAnimation speed="0.1f" loop="false">
 				<animation x="14" y="9" w="19" h="28"/>
-				<animation x="62" y="19" w="19" h="28"/>
-				<animation x="110" y="9" w="19" h="28"/>
-				<animation x="158" y="11" w="20" h="28"/>
-				<animation x="206" y="16" w="27" h="23"/>
-				<animation x="254" y="22" w="21" h="19"/>
-				<animation x="300" y="28" w="26" h="11"/>
-				<animation x="348" y="31" w="26" h="8"/>
-				<animation x="394" y="33" w="30" h="6"/>
 			</dieAnimation>
 		</enemy>
 		<map path="Assets/Maps/" name="Map_level1.tmx"/>

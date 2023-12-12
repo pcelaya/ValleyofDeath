@@ -29,7 +29,7 @@ bool Enemy::Awake()
 	}
 	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_int();
 
-
+	
 	return true;
 }
 

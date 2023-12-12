@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "PathFinding.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -130,23 +131,26 @@ public:
     // L06: DONE 6: Load a group of properties 
     bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
+    void CreateNavigationMap(int& width, int& height, uchar** buffer) const;
+
+    // Get height of the tile
+    int GetTileWidth() { return mapData.tilewidth; }
+    int GetTileHeight() { return mapData.tileheight; }
+
     // Get height of the map
-    int getMapHeight() {
-        return mapData.height * mapData.tileheight;
-    }
+    int getMapHeight() { return mapData.height * mapData.tileheight; }
+    int getMapWidth() { return mapData.width * mapData.tilewidth; }
 
-    int getMapWidth() {
-        return mapData.width * mapData.tilewidth;
-    }
-
-
-public: 
+public:
     SString name;
     SString path;
+    PathFinding* pathfinding;
 
 private:
     MapData mapData;
     bool mapLoaded;
+    MapLayer* navigationLayer;
+    int blockedGid = 49; //!!!! make sure that you assign blockedGid according to your map
 };
 
 

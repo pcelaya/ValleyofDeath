@@ -27,11 +27,16 @@ bool Scene::Awake(pugi::xml_node config)
 	bool ret = true;
 
 	player = (Player*) app->entityManager->CreateEntity(EntityType::PLAYER);
-	//Assigns the XML node to a member in player
 	player->config = config.child("player");
-
-	enemy = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY);
-	enemy->config = config.child("enemy");
+	
+	// iterate all ghost in the scene
+	/*for (pugi::xml_node enemyNode = config.child("enemy").child("ghost"); enemyNode; enemyNode = enemyNode.next_sibling("ghost"))
+	{
+		Ghost* enemy = (Ghost*)app->entityManager->CreateEntity(EntityType::GHOST);
+		enemy->parameters = enemyNode;
+	}*/
+	ghost = (Ghost*)app->entityManager->CreateEntity(EntityType::GHOST);
+	ghost->config = config.child("enemy").child("ghost");
 
 	//Get the map name from the config file and assigns the value in the module
 	app->map->name = config.child("map").attribute("name").as_string();
@@ -44,6 +49,8 @@ bool Scene::Awake(pugi::xml_node config)
 		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
 		item->parameters = itemNode;
 	}
+
+	debug = false;
 
 	return ret;
 }
@@ -114,3 +121,4 @@ bool Scene::CleanUp()
 
 	return true;
 }
+

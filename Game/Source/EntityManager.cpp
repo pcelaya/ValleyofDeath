@@ -1,6 +1,5 @@
 #include "EntityManager.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Item.h"
 #include "App.h"
 #include "Textures.h"
@@ -79,7 +78,7 @@ bool EntityManager::CleanUp()
 
 Entity* EntityManager::CreateEntity(EntityType type)
 {
-	Entity* entity = nullptr; 
+	Entity* entity = new Entity(type); 
 
 	//L03: DONE 3a: Instantiate entity according to the type and add the new entity to the list of Entities
 	switch (type)
@@ -90,9 +89,10 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::ITEM:
 		entity = new Item();
 		break;
-	case EntityType::ENEMY:
-		entity = new Enemy();
+	case EntityType::GHOST:
+		entity = new Ghost();
 		break;
+	case EntityType::SKELETON:
 
 	default:
 		break;

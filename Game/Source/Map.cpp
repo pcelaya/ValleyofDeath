@@ -59,17 +59,15 @@ bool Map::Update(float dt)
     ListItem<MapLayer*>* mapLayer; 
     mapLayer = mapData.layers.start;
 
+    // L06: DONE 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
+
     // iterates the layers in the map
-    while (mapLayer != NULL) 
-    {
+    while (mapLayer != NULL) {
         //Check if the property Draw exist get the value, if it's true draw the lawyer
-        if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) 
-        {
+        if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) {
             //iterate all tiles in a layer
-            for (int i = 0; i < mapData.width; i++) 
-            {
-                for (int j = 0; j < mapData.height; j++) 
-                {
+            for (int i = 0; i < mapData.width; i++) {
+                for (int j = 0; j < mapData.height; j++) {
                     //Get the gid from tile
                     int gid = mapLayer->data->Get(i, j);
 
@@ -83,7 +81,7 @@ bool Map::Update(float dt)
                     iPoint mapCoord = MapToWorld(i, j);
 
                     // L06: DONE 9: Complete the draw function
-                   app->render->DrawTexture(tileSet->texture, mapCoord.x, mapCoord.y, &tileRect);
+                    app->render->DrawTexture(tileSet->texture, mapCoord.x, mapCoord.y, &tileRect);
 
                 }
             }
@@ -116,15 +114,11 @@ bool Map::CleanUp()
 {
     LOG("Unloading map");
 
-    //Clean up pathfing class
-    pathfinding->CleanUp();
-
     // L05: DONE 2: Make sure you clean up any memory allocated from tilesets/map
     ListItem<TileSet*>* tileset;
     tileset = mapData.tilesets.start;
     
-    while (tileset != NULL) 
-    {
+    while (tileset != NULL) {
         RELEASE(tileset->data);
         tileset = tileset->next;
     }
@@ -168,8 +162,10 @@ bool Map::Load(SString mapFileName)
         mapData.tilewidth = mapFileXML.child("map").attribute("tilewidth").as_int();
         mapData.tileheight = mapFileXML.child("map").attribute("tileheight").as_int();
 
+        // L09: TODO 2: Define a property to store the MapType and Load it from the map
 
-        // Iterate the Tileset
+        // L05: DONE 4: Implement the LoadTileSet function to load the tileset properties
+       // Iterate the Tileset
         for (pugi::xml_node tilesetNode = mapFileXML.child("map").child("tileset"); tilesetNode != NULL; tilesetNode = tilesetNode.next_sibling("tileset")) {
 
             TileSet* tileset = new TileSet();
@@ -221,9 +217,12 @@ bool Map::Load(SString mapFileName)
             //add the layer to the map
             mapData.layers.Add(mapLayer);
         }
-              
 
-        // CALL TO CREATE COLLIDERS FROM MAP
+
+        // L07 DONE 3: Create colliders      
+        // L07 DONE 7: Assign collider type
+        // Later you can create a function here to load and create the colliders from the map
+
         for (pugi::xml_node layerNode = mapFileXML.child("map").child("objectgroup").child("object"); layerNode != NULL; layerNode = layerNode.next_sibling("object"))
         {
             int x = layerNode.attribute("x").as_int();
@@ -303,16 +302,6 @@ iPoint Map::MapToWorld(int x, int y) const
 
     ret.x = x * mapData.tilewidth;
     ret.y = y * mapData.tileheight;
-
-    return ret;
-}
-
-iPoint Map::WorldToMap(int x, int y) const
-{
-    iPoint ret(0, 0);
-    
-    ret.x = x / mapData.tilewidth;
-    ret.y = y / mapData.tileheight;
 
     return ret;
 }

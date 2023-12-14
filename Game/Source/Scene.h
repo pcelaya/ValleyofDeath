@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Ghost.h"
+#include "Enemy.h"
 
 struct SDL_Texture;
 
@@ -39,13 +39,8 @@ public:
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;
-
-	// Debug mode
-	bool debug;
-
 	Player* player;
-	Ghost* ghost;
-	ListItem<Entity>* enemy;
+	Enemy* enemy;
 };
 
 #endif // __SCENE_H__

@@ -5,8 +5,6 @@
 #include "Entity.h"
 #include "List.h"
 
-
-
 class EntityManager : public Module
 {
 public:

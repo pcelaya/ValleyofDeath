@@ -7,7 +7,6 @@
 #include "Defs.h"
 #include "Log.h"
 #include "Render.h"
-#include "Scene.h"
 #include "Player.h"
 #include "Window.h"
 #include "Box2D/Box2D/Box2D.h"
@@ -23,6 +22,7 @@ Physics::Physics() : Module()
 {
 	// Initialise all the internal class variables, at least to NULL pointer
 	world = NULL;
+	debug = false;
 }
 
 // Destructor
@@ -225,10 +225,10 @@ bool Physics::PostUpdate()
 
 	// Activate or deactivate debug mode
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		app->scene->debug = !app->scene->debug;
+		debug = !debug;
 	
 	//  Iterate all objects in the world and draw the bodies
-	if (app->scene->debug)
+	if (debug)
 	{
 		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 		{

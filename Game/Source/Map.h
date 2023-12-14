@@ -125,8 +125,6 @@ public:
     // L06: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
     iPoint MapToWorld(int x, int y) const;
 
-    iPoint WorldToMap(int x, int y) const;
-
     // L08: DONE 2: Implement function to the Tileset based on a tile id
     TileSet* GetTilesetFromTileId(int gid) const;
 

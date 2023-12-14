@@ -80,6 +80,9 @@ public:
 
 private:
 
+	// Debug mode
+	bool debug;
+
 	// Box2D World
 	b2World* world;
 	b2MouseJoint* mouse_joint;

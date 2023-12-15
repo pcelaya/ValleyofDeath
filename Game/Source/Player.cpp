@@ -39,6 +39,13 @@ bool Player::Awake()
 	}
 	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_float();
 
+	// Initialize Attack Animation
+	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	{
+		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+	}
+	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
+
 	//Initialize Die Animation
 	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
@@ -76,8 +83,6 @@ bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 
-	cout << position.x << " " << position.y << endl;
-
 	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		respawn();
 
@@ -99,12 +104,10 @@ bool Player::Update(float dt)
 			dieAnimation.Reset();
 			currentAnimation = &idleAnimation;
 			respawn();
-			death = false;
 		}
 	}
-
-	if (!death) {
-
+	else
+	{
 		b2ContactEdge* contact = pbody->body->GetContactList();
 		if (contact != nullptr) {
 			b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;

@@ -1,6 +1,5 @@
 #include "EntityManager.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Item.h"
 #include "App.h"
 #include "Textures.h"
@@ -90,8 +89,10 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::ITEM:
 		entity = new Item();
 		break;
-	case EntityType::ENEMY:
-		entity = new Enemy();
+	case EntityType::GHOST:
+		entity = new Ghost();
+	case EntityType::SKELETON:
+		//entity = new Skeleton();
 		break;
 
 	default:

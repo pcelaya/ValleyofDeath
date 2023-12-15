@@ -46,13 +46,20 @@
 			</dieAnimation>
 			<jumpAnimation>	</jumpAnimation>
 		</player>
-		<enemy x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png" attacktexturePath="Assets/Textures/">
-			<walkAnimation speed="0.1f" loop="true">
-				<animation x="14" y="9" w="19" h="30"/>
-			</walkAnimation>
-			<dieAnimation speed="0.1f" loop="false">
-				<animation x="14" y="9" w="19" h="28"/>
-			</dieAnimation>
+		<enemy>
+			<ghost x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" attacktexturePath="Assets/Textures/" dietexturePath="Assets/Textures/.png">
+				<walkAnimation speed="0.1f" loop="true">
+					<animation x="14" y="9" w="19" h="30"/>
+				</walkAnimation>
+				<attackAnimation speed="0.1f" loop="true">
+					<animation x="14" y="9" w="19" h="30"/>
+				</attackAnimation>
+				<dieAnimation speed="0.1f" loop="false">
+					<animation x="14" y="9" w="19" h="28"/>
+				</dieAnimation>
+			</ghost>
+			<skeleton>
+			</skeleton>
 		</enemy>
 		<map path="Assets/Maps/" name="Map_level1.tmx"/>
 		<item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>

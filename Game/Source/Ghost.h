@@ -1,5 +1,5 @@
-#ifndef __ENEMY_H__
-#define __ENEMY_H__
+#ifndef __GHOST_H__
+#define __GHOST_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -9,13 +9,11 @@
 
 struct SDL_Texture;
 
-class Enemy : public Entity
+class Ghost : public Entity
 {
 public:
 
-	Enemy();
-
-	virtual ~Enemy();
+	Ghost() : Entity(EntityType::GHOST) {}
 
 	bool Awake();
 
@@ -27,13 +25,15 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	void respawn();
+
+	//void respawn() override;
 
 public:
 	float speed = 0.2f;
 	SDL_Texture* texture = NULL;
 	pugi::xml_node config;
 	uint texW, texH;
+	SDL_Texture* mouseTileTex = nullptr;
 
 	bool flip;
 	bool death;
@@ -47,4 +47,4 @@ public:
 	Animation attackAnimation;
 };
 
-#endif // __ENEMY_H__
+#endif // __GHOST_H__

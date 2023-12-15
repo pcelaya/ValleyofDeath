@@ -1,4 +1,3 @@
-
 #include "App.h"
 #include "Render.h"
 #include "Textures.h"
@@ -62,12 +61,16 @@ bool Map::Update(float dt)
     // L06: DONE 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
 
     // iterates the layers in the map
-    while (mapLayer != NULL) {
+    while (mapLayer != NULL) 
+    {
         //Check if the property Draw exist get the value, if it's true draw the lawyer
-        if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) {
+        if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) 
+        {
             //iterate all tiles in a layer
-            for (int i = 0; i < mapData.width; i++) {
-                for (int j = 0; j < mapData.height; j++) {
+            for (int i = 0; i < mapData.width; i++) 
+            {
+                for (int j = 0; j < mapData.height; j++) 
+                {
                     //Get the gid from tile
                     int gid = mapLayer->data->Get(i, j);
 
@@ -75,8 +78,7 @@ bool Map::Update(float dt)
                     //Get the Rect from the tileSetTexture;
                     TileSet* tileSet = GetTilesetFromTileId(gid);
                     SDL_Rect tileRect = tileSet->GetRect(gid);
-                    //SDL_Rect tileRect = mapData.tilesets.start->data->GetRect(gid); // (!!) we are using always the first tileset in the list
-
+                    
                     //Get the screen coordinates from the tile coordinates
                     iPoint mapCoord = MapToWorld(i, j);
 
@@ -114,11 +116,15 @@ bool Map::CleanUp()
 {
     LOG("Unloading map");
 
+    //Clean up pathfing class
+    pathfinding->CleanUp();
+
     // L05: DONE 2: Make sure you clean up any memory allocated from tilesets/map
     ListItem<TileSet*>* tileset;
     tileset = mapData.tilesets.start;
     
-    while (tileset != NULL) {
+    while (tileset != NULL) 
+    {
         RELEASE(tileset->data);
         tileset = tileset->next;
     }
@@ -129,7 +135,8 @@ bool Map::CleanUp()
     ListItem<MapLayer*>* layerItem;
     layerItem = mapData.layers.start;
 
-    while (layerItem != NULL) {
+    while (layerItem != NULL) 
+    {
         RELEASE(layerItem->data->tiles);
         RELEASE(layerItem->data);
         layerItem = layerItem->next;
@@ -302,6 +309,16 @@ iPoint Map::MapToWorld(int x, int y) const
 
     ret.x = x * mapData.tilewidth;
     ret.y = y * mapData.tileheight;
+
+    return ret;
+}
+
+iPoint Map::WorldToMap(int x, int y) const
+{
+    iPoint ret(0, 0);
+
+    ret.x = x / mapData.tilewidth;
+    ret.y = y / mapData.tileheight;
 
     return ret;
 }

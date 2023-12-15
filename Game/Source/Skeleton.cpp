@@ -1,39 +1,51 @@
-#include "Enemy.h"
+#include "Skeleton.h"
 #include "App.h"
 #include "Textures.h"
 #include "Audio.h"
 #include "Input.h"
 #include "Render.h"
 #include "Scene.h"
+#include "Map.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
 
 
-Enemy::Enemy() : Entity(EntityType::ENEMY)
-{
-	name.Create("Enemy");
-}
 
-Enemy::~Enemy() {}
-
-bool Enemy::Awake()
+bool Skeleton::Awake()
 {
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
 	initPosition = position;
 	speed = config.attribute("speed").as_int();
 
-	for (pugi::xml_node animationNode = config.child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	// Initialize Skeleton Walk Animation
+	for (pugi::xml_node animnNode = config.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
 	{
-		walkAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+		walkAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
 	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_int();
 
-	
+
+	// Initialize Skeleton Attack Animation
+	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	{
+		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+	}
+	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
+
+
+	//Initialize Skeleton Animation
+	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	{
+		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+	}
+	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
+	dieAnimation.loop = config.child("dieAnimation").attribute("loop").as_bool();
+
 	return true;
 }
 
-bool Enemy::Start()
+bool Skeleton::Start()
 {
 	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
 
@@ -45,12 +57,13 @@ bool Enemy::Start()
 	pbody->listener = this;
 	pbody->ctype = ColliderType::ENEMY;
 
+	death = false;
 	flip = false;
 
 	return true;
 }
 
-bool Enemy::Update(float dt)
+bool Skeleton::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 
@@ -58,6 +71,21 @@ bool Enemy::Update(float dt)
 	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
 	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 
+	if (death)
+	{
+		if (dieAnimation.HasFinished())
+		{
+			dieAnimation.Reset();
+			currentAnimation = &walkAnimation;
+		}
+	}
+	else
+	{
+		if (true)
+		{
+
+		}
+	}
 
 	if (!flip)
 		app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
@@ -69,12 +97,12 @@ bool Enemy::Update(float dt)
 	return true;
 }
 
-bool Enemy::CleanUp()
+bool Skeleton::CleanUp()
 {
 	return true;
 }
 
-void Enemy::OnCollision(PhysBody* physA, PhysBody* physB)
+void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 	b2ContactEdge* contact = pbody->body->GetContactList();
 	b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
@@ -99,8 +127,4 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB)
 	default:
 		break;
 	}
-}
-
-void Enemy::respawn()
-{
 }

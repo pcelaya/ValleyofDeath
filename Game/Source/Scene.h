@@ -39,13 +39,16 @@ public:
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;
+	float limitCamera;
+	float limitWindow;
+
 	// Debug mode
 	bool debug;
 
 
 	Player* player;
 	Ghost* ghost;
-	ListItem<Entity>* enemy;
+	List<Entity>* enemy;
 };
 
 #endif // __SCENE_H__

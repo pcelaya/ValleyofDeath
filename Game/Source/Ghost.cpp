@@ -34,7 +34,7 @@ bool Ghost::Awake()
 	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
 
 
-	//Initialize Die Animation
+	//Initialize Ghost Die Animation
 	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
 		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
@@ -52,6 +52,7 @@ bool Ghost::Start()
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &walkAnimation;
 	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
+	pbody->body->SetGravityScale(0);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -60,15 +61,13 @@ bool Ghost::Start()
 	death = false;
 	flip = false;
 
-	mouseTileTex = app->tex->Load("Assets/Maps/tileSelection.png");
+	mouseTileTex = app->tex->Load(config.child("pathTile").attribute("texturepath").as_string());
 
 	return true;
 }
 
 bool Ghost::Update(float dt)
 {
-	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
-
 	b2Transform pbodyPos = pbody->body->GetTransform();
 	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
 	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
@@ -82,30 +81,18 @@ bool Ghost::Update(float dt)
 		}
 	}
 	else
-	{
-		// Get the mouse position and obtain the map coordinate
-		iPoint mousePos;
-		app->input->GetMousePosition(mousePos.x, mousePos.y);
-		iPoint mouseTile = app->map->WorldToMap(mousePos.x - app->render->camera.x, mousePos.y - app->render->camera.y);
-
-		if (app->scene->debug)
-		{
-			// Render a texture where the mouse is over to highlight the tile
-			iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
-			app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
-		}
-		
-		iPoint origin = app->map->WorldToMap(app->scene->ghost->position.x - app->render->camera.x, app->scene->ghost->position.y - app->render->camera.y); 
-		iPoint destiny = app->map->WorldToMap(app->scene->player->position.x - app->render->camera.x, app->scene->player->position.y - app->render->camera.y);
+	{		
+		iPoint origin = app->map->WorldToMap(position.x, position.y);
+		iPoint destiny = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
 		app->map->pathfinding->CreatePath(origin, destiny);
 
-		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 		{
 			const DynArray<iPoint>* movePath = app->map->pathfinding->GetLastPath();
-			for (uint i = 0; i < movePath->Count(); ++i)
-			{
-				app->scene->ghost->position = app->map->MapToWorld(movePath->At(i)->x, movePath->At(i)->y);
-			}
+
+			iPoint enemypos = app->map->MapToWorld(movePath->At(1)->x, movePath->At(1)->y+2);
+			b2Vec2 movepos(PIXEL_TO_METERS(enemypos.x), PIXEL_TO_METERS(enemypos.y));
+			pbody->body->SetTransform(movepos, 0);
 		}
 
 		if (app->scene->debug)

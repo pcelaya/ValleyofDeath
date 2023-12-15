@@ -150,9 +150,6 @@ bool Map::Load(SString mapFileName)
 {
     bool ret = true;
 
-    // L05: DONE 3: Implement LoadMap to load the map properties
-    // retrieve the paremeters of the <map> node and save it into map data
-
     pugi::xml_document mapFileXML;
     pugi::xml_parse_result result = mapFileXML.load_file(mapFileName.GetString());
 
@@ -288,7 +285,8 @@ bool Map::Load(SString mapFileName)
 
         //Search the layer in the map that contains information for navigation
         while (mapLayerItem != NULL) {
-            if (mapLayerItem->data->properties.GetProperty("Navigation") != NULL && mapLayerItem->data->properties.GetProperty("Navigation")->value) {
+            if (mapLayerItem->data->properties.GetProperty("Navigation") != NULL && mapLayerItem->data->properties.GetProperty("Navigation")->value) 
+            {
                 navigationLayer = mapLayerItem->data;
                 break;
             }

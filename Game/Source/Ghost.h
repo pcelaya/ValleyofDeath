@@ -40,6 +40,8 @@ public:
 	iPoint initPosition;
 	PhysBody* pbody;
 
+	int it;
+
 	// ANIMATION
 	Animation* currentAnimation = nullptr;
 	Animation walkAnimation;

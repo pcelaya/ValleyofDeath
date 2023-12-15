@@ -59,7 +59,7 @@ bool Player::Awake()
 
 bool Player::Start() {
 
-	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+	texture = app->tex->Load(config.attribute("attacktexturePath").as_string());
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;

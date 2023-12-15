@@ -11,7 +11,7 @@
 	</renderer>
 
 	<window>
-		<resolution width="1240" height="400" scale="1"/>
+		<resolution width="1152" height="608" scale="1"/>
 		<fullscreen value="false"/>
 		<borderless value="false"/>
 		<resizable value="false"/>
@@ -19,7 +19,7 @@
 	</window>
 
 	<scene>
-		<player x="20" y="250" speed="0.2f" idletexturePath="Assets/Textures/IdleReaper.png" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" jumptexturePath="Assets/Textures/JumpingReaper.png" attacktexturePath="Assets/Textures/AttackingReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
+		<player x="20" y="250" speed="0.2f" idletexturePath="Assets/Textures/IdleReaper.png" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" jumptexturePath="Assets/Textures/JumpingReaper.png" attacktexturePath="Assets/Textures/AttackReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
 			<idleAnimation speed="0.06f" loop="true">
 				<animation x="14" y="6" w="19" h="34"/>
 				<animation x="45" y="6" w="19" h="34"/>
@@ -44,10 +44,30 @@
 				<animation x="348" y="9" w="26" h="31"/>
 				<animation x="394" y="9" w="30" h="31"/>
 			</dieAnimation>
-			<jumpAnimation>	</jumpAnimation>
+			<jumpAnimation speed="0.08f" loop="true">
+				<animation x="14" y="9" w="19" h="31"/>
+				<animation x="61" y="9" w="20" h="31"/>
+				<animation x="109" y="9" w="20" h="31"/>
+				<animation x="158" y="9" w="19" h="31"/>
+				<animation x="206" y="9" w="19" h="31"/>
+				<animation x="253" y="9" w="20" h="31"/>
+				<animation x="350" y="9" w="20" h="31"/>
+			</jumpAnimation>
+			<attackAnimation speed="0.08f" loop="true">
+				<animation x="14" y="7" w="28" h="39"/>
+				<animation x="62" y="7" w="23" h="39"/>
+				<animation x="98" y="7" w="32" h="39"/>
+				<animation x="147" y="7" w="31" h="39"/>
+				<animation x="197" y="7" w="42" h="39"/>
+				<animation x="246" y="7" w="41" h="39"/>
+				<animation x="295" y="7" w="40" h="39"/>
+				<animation x="350" y="7" w="31" h="39"/>
+				<animation x="398" y="7" w="31" h="39"/>
+				<animation x="446" y="7" w="32" h="39"/>
+			</attackAnimation>
 		</player>
 		<enemy>
-			<ghost x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" attacktexturePath="Assets/Textures/" dietexturePath="Assets/Textures/.png">
+			<ghost x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
 				<walkAnimation speed="0.1f" loop="true">
 					<animation x="14" y="9" w="19" h="30"/>
 				</walkAnimation>
@@ -57,6 +77,7 @@
 				<dieAnimation speed="0.1f" loop="false">
 					<animation x="14" y="9" w="19" h="28"/>
 				</dieAnimation>
+				<pathTile texturepath="Assets/Maps/tileSelection.png"/>
 			</ghost>
 			<skeleton>
 			</skeleton>

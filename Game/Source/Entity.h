@@ -77,19 +77,19 @@ public:
 
 	SString name;
 	EntityType type;
-	bool active = true;
-	bool flip ;
+	SDL_Texture* texture = NULL;
+	uint texW, texH;
 	pugi::xml_node config;
+	
+	bool active = true;
+	bool flip;
+	bool renderable = true;
 
-	uint lives;
-	b2Vec2 velocity;
-	float realVelocity;
-	float followVelovity;
-	float idleVelocity;
-
+	PhysBody* pbody;
 	iPoint position;
 	iPoint tilePos;
-	bool renderable = true;
+	iPoint initPosition;
+
 };
 
 #endif // __ENTITY_H__

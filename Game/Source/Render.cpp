@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Render.h"
 #include "Map.h"
+#include "Physics.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -296,20 +297,28 @@ SDL_Texture* Render::LoadTexture(SDL_Renderer* renderer, const char* filePath)
 
 bool Render::LoadState(pugi::xml_node save)
 {
-	camera.x = save.child("camera").attribute("x").as_int();
-	camera.y = save.child("camera").attribute("y").as_int();
+	if (app->render->camera.x < 0)
+		camera.x = save.child("camera").attribute("x").as_int();
+
+	if (app->render->camera.y < 0)
+		camera.y = save.child("camera").attribute("y").as_int();
 
 	//Iterates over the entities and changes its attributes
 	ListItem<Entity*>* item = app->entityManager->entities.start;
 
-	for (pugi::xml_node enemyNode = save.child("scene").first_child(); enemyNode; enemyNode = enemyNode.next_sibling())
+	for (pugi::xml_node configEntity = config.first_child(); configEntity && item != NULL; configEntity = configEntity.next_sibling())
 	{
-		if (item != NULL && enemyNode.attribute("active").as_bool())
+		pugi::xml_node newEntity = save.parent().child("scene").child(configEntity.name());
+		
+		if (item->data->active)
 		{
-			item->data->position.x = enemyNode.attribute("x").as_int();
-			item->data->position.y = enemyNode.attribute("y").as_int();
-			item = item->next;
+			b2Vec2 savedPos = b2Vec2(METERS_TO_PIXELS(newEntity.attribute("x").as_int()), METERS_TO_PIXELS(newEntity.attribute("y").as_int()));
+			item->data->pbody->body->SetTransform(savedPos, 0);
+			item->data->position = savedPosition;
 		}
+
+		item->data->active = newEntity.attribute("active").as_bool();
+		item = item->next;
 	}
 
 	return true;
@@ -317,22 +326,27 @@ bool Render::LoadState(pugi::xml_node save)
 
 bool Render::SaveState(pugi::xml_node save)
 {
-	pugi::xml_node camNode = save.append_child("camera");
+	//Saves camera position
+	pugi::xml_node camNode = save.parent().child("renderer").append_child("camera");
 	camNode.append_attribute("x").set_value(camera.x);
 	camNode.append_attribute("y").set_value(camera.y);
 
-	//Iterates over the entities and changes its attributes
+	//Iterates over the entities and saves its attributes
 	ListItem<Entity*>* item = app->entityManager->entities.start;
 
-	for (pugi::xml_node enemyNode = save.child("scene").first_child(); enemyNode; enemyNode = enemyNode.next_sibling())
+	for (pugi::xml_node configEntity = config.first_child(); configEntity && item != NULL; configEntity = configEntity.next_sibling())
 	{
-		if (item != NULL)
+		pugi::xml_node newEntity = save.parent().child("scene").append_child(configEntity.name());
+
+		if (item->data->active)
 		{
-			enemyNode.append_attribute("x").set_value(item->data->position.x);
-			enemyNode.append_attribute("y").set_value(item->data->position.y);
-			enemyNode.append_attribute("active").set_value(item->data->active);
-			item = item->next;
+			newEntity.append_attribute("x").set_value(METERS_TO_PIXELS(item->data->position.x));
+			newEntity.append_attribute("y").set_value(METERS_TO_PIXELS(item->data->position.y));
+			savedPosition = iPoint(newEntity.attribute("x").as_int(), newEntity.attribute("y").as_int());
 		}
+
+		newEntity.append_attribute("active").set_value(item->data->active);
+		item = item->next;
 	}
 
 	return true;

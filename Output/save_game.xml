@@ -4,20 +4,20 @@
 	<input />
 	<textures />
 	<audio />
-	<anonymous />
-	<anonymous />
+	<physics />
 	<scene>
-		<player x="20" y="250" active="true"/>
-		<ghost x="900" y="100" active="true"/>
-		<ghost x="50" y="100" active="true"/>
-		<item x="256" y="250" active="true"/>
-		<item x="400" y="250" active="true"/>
-		<item x="500" y="90" active="true"/>
-		<item x="600" y="200" active="true"/>
-		<item x="900" y="90" active="true"/>
+		<player x="-250" y="10750" active="true" />
+		<ghost x="43750" y="3650" active="true" />
+		<ghost x="1300" y="4250" active="true" />
+		<item x="12800" y="11950" active="true" />
+		<item x="20000" y="11950" active="true" />
+		<item x="25000" y="4750" active="true" />
+		<item x="30000" y="10350" active="true" />
+		<item x="45350" y="4750" active="true" />
 	</scene>
+	<:anonymous />
 	<entitymanager />
 	<renderer>
-		<camera x="0" y="0"/>
+		<camera x="0" y="0" />
 	</renderer>
 </game_state>

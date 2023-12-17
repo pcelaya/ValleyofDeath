@@ -29,12 +29,6 @@ public:
 
 public:
 	float speed = 0.2f;
-	SDL_Texture* texture = NULL;
-	uint texW, texH;
-	SDL_Texture* mouseTileTex = nullptr;
-
-	iPoint initPosition;
-	PhysBody* pbody;
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;

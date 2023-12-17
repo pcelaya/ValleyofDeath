@@ -17,6 +17,7 @@
 		<borderless value="false"/>
 		<resizable value="false"/>
 		<fullscreen_window value="flase"/>
+		
 	</window>
 
 	<scene>
@@ -91,13 +92,12 @@
 				</dieAnimation>
 				<pathTile texturepath="Assets/Maps/tileSelection.png"/>
 			</ghost>
-		<skeleton></skeleton>
-		<map path="Assets/Maps/" name="Map_level1.tmx"/>
 		<item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="400" y="250" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="500" y="90" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="600" y="200" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="900" y="90" texturepath="Assets/Textures/goldCoin.png"/>
 	</scene>
-
+	<map path="Assets/Maps/" name="Map_level1.tmx">
+	</map>
 </config>

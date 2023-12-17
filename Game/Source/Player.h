@@ -30,13 +30,10 @@ public:
 	void respawn();
 
 public:
-	float speed = 0.2f;
-	SDL_Texture* texture = NULL;
-	uint texW, texH;
+	float speed;
 	bool god_mode = false;
-	
-	iPoint initPosition;
-	PhysBody* pbody;
+
+	//b2Vec2 velocity;
 
 	// jumping
 	int remainingJumpSteps = 0;

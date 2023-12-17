@@ -15,7 +15,6 @@
 bool Ghost::Awake()
 {
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
-	tilePos = app->map->WorldToMap(position.x - texW / 2, position.y - texH / 2);
 	initPosition = position;
 	speed = config.attribute("speed").as_int();
 
@@ -49,6 +48,7 @@ bool Ghost::Awake()
 bool Ghost::Start()
 {
 	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
+	
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &walkAnimation;
@@ -59,6 +59,9 @@ bool Ghost::Start()
 	pbody->ctype = ColliderType::DEADLY;
 
 	enemyRange = 20;
+
+	//idleVelocity = speed;
+	//followVelovity = speed * 1.5;
 	active = true;
 	flip = false;
 
@@ -70,10 +73,12 @@ bool Ghost::Start()
 bool Ghost::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, 0);
+	tilePos = app->map->WorldToMap(position.x - texW / 2, position.y - texH / 2);
 
+	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (texW / 2);
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (texH / 2);
+	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
+	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 
 	if (!active)
 	{
@@ -87,26 +92,46 @@ bool Ghost::Update(float dt)
 	{	
 		iPoint origin = tilePos;
 		iPoint destiny = app->scene->player->tilePos;
-		
+
 		if (destiny.DistanceTo(origin) < enemyRange && app->scene->player->active)
 		{
-			realVelocity = followVelovity;
+			//realVelocity = followVelovity;
+
 			app->map->pathfinding->CreatePath(origin, destiny);
-
 			const DynArray<iPoint>* movePath = app->map->pathfinding->GetLastPath();
-
-			if (movePath->Count() > 1)
+			/*if (movePath->Count() > 1)
 			{
 				if (tilePos.x != movePath->At(1)->x)
 				{
 					if (tilePos.x > movePath->At(1)->x)
 						velocity.x = -realVelocity * dt;
 					else 
-						velocity.x += realVelocity;
+						velocity.x = realVelocity * dt;
+
+					if (movePath->Count() > 2)
+					{
+						if (movePath->At(2)->y != tilePos.y)
+						{
+							if (tilePos.y > movePath->At(2)->y)
+								velocity.y = -realVelocity / 1.3 * dt;
+							else
+								velocity.y = realVelocity / 1.3 * dt;
+
+							velocity.x /= 1.3;
+						}
+						else
+							velocity.y = 0;
+					}
 				}
 			}
+			else
+			{
+				if (tilePos.y != movePath->At(1)->y) 
+				{
+				
+				}
+			}*/
 		}
-
 
 		if (app->scene->debug)
 		{
@@ -121,12 +146,12 @@ bool Ghost::Update(float dt)
 				}
 			}
 		}
-	}
 
-	if (!flip)
-		app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
-	else
-		app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+		if (!flip)
+			app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+		else
+			app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+	}
 
 	currentAnimation->Update();
 

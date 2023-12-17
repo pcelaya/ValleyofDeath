@@ -32,7 +32,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	//L07 DONE 2: Add Physics module
 	physics = new Physics();
 	scene = new Scene();
 	map = new Map();
@@ -45,11 +44,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	//L07 DONE 2: Add Physics module
 	AddModule(physics);
 	AddModule(scene);
 	AddModule(map);
 	AddModule(entityManager);
+	
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -234,7 +233,7 @@ void App::FinishUpdate()
 		gameTitle.GetString(), averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
 
 	app->win->SetTitle(title);
-
+	
 	if (loadRequest) {
 		loadRequest = false;
 		LoadFromFile();
@@ -315,6 +314,7 @@ bool App::LoadFromFile()
 {
 	bool ret = true;
 
+	pugi::xml_document saveFile;
 	pugi::xml_parse_result result = saveFile.load_file("save_game.xml");
 
 	if (result)
@@ -343,7 +343,7 @@ bool App::SaveFromFile()
 {
 	bool ret = true;
 
-	//pugi::xml_document saveFile;
+	pugi::xml_document saveFile;
 	pugi::xml_node gameState = saveFile.append_child("game_state");
 
 	ListItem<Module*>* item;

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "App.h"
+#include "Map.h"
 #include "Textures.h"
 #include "Audio.h"
 #include "Input.h"
@@ -21,7 +22,6 @@ bool Player::Awake()
 {
 	//Initialize Player parameters
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
-	tilePos = app->map->WorldToMap(position.x + texW / 2, position.y + texH / 2);
 	initPosition = position;
 	speed = config.attribute("speed").as_float();
 
@@ -79,6 +79,7 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
+	tilePos = app->map->WorldToMap(position.x + texW / 2, position.y + texH / 2);
 
 	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		respawn();
@@ -191,7 +192,8 @@ bool Player::Update(float dt)
 				remainingJumpSteps = 0;
 				jumpForceReduce = 0;
 			}
-			if (contact != nullptr) {
+			if (contact != nullptr) 
+			{
 				b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
 				if (contactPonts.y == 1) {
 					force = 0;

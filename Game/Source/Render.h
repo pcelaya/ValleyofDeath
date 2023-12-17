@@ -60,6 +60,9 @@ public:
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
+
+	pugi::xml_node config;
+	iPoint savedPosition;
 };
 
 #endif // __RENDER_H__

@@ -45,10 +45,7 @@ public:
 	// Debug mode
 	bool debug;
 
-
 	Player* player;
-	Ghost* ghost;
-	List<Entity>* enemy;
 };
 
 #endif // __SCENE_H__

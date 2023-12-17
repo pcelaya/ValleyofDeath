@@ -21,6 +21,7 @@ bool Player::Awake()
 {
 	//Initialize Player parameters
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
+	tilePos = app->map->WorldToMap(position.x + texW / 2, position.y + texH / 2);
 	initPosition = position;
 	speed = config.attribute("speed").as_float();
 
@@ -52,14 +53,13 @@ bool Player::Awake()
 		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
 	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
-	dieAnimation.loop = config.child("dieAnimation").attribute("loop").as_bool();
 
 	return true;
 }
 
 bool Player::Start() {
 
-	texture = app->tex->Load(config.attribute("attacktexturePath").as_string());
+	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
@@ -69,10 +69,7 @@ bool Player::Start() {
 	pbody->listener = this;
 	pbody->ctype = ColliderType::PLAYER;
 
-	//initialize audio effect
-	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
-
-	death = false;
+	active = true;
 	flip = false;
 	god_mode = false;
 
@@ -89,7 +86,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !god_mode)
 	{
 		god_mode = !god_mode;
-		pbody->body->SetGravityScale(0.1);
+		pbody->body->SetGravityScale(0);
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && god_mode)
 	{
@@ -97,12 +94,23 @@ bool Player::Update(float dt)
 		pbody->body->SetGravityScale(1);
 	}
 
-	if (death) 
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		texture = app->tex->Load(config.attribute("attacktexturePath").as_string());
+		currentAnimation = &attackAnimation;
+
+		if (attackAnimation.HasFinished())
+		{
+			attackAnimation.Reset();
+			currentAnimation = &idleAnimation;
+		}
+	}
+
+	if (!active) 
 	{
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();
-			currentAnimation = &idleAnimation;
 			respawn();
 		}
 	}
@@ -230,25 +238,14 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		LOG("Collision PLATFORM");
 		break;
 
-	case ColliderType::ITEM:
-		LOG("Collision ITEM");
-		app->audio->PlayFx(pickCoinFxId);
-		app->entityManager->DestroyEntity(physB->listener);
-	
-		break;
-
 	case ColliderType::DEADLY:
 		LOG("Collision DEADLY");
 		if (!god_mode)
 		{
-			death = true;
-			currentAnimation = &dieAnimation;
+			active = false;
 			texture = app->tex->Load(config.attribute("dietexturePath").as_string());
+			currentAnimation = &dieAnimation;
 		}
-		break;
-
-	case ColliderType::UNKNOWN:
-		LOG("Collision UNKNOWN");
 		break;
 	default:
 		break;
@@ -267,6 +264,7 @@ void Player::respawn()
 	if (app->render->camera.y < 0)
 		app->render->camera.y = 0;
 	
-	death = false;
+	active = true;
 	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+	currentAnimation = &idleAnimation;
 }

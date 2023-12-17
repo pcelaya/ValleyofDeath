@@ -8,6 +8,7 @@
 
 	<renderer>
 		<vsync value="flase"/>
+		<camera x="0" y="0" />
 	</renderer>
 
 	<window>
@@ -66,8 +67,7 @@
 				<animation x="446" y="7" w="32" h="39"/>
 			</attackAnimation>
 		</player>
-		<enemy>
-			<ghost x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="900" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
 				<walkAnimation speed="0.1f" loop="true">
 					<animation x="14" y="9" w="19" h="30"/>
 				</walkAnimation>
@@ -79,9 +79,19 @@
 				</dieAnimation>
 				<pathTile texturepath="Assets/Maps/tileSelection.png"/>
 			</ghost>
-			<skeleton>
-			</skeleton>
-		</enemy>
+		<ghost x="50" y="100" speed="0.1f" walktexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+				<walkAnimation speed="0.1f" loop="true">
+					<animation x="14" y="9" w="19" h="30"/>
+				</walkAnimation>
+				<attackAnimation speed="0.1f" loop="true">
+					<animation x="14" y="9" w="19" h="30"/>
+				</attackAnimation>
+				<dieAnimation speed="0.1f" loop="false">
+					<animation x="14" y="9" w="19" h="28"/>
+				</dieAnimation>
+				<pathTile texturepath="Assets/Maps/tileSelection.png"/>
+			</ghost>
+		<skeleton></skeleton>
 		<map path="Assets/Maps/" name="Map_level1.tmx"/>
 		<item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="400" y="250" texturepath="Assets/Textures/goldCoin.png"/>

@@ -32,17 +32,11 @@ public:
 public:
 	float speed = 0.2f;
 	SDL_Texture* texture = NULL;
-	pugi::xml_node config;
 	uint texW, texH;
 	bool god_mode = false;
 	
-	bool flip;
-	bool death;
 	iPoint initPosition;
 	PhysBody* pbody;
-
-	//Audio fx
-	int pickCoinFxId;
 
 	// jumping
 	int remainingJumpSteps = 0;

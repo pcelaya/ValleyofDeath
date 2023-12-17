@@ -13,32 +13,8 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Audio.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Physics.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
       <Filter>Game\Modules\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Render.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Textures.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Window.cpp">
-      <Filter>Game\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Item.cpp">
       <Filter>Game\Entities</Filter>
@@ -52,14 +28,38 @@
     <ClCompile Include="Source\PerfTimer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PathFinding.cpp">
-      <Filter>Game\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Skeleton.cpp">
       <Filter>Game\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\Ghost.cpp">
       <Filter>Game\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PathFinding.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Textures.cpp">
+      <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Game\Modules\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,41 +93,14 @@
     <ClInclude Include="Source\Module.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Audio.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Render.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene.h">
       <Filter>Game\Modules\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Textures.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Map.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Window.h">
-      <Filter>Game\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>Game\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Item.h">
       <Filter>Game\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Source\App.h">
       <Filter>Game</Filter>
@@ -141,14 +114,41 @@
     <ClInclude Include="Source\Entity.h">
       <Filter>Game\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="PathFinding.h">
-      <Filter>Game\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Ghost.h">
       <Filter>Game\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Skeleton.h">
       <Filter>Game\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Textures.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +172,12 @@
     </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{2cad778a-d356-48b0-9fee-587f1bbb187e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Heathers">
+      <UniqueIdentifier>{847470f2-e64c-43be-8c57-5c8bb3d55c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Body">
+      <UniqueIdentifier>{d44a0483-87dd-4415-8e20-d717d105d460}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

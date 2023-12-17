@@ -11,8 +11,7 @@ class Module
 {
 public:
 
-	Module() : active(false)
-	{}
+	Module() : active(false) {}
 
 	void Init()
 	{
@@ -54,6 +53,10 @@ public:
 	{
 		return true;
 	}
+
+	virtual bool LoadState(pugi::xml_node save) { return true; }
+	
+	virtual bool SaveState(pugi::xml_node save) { return true; }
 
 public:
 

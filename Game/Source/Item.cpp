@@ -18,9 +18,11 @@ Item::~Item() {}
 
 bool Item::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
+	position.x = config.attribute("x").as_int();
+	position.y = config.attribute("y").as_int();
+	texturePath = config.attribute("texturepath").as_string();
+	texturePath = config.attribute("texturepath").as_string();
+
 
 	return true;
 }
@@ -36,6 +38,9 @@ bool Item::Start() {
 
 	// L07 DONE 7: Assign collider type
 	pbody->ctype = ColliderType::ITEM;
+
+	//initialize audio effect
+	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
 
 	return true;
 }
@@ -56,4 +61,20 @@ bool Item::Update(float dt)
 bool Item::CleanUp()
 {
 	return true;
+}
+
+void Item::OnCollision(PhysBody* physA, PhysBody* physB)
+{
+	b2ContactEdge* contact = pbody->body->GetContactList();
+	b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
+
+	switch (physB->ctype)
+	{
+	case ColliderType::PLAYER:
+		LOG("Collision PLAYER");
+		app->audio->PlayFx(pickCoinFxId);
+		app->entityManager->DestroyEntity(physA->listener);
+	default:
+		break;
+	}
 }

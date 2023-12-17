@@ -1,12 +1,23 @@
 <?xml version="1.0"?>
-<!-- L02: TODO 4: Create a simulation xml file to read -->
 <game_state>
-	<input />
 	<window />
+	<input />
 	<textures />
 	<audio />
-	<scene />
+	<anonymous />
+	<anonymous />
+	<scene>
+		<player x="20" y="250" active="true"/>
+		<ghost x="900" y="100" active="true"/>
+		<ghost x="50" y="100" active="true"/>
+		<item x="256" y="250" active="true"/>
+		<item x="400" y="250" active="true"/>
+		<item x="500" y="90" active="true"/>
+		<item x="600" y="200" active="true"/>
+		<item x="900" y="90" active="true"/>
+	</scene>
+	<entitymanager />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="0" y="0"/>
 	</renderer>
 </game_state>

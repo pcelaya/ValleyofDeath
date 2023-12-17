@@ -31,16 +31,12 @@ public:
 public:
 	float speed = 0.2f;
 	SDL_Texture* texture = NULL;
-	pugi::xml_node config;
 	uint texW, texH;
 	SDL_Texture* mouseTileTex = nullptr;
 
-	bool flip;
-	bool death;
 	iPoint initPosition;
 	PhysBody* pbody;
-
-	int it;
+	int enemyRange;
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;

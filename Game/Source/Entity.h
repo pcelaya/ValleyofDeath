@@ -71,22 +71,24 @@ public:
 		}
 	}
 
-	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {
-
-	};
-
-
+	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {};
 
 public:
 
 	SString name;
 	EntityType type;
 	bool active = true;
-	pugi::xml_node parameters; 
+	bool flip ;
+	pugi::xml_node config;
 
-	// Possible properties, it depends on how generic we
-	// want our Entity class, maybe it's not renderable...
-	iPoint position;       
+	uint lives;
+	b2Vec2 velocity;
+	float realVelocity;
+	float followVelovity;
+	float idleVelocity;
+
+	iPoint position;
+	iPoint tilePos;
 	bool renderable = true;
 };
 

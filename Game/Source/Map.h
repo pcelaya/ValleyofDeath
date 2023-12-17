@@ -152,7 +152,10 @@ private:
     MapData mapData;
     bool mapLoaded;
     MapLayer* navigationLayer;
+
     int blockedGid = 535;
+    int firstX, firstY;
+    int lastX, lastY;
 };
 
 

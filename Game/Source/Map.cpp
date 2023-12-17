@@ -55,6 +55,12 @@ bool Map::Update(float dt)
     if(mapLoaded == false)
         return false;
 
+    //firstX = app->render->GetFirstTileX();
+    //firstY = app->render->GetFirstTileY();
+    //lastX = app->render->GetLastTileX();
+    //lastY = app->render->GetLastTileY();
+
+
     ListItem<MapLayer*>* mapLayer; 
     mapLayer = mapData.layers.start;
 
@@ -67,9 +73,9 @@ bool Map::Update(float dt)
         if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) 
         {
             //iterate all tiles in a layer
-            for (int i = 0; i < mapData.width; i++) 
+            for (int i = 0; i < 173; i++) 
             {
-                for (int j = 0; j < mapData.height; j++) 
+                for (int j = 0; j < 29; j++) 
                 {
                     //Get the gid from tile
                     int gid = mapLayer->data->Get(i, j);

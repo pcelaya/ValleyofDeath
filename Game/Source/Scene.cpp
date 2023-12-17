@@ -31,13 +31,11 @@ bool Scene::Awake(pugi::xml_node config)
 	player->config = config.child("player");
 
 	// iterate all ghost in the scene
-	/*for (pugi::xml_node enemyNode = config.child("enemy").child("ghost"); enemyNode; enemyNode = enemyNode.next_sibling("ghost"))
+	for (pugi::xml_node enemyNode = config.child("ghost"); enemyNode; enemyNode = enemyNode.next_sibling("ghost"))
 	{
-		Ghost* enemy = (Ghost*)app->entityManager->CreateEntity(EntityType::GHOST);
-		enemy->parameters = enemyNode;
-	}*/
-	ghost = (Ghost*)app->entityManager->CreateEntity(EntityType::GHOST);
-	ghost->config = config.child("enemy").child("ghost");
+		Ghost* ghost = (Ghost*)app->entityManager->CreateEntity(EntityType::GHOST);
+		ghost->config = enemyNode;
+	}
 
 	//Get the map name from the config file and assigns the value in the module
 	app->map->name = config.child("map").attribute("name").as_string();
@@ -48,7 +46,7 @@ bool Scene::Awake(pugi::xml_node config)
 	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
 	{
 		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-		item->parameters = itemNode;
+		item->config = itemNode;
 	}
 
 	debug = false;
@@ -99,6 +97,9 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= (int)ceil(camSpeed * dt);
+
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
 
 	return true;
 }

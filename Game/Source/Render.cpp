@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Window.h"
 #include "Render.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -291,4 +292,68 @@ SDL_Texture* Render::LoadTexture(SDL_Renderer* renderer, const char* filePath)
 	}
 
 	return texture;
+}
+
+bool Render::LoadState(pugi::xml_node save)
+{
+	camera.x = save.child("camera").attribute("x").as_int();
+	camera.y = save.child("camera").attribute("y").as_int();
+
+	//Iterates over the entities and changes its attributes
+	ListItem<Entity*>* item = app->entityManager->entities.start;
+
+	for (pugi::xml_node enemyNode = save.child("scene").first_child(); enemyNode; enemyNode = enemyNode.next_sibling())
+	{
+		if (item != NULL && enemyNode.attribute("active").as_bool())
+		{
+			item->data->position.x = enemyNode.attribute("x").as_int();
+			item->data->position.y = enemyNode.attribute("y").as_int();
+			item = item->next;
+		}
+	}
+
+	return true;
+}
+
+bool Render::SaveState(pugi::xml_node save)
+{
+	pugi::xml_node camNode = save.append_child("camera");
+	camNode.append_attribute("x").set_value(camera.x);
+	camNode.append_attribute("y").set_value(camera.y);
+
+	//Iterates over the entities and changes its attributes
+	ListItem<Entity*>* item = app->entityManager->entities.start;
+
+	for (pugi::xml_node enemyNode = save.child("scene").first_child(); enemyNode; enemyNode = enemyNode.next_sibling())
+	{
+		if (item != NULL)
+		{
+			enemyNode.append_attribute("x").set_value(item->data->position.x);
+			enemyNode.append_attribute("y").set_value(item->data->position.y);
+			enemyNode.append_attribute("active").set_value(item->data->active);
+			item = item->next;
+		}
+	}
+
+	return true;
+}
+
+int Render::GetFirstTileX()
+{
+	return (camera.x * -1) / app->map->GetTileWidth();
+}
+
+int Render::GetLastTileX()
+{
+	return ((camera.x * -1) + camera.w + app->map->GetTileWidth()) / app->map->GetTileWidth();
+}
+
+int Render::GetFirstTileY()
+{
+	return (camera.y * -1) / app->map->GetTileHeight();
+}
+
+int Render::GetLastTileY()
+{
+	return ((camera.y * -1) + camera.h + app->map->GetTileHeight()) / app->map->GetTileHeight();
 }

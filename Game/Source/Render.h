@@ -33,6 +33,8 @@ public:
 
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
+	// Set background color
+	void SetBackgroundColor(SDL_Color color);
 
 	// Drawing
 	bool DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
@@ -43,8 +45,14 @@ public:
 
 	SDL_Texture* LoadTexture(SDL_Renderer* renderer, const char* filePath);
 
-	// Set background color
-	void SetBackgroundColor(SDL_Color color);
+	bool LoadState(pugi::xml_node save);
+	bool SaveState(pugi::xml_node save);
+	
+	// Get the window borders
+	int GetFirstTileX();
+	int GetLastTileX();
+	int GetFirstTileY();
+	int GetLastTileY();
 
 public:
 

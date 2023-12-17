@@ -21,7 +21,6 @@ class Audio;
 class Scene;
 class EntityManager;
 class Map;
-//L07 DONE 2: Add Physics module
 class Physics;
 
 class App
@@ -55,6 +54,10 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
+	// Request to Load / Save the game state in the XML file
+	bool LoadRequest();
+	bool SaveRequest();
+
 private:
 
 	// Load config file
@@ -74,6 +77,10 @@ private:
 
 	// Call modules after each loop iteration
 	bool PostUpdate();
+
+	// Reeds / Saves XML file data
+	bool LoadFromFile();
+	bool SaveFromFile();
 
 public:
 
@@ -100,10 +107,10 @@ private:
 
 	List<Module *> modules;
 
-	// L04: DONE 2 - Create a variable to load and store the XML file in memory
 	// xml_document to store the config file
 	pugi::xml_document configFile;
-	
+	pugi::xml_document saveFile;
+
 	uint frames;
 	float dt;
 
@@ -123,6 +130,8 @@ private:
 	//L02 DONE 1: Set the maximun frame duration in miliseconds.
 	uint32 maxFrameDuration = 16;
 
+	bool loadRequest = false;
+	bool saveRequest = false;
 };
 
 extern App* app;

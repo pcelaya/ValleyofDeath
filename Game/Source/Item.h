@@ -22,7 +22,7 @@ public:
 
 	bool CleanUp();
 
-public:
+	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 	bool isPicked = false;
 
@@ -34,6 +34,9 @@ private:
 
 	//L07 DONE 4: Add a physics to an item
 	PhysBody* pbody;
+
+	//Audio fx
+	int pickCoinFxId;
 };
 
 #endif // __ITEM_H__

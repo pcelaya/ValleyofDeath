@@ -55,9 +55,9 @@ bool Skeleton::Start()
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
-	pbody->ctype = ColliderType::ENEMY;
+	pbody->ctype = ColliderType::DEADLY;
 
-	death = false;
+	active = true;
 	flip = false;
 
 	return true;
@@ -71,7 +71,7 @@ bool Skeleton::Update(float dt)
 	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
 	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 
-	if (death)
+	if (!active)
 	{
 		if (dieAnimation.HasFinished())
 		{

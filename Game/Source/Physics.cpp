@@ -329,13 +329,6 @@ void Physics::BeginContact(b2Contact* contact)
 
 	if (physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
-
-	if (physA && physA->listener != NULL)
-	{
-		if (physA->ctype == ColliderType::DEADLY)
-		{
-		}
-	}
 }
 
 //--------------- PhysBody

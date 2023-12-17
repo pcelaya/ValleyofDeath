@@ -15,6 +15,7 @@
 bool Ghost::Awake()
 {
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
+	tilePos = app->map->WorldToMap(position.x - texW / 2, position.y - texH / 2);
 	initPosition = position;
 	speed = config.attribute("speed").as_int();
 
@@ -52,13 +53,13 @@ bool Ghost::Start()
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &walkAnimation;
 	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
-	pbody->body->SetGravityScale(0);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
-	pbody->ctype = ColliderType::ENEMY;
+	pbody->ctype = ColliderType::DEADLY;
 
-	death = false;
+	enemyRange = 20;
+	active = true;
 	flip = false;
 
 	mouseTileTex = app->tex->Load(config.child("pathTile").attribute("texturepath").as_string());
@@ -68,11 +69,13 @@ bool Ghost::Start()
 
 bool Ghost::Update(float dt)
 {
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
+	b2Vec2 velocity = b2Vec2(0, 0);
 
-	if (death)
+	b2Transform pbodyPos = pbody->body->GetTransform();
+	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (texW / 2);
+	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (texH / 2);
+
+	if (!active)
 	{
 		if (dieAnimation.HasFinished())
 		{
@@ -81,23 +84,33 @@ bool Ghost::Update(float dt)
 		}
 	}
 	else
-	{		
-		iPoint origin = app->map->WorldToMap(position.x, position.y);
-		iPoint destiny = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
-		app->map->pathfinding->CreatePath(origin, destiny);
-
-		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{	
+		iPoint origin = tilePos;
+		iPoint destiny = app->scene->player->tilePos;
+		
+		if (destiny.DistanceTo(origin) < enemyRange && app->scene->player->active)
 		{
+			realVelocity = followVelovity;
+			app->map->pathfinding->CreatePath(origin, destiny);
+
 			const DynArray<iPoint>* movePath = app->map->pathfinding->GetLastPath();
 
-			iPoint enemypos = app->map->MapToWorld(movePath->At(1)->x, movePath->At(1)->y+2);
-			b2Vec2 movepos(PIXEL_TO_METERS(enemypos.x), PIXEL_TO_METERS(enemypos.y));
-			pbody->body->SetTransform(movepos, 0);
+			if (movePath->Count() > 1)
+			{
+				if (tilePos.x != movePath->At(1)->x)
+				{
+					if (tilePos.x > movePath->At(1)->x)
+						velocity.x = -realVelocity * dt;
+					else 
+						velocity.x += realVelocity;
+				}
+			}
 		}
+
 
 		if (app->scene->debug)
 		{
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 			{
 				//Get the latest calculated path and draw
 				const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
@@ -136,17 +149,10 @@ void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 		LOG("Collision PLATFORM");
 		break;
 
-	case ColliderType::ITEM:
-		LOG("Collision ITEM");
-		break;
-
-	case ColliderType::DEADLY:
-		LOG("Collision DEADLY");
-		break;
-
-	case ColliderType::UNKNOWN:
+	case ColliderType::PLAYER:
 		LOG("Collision UNKNOWN");
 		break;
+
 	default:
 		break;
 	}

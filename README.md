@@ -9,12 +9,17 @@ In this game you encanate Death himself in his daily job of recolecting the soul
  - Colect Souls
  - Jump
  - Complete Levels
+ - Path finding
+ - Enemies, one walks, the other flies
+ - Load and save
+
  
 ## Controls
 
  - A -> move left
  - D -> move right
  - SPACE -> jump
+ - Left mouse click --> attack
  - F1 -> reset character
  - F3 -> reset level
  - F9 -> Un/see colliders

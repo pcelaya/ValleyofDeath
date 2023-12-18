@@ -40,7 +40,6 @@ bool Skeleton::Awake()
 		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
 	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
-	dieAnimation.loop = config.child("dieAnimation").attribute("loop").as_bool();
 
 	return true;
 }
@@ -57,8 +56,12 @@ bool Skeleton::Start()
 	pbody->listener = this;
 	pbody->ctype = ColliderType::DEADLY;
 
+	enemyRange = 20;
+
 	active = true;
 	flip = false;
+
+	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").child("pathTile").attribute("texturepath").as_string());
 
 	return true;
 }

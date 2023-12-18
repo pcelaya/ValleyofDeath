@@ -28,7 +28,21 @@ public:
 	//void respawn();
 
 public:
-	float speed = 0.2f;
+	float speed;
+	SDL_Texture* texture = NULL;
+	uint texW, texH;
+	SDL_Texture* mouseTileTex = nullptr;
+
+	iPoint initPosition;
+	int enemyRange;
+
+	uint lives;
+
+	// moving the enemy
+	/*b2Vec2 velocity = b2Vec2(0, 0);
+	float realVelocity;
+	float followVelovity;
+	float idleVelocity;*/
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;

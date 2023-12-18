@@ -9,6 +9,9 @@ In this game you encanate Death himself in his daily job of recolecting the soul
  - Colect Souls
  - Jump
  - Complete Levels
+ - Path finding
+ - Enemies: one walks, the other flies
+ - Load and save
  
 ## Controls
 
@@ -21,6 +24,7 @@ In this game you encanate Death himself in his daily job of recolecting the soul
  - F10 -> GOD mode
     - W -> Fly up
     - S -> Fly down
+    - Left mouse click --> attack
 
 ## Developers
 

@@ -18,13 +18,14 @@ In this game you encanate Death himself in his daily job of recolecting the soul
  - A -> move left
  - D -> move right
  - SPACE -> jump
+ - Left mouse click --> attack
  - F1 -> reset character
  - F3 -> reset level
  - F9 -> Un/see colliders
  - F10 -> GOD mode
     - W -> Fly up
     - S -> Fly down
-    - Left mouse click --> attack
+   
 
 ## Developers
 

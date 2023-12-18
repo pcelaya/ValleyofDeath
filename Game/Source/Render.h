@@ -62,7 +62,6 @@ public:
 	SDL_Color background;
 
 	pugi::xml_node config;
-	iPoint savedPosition;
 };
 
 #endif // __RENDER_H__

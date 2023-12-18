@@ -6,14 +6,11 @@
 	<audio />
 	<physics />
 	<scene>
-		<player x="-250" y="10750" active="true" />
-		<ghost x="42600" y="3150" active="true" />
-		<ghost x="100" y="3150" active="true" />
-		<item x="12800" y="11950" active="true" />
-		<item x="20000" y="11950" active="true" />
-		<item x="25000" y="4750" active="true" />
-		<item x="30000" y="10350" active="true" />
-		<item x="44950" y="4750" active="true" />
+		<player dead="false" />
+		<ghost x="1886" y="81" dead="true" />
+		<ghost x="1036" y="181" dead="true" />
+		<skeleton x="538" y="376" dead="true" />
+		<skeleton x="888" y="440" dead="true" />
 	</scene>
 	<:anonymous />
 	<entitymanager />

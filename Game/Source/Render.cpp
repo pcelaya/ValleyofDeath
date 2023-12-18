@@ -310,14 +310,15 @@ bool Render::LoadState(pugi::xml_node save)
 	{
 		pugi::xml_node newEntity = save.parent().child("scene").child(configEntity.name());
 		
-		if (item->data->active)
+		if (!item->data->dead)
 		{
-			b2Vec2 savedPos = b2Vec2(METERS_TO_PIXELS(newEntity.attribute("x").as_int()), METERS_TO_PIXELS(newEntity.attribute("y").as_int()));
+			item->data->position.x = newEntity.attribute("x").as_int();
+			item->data->position.y = newEntity.attribute("y").as_int();
+			b2Vec2 savedPos = b2Vec2(PIXEL_TO_METERS(item->data->position.x), PIXEL_TO_METERS(item->data->position.y));
 			item->data->pbody->body->SetTransform(savedPos, 0);
-			item->data->position = savedPosition;
 		}
 
-		item->data->active = newEntity.attribute("active").as_bool();
+		item->data->dead = newEntity.attribute("dead").as_bool();
 		item = item->next;
 	}
 
@@ -338,14 +339,13 @@ bool Render::SaveState(pugi::xml_node save)
 	{
 		pugi::xml_node newEntity = save.parent().child("scene").append_child(configEntity.name());
 
-		if (item->data->active)
+		if (!item->data->dead)
 		{
-			newEntity.append_attribute("x").set_value(METERS_TO_PIXELS(item->data->position.x));
-			newEntity.append_attribute("y").set_value(METERS_TO_PIXELS(item->data->position.y));
-			savedPosition = iPoint(newEntity.attribute("x").as_int(), newEntity.attribute("y").as_int());
+			newEntity.append_attribute("x").set_value(item->data->position.x);
+			newEntity.append_attribute("y").set_value(item->data->position.y);
 		}
 
-		newEntity.append_attribute("active").set_value(item->data->active);
+		newEntity.append_attribute("dead").set_value(item->data->dead);
 		item = item->next;
 	}
 

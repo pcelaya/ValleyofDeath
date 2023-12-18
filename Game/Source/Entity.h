@@ -81,7 +81,8 @@ public:
 	uint texW, texH;
 	pugi::xml_node config;
 	
-	bool active = true;
+	bool active;
+	bool dead;
 	bool flip;
 	bool renderable = true;
 

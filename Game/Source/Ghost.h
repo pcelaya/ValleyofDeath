@@ -25,9 +25,6 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-
-	//void respawn() override;
-
 public:
 	float speed;
 	SDL_Texture* texture = NULL;
@@ -40,10 +37,9 @@ public:
 	uint lives;
 
 	// moving the enemy
-	/*b2Vec2 velocity = b2Vec2(0, 0);
 	float realVelocity;
 	float followVelovity;
-	float idleVelocity;*/
+	float idleVelocity;
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;

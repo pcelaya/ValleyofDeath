@@ -39,10 +39,9 @@ public:
 	uint lives;
 
 	// moving the enemy
-	/*b2Vec2 velocity = b2Vec2(0, 0);
 	float realVelocity;
 	float followVelovity;
-	float idleVelocity;*/
+	float idleVelocity;
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;

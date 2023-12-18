@@ -135,7 +135,7 @@ public:
 
     void CreateNavigationMap(int& width, int& height, uchar** buffer) const;
 
-    // Get height of the tile
+    // Get size of the tile
     int GetTileWidth() { return mapData.tilewidth; }
     int GetTileHeight() { return mapData.tileheight; }
 

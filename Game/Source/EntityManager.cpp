@@ -4,6 +4,7 @@
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "Skeleton.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -91,8 +92,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::GHOST:
 		entity = new Ghost();
+		break;
 	case EntityType::SKELETON:
-		//entity = new Skeleton();
+		entity = new Skeleton();
 		break;
 
 	default:

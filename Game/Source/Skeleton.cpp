@@ -16,7 +16,7 @@ bool Skeleton::Awake()
 {
 	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
 	initPosition = position;
-	speed = config.attribute("speed").as_int();
+	speed = config.attribute("speed").as_float();
 
 	// Initialize Skeleton Walk Animation
 	for (pugi::xml_node animnNode = config.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
@@ -24,22 +24,6 @@ bool Skeleton::Awake()
 		walkAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
 	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_int();
-
-
-	// Initialize Skeleton Attack Animation
-	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
-	{
-		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
-	}
-	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
-
-
-	//Initialize Skeleton Animation
-	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
-	{
-		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
-	}
-	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
 
 	return true;
 }
@@ -58,7 +42,9 @@ bool Skeleton::Start()
 
 	enemyRange = 20;
 
-	active = true;
+	idleVelocity = 0;
+	followVelovity = speed;
+	dead = false;
 	flip = false;
 
 	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").child("pathTile").attribute("texturepath").as_string());
@@ -68,32 +54,65 @@ bool Skeleton::Start()
 
 bool Skeleton::Update(float dt)
 {
+	tilePos = app->map->WorldToMap(position.x+10, position.y+10);
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
-
-	if (!active)
+	if (!dead)
 	{
-		if (dieAnimation.HasFinished())
+		iPoint origin = tilePos;
+		iPoint destiny = app->scene->player->tilePos;
+
+		if (destiny.DistanceTo(origin) < enemyRange && !app->scene->player->dead)
 		{
-			dieAnimation.Reset();
-			currentAnimation = &walkAnimation;
+			realVelocity = followVelovity;
+
+			app->map->pathfinding->CreatePath(origin, destiny);
+			const DynArray<iPoint>* movePath = app->map->pathfinding->GetLastPath();
+			if (movePath->Count() > 1)
+			{
+				if (tilePos.x > movePath->At(1)->x)
+					velocity.x = -realVelocity * dt;
+				else
+					velocity.x = realVelocity * dt;
+			}
+			else if (movePath->Count() == 1)
+			{
+				if (app->scene->player->position.x < position.x)
+					velocity.x = -realVelocity * dt;
+				else
+					velocity.x = realVelocity * dt;
+			}
 		}
 	}
 	else
 	{
-		if (true)
-		{
+		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+		pbody->body->SetTransform(diePos, 0);
+	}
 
+	pbody->body->SetLinearVelocity(velocity);
+	b2Transform pbodyPos = pbody->body->GetTransform();
+	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (currentAnimation->GetCurrentFrame().w / 2);
+	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (currentAnimation->GetCurrentFrame().h / 2);
+
+	if (app->scene->debug)
+	{
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		{
+			//Get the latest calculated path and draw
+			const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+			for (uint i = 0; i < path->Count(); ++i)
+			{
+				iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+				app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
+			}
 		}
 	}
 
 	if (!flip)
-		app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 	else
-		app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -116,17 +135,14 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 		LOG("Collision PLATFORM");
 		break;
 
-	case ColliderType::ITEM:
-		LOG("Collision ITEM");
+	case ColliderType::PLAYER:
+		LOG("Collision PLAYER");
+		if (app->scene->player->currentAnimation = &attackAnimation)
+		{
+			dead = true;
+		}
 		break;
 
-	case ColliderType::DEADLY:
-		LOG("Collision DEADLY");
-		break;
-
-	case ColliderType::UNKNOWN:
-		LOG("Collision UNKNOWN");
-		break;
 	default:
 		break;
 	}

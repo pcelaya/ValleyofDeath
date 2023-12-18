@@ -55,16 +55,25 @@ bool Map::Update(float dt)
     if(mapLoaded == false)
         return false;
 
-    //firstX = app->render->GetFirstTileX();
-    //firstY = app->render->GetFirstTileY();
-    //lastX = app->render->GetLastTileX();
-    //lastY = app->render->GetLastTileY();
+    firstX = app->render->GetFirstTileX();
+    firstY = app->render->GetFirstTileY();
+    lastX = app->render->GetLastTileX();
+    lastY = app->render->GetLastTileY();
 
+    if (firstX < 0)
+        firstX = 0;
+
+    if (firstY < 0)
+        firstY = 0;
+
+    if (lastX > mapData.width)
+        lastX = mapData.width;
+
+    if (lastY > mapData.height)
+        lastY = mapData.height;
 
     ListItem<MapLayer*>* mapLayer; 
     mapLayer = mapData.layers.start;
-
-    // L06: DONE 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
 
     // iterates the layers in the map
     while (mapLayer != NULL) 
@@ -73,14 +82,13 @@ bool Map::Update(float dt)
         if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) 
         {
             //iterate all tiles in a layer
-            for (int i = 0; i < 173; i++) 
+            for (int i = firstX; i < lastX; i++)
             {
-                for (int j = 0; j < 29; j++) 
+                for (int j = firstY; j < lastY; j++)
                 {
                     //Get the gid from tile
                     int gid = mapLayer->data->Get(i, j);
 
-                    //L08: DONE 3: Obtain the tile set using GetTilesetFromTileId
                     //Get the Rect from the tileSetTexture;
                     TileSet* tileSet = GetTilesetFromTileId(gid);
                     SDL_Rect tileRect = tileSet->GetRect(gid);
@@ -172,9 +180,6 @@ bool Map::Load(SString mapFileName)
         mapData.tilewidth = mapFileXML.child("map").attribute("tilewidth").as_int();
         mapData.tileheight = mapFileXML.child("map").attribute("tileheight").as_int();
 
-        // L09: TODO 2: Define a property to store the MapType and Load it from the map
-
-        // L05: DONE 4: Implement the LoadTileSet function to load the tileset properties
        // Iterate the Tileset
         for (pugi::xml_node tilesetNode = mapFileXML.child("map").child("tileset"); tilesetNode != NULL; tilesetNode = tilesetNode.next_sibling("tileset")) {
 
@@ -233,16 +238,6 @@ bool Map::Load(SString mapFileName)
         // L07 DONE 7: Assign collider type
         // Later you can create a function here to load and create the colliders from the map
 
-        for (pugi::xml_node layerNode = mapFileXML.child("map").child("objectgroup").child("object"); layerNode != NULL; layerNode = layerNode.next_sibling("object"))
-        {
-            int x = layerNode.attribute("x").as_int();
-            int y = layerNode.attribute("y").as_int();
-            int w = layerNode.attribute("width").as_int();
-            int h = layerNode.attribute("height").as_int();
-            PhysBody* c1 = app->physics->CreateRectangle(x + w / 2, y + h / 2, w, h, STATIC);
-            c1->ctype = ColliderType::DEADLY;
-        }
-
         for (pugi::xml_node layerNode = mapFileXML.child("map").child("objectgroup").next_sibling("objectgroup").child("object"); layerNode != NULL; layerNode = layerNode.next_sibling("object"))
         {
             int x = layerNode.attribute("x").as_int();
@@ -251,6 +246,16 @@ bool Map::Load(SString mapFileName)
             int h = layerNode.attribute("height").as_int();
             PhysBody* c1 = app->physics->CreateRectangle(x + w / 2, y + h / 2, w, h, STATIC);
             c1->ctype = ColliderType::PLATFORM;
+        }
+
+        for (pugi::xml_node layerNode = mapFileXML.child("map").child("objectgroup").child("object"); layerNode != NULL; layerNode = layerNode.next_sibling("object"))
+        {
+            int x = layerNode.attribute("x").as_int();
+            int y = layerNode.attribute("y").as_int();
+            int w = layerNode.attribute("width").as_int();
+            int h = layerNode.attribute("height").as_int();
+            PhysBody* c1 = app->physics->CreateRectangle(x + w / 2, y + h / 2, w, h, STATIC);
+            c1->ctype = ColliderType::DEADLY;
         }
 
           //LOG all the data loaded iterate all tilesetsand LOG everything

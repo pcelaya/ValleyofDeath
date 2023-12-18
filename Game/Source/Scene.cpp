@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
-#include "Item.h"
+#include "Skeleton.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -39,17 +39,24 @@ bool Scene::Awake(pugi::xml_node config)
 		ghost->config = enemyNode;
 	}
 
+	// iterate all ghost in the scene
+	for (pugi::xml_node enemyNode = config.child("skeleton"); enemyNode; enemyNode = enemyNode.next_sibling("skeleton"))
+	{
+		Skeleton* skele = (Skeleton*)app->entityManager->CreateEntity(EntityType::SKELETON);
+		skele->config = enemyNode;
+	}
+
 	//Get the map name from the config file and assigns the value in the module
 	app->map->name = config.parent().child("map").attribute("name").as_string();
 	app->map->path = config.parent().child("map").attribute("path").as_string();
 
-	// iterate all items in the scene
-	// Check https://pugixml.org/docs/quickstart.html#access
-	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
-	{
-		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-		item->config = itemNode;
-	}
+	//// iterate all items in the scene
+	//// Check https://pugixml.org/docs/quickstart.html#access
+	//for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
+	//{
+	//	Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
+	//	item->config = itemNode;
+	//}
 
 	debug = false;
 
@@ -87,12 +94,6 @@ bool Scene::Update(float dt)
 	limitCamera = player->position.x - windowW + 32;
 	if (limitCamera > 0 && limitCamera < (app->map->getMapWidth() - windowW) && limitCamera < app->map->getMapWidth())
 		app->render->camera.x = (player->position.x - windowW / 2) * -1; 
-
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += (int)ceil(camSpeed * dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= (int)ceil(camSpeed * dt);
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		app->render->camera.x += (int)ceil(camSpeed * dt);

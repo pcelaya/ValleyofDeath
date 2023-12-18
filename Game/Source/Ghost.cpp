@@ -18,15 +18,15 @@ bool Ghost::Awake()
 	initPosition = position;
 	speed = config.attribute("speed").as_int();
 
-	// Initialize Ghost Flying (walking) Animation
-	for (pugi::xml_node animnNode = config.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	// Initialize Ghost Flying animation
+	for (pugi::xml_node animnNode = config.child("flyAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
 	{
-		walkAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+		flyAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
-	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_int();
+	flyAnimation.speed = config.child("flyAnimation").attribute("speed").as_int();
 
 
-	// Initialize Ghost Attack Animation
+	// Initialize Ghost Attack animation
 	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
 	{
 		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
@@ -34,25 +34,23 @@ bool Ghost::Awake()
 	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
 
 
-	//Initialize Ghost Die Animation
+	//Initialize Ghost Die animation
 	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
 		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
 	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
-	dieAnimation.loop = config.child("dieAnimation").attribute("loop").as_bool();
 
 	return true;
 }
 
 bool Ghost::Start()
 {
-	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
-	
+	texture = app->tex->Load(config.attribute("flytexturePath").as_string());
 
 	app->tex->GetSize(texture, texW, texH);
-	currentAnimation = &walkAnimation;
-	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
+	currentAnimation = &flyAnimation;
+	pbody = app->physics->CreateCircle(position.x - texW/2, position.y - texH / 2, currentAnimation->GetCurrentFrame().w /2, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -65,7 +63,7 @@ bool Ghost::Start()
 	active = true;
 	flip = false;
 
-	mouseTileTex = app->tex->Load(config.child("pathTile").attribute("texturepath").as_string());
+	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").child("pathTile").attribute("texturepath").as_string());
 
 	return true;
 }
@@ -73,7 +71,7 @@ bool Ghost::Start()
 bool Ghost::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, 0);
-	tilePos = app->map->WorldToMap(position.x - texW / 2, position.y - texH / 2);
+	tilePos = app->map->WorldToMap(position.x + texW/2, position.y + texH/2);
 
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
@@ -85,7 +83,7 @@ bool Ghost::Update(float dt)
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();
-			currentAnimation = &walkAnimation;
+			currentAnimation = &flyAnimation;
 		}
 	}
 	else
@@ -175,7 +173,7 @@ void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 		break;
 
 	case ColliderType::PLAYER:
-		LOG("Collision UNKNOWN");
+		LOG("Collision PLAYER");
 		break;
 
 	default:

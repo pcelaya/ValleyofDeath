@@ -47,7 +47,7 @@ public:
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;
-	Animation walkAnimation;
+	Animation flyAnimation;
 	Animation dieAnimation;
 	Animation attackAnimation;
 };

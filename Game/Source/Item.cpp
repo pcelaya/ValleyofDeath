@@ -39,9 +39,6 @@ bool Item::Start() {
 	// L07 DONE 7: Assign collider type
 	pbody->ctype = ColliderType::ITEM;
 
-	//initialize audio effect
-	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
-
 	return true;
 }
 
@@ -70,10 +67,13 @@ void Item::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	switch (physB->ctype)
 	{
+	case ColliderType::PLATFORM:
+		LOG("Collision PLATFORM");
+		break;
+
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		app->audio->PlayFx(pickCoinFxId);
-		app->entityManager->DestroyEntity(physA->listener);
+		break;
 	default:
 		break;
 	}

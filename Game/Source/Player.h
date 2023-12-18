@@ -9,6 +9,15 @@
 
 struct SDL_Texture;
 
+enum class AnimationType
+{
+	IDLE,
+	WALK,
+	JUMP,
+	ATTACK,
+	DIE,
+};
+
 class Player : public Entity
 {
 public:
@@ -29,9 +38,11 @@ public:
 
 	void respawn();
 
+	void animationManager();
 public:
 	float speed;
 	bool god_mode = false;
+	bool moveing;
 
 	//b2Vec2 velocity;
 
@@ -47,6 +58,11 @@ public:
 	Animation jumpAnimation;
 	Animation dieAnimation;
 	Animation attackAnimation;
+	AnimationType animtype;
+	AnimationType currentype;
+
+	//Audio fx
+	int pickCoinFxId;
 };
 
 #endif // __PLAYER_H__

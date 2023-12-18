@@ -59,7 +59,14 @@ bool Player::Awake()
 
 bool Player::Start() {
 
+	//initialize animation type
 	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+	animtype = AnimationType::IDLE;
+	currentype = animtype;
+
+	//initialize audio effect
+	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
+
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
@@ -81,39 +88,35 @@ bool Player::Update(float dt)
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
 	tilePos = app->map->WorldToMap(position.x + texW / 2, position.y + texH / 2);
 
+	pbody->body->SetLinearVelocity(velocity);
+	b2Transform pbodyPos = pbody->body->GetTransform();
+	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
+	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
+
 	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		respawn();
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !god_mode)
 	{
 		god_mode = !god_mode;
+		velocity = b2Vec2(0, 0);
 		pbody->body->SetGravityScale(0);
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && god_mode)
 	{
 		god_mode = !god_mode;
+		velocity = b2Vec2(0, -GRAVITY_Y);
 		pbody->body->SetGravityScale(1);
 	}
 
 	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		texture = app->tex->Load(config.attribute("attacktexturePath").as_string());
-		currentAnimation = &attackAnimation;
-
-		if (attackAnimation.HasFinished())
-		{
-			attackAnimation.Reset();
-			currentAnimation = &idleAnimation;
-		}
+		animtype = AnimationType::ATTACK;
 	}
 
 	if (!active) 
 	{
-		if (dieAnimation.HasFinished())
-		{
-			dieAnimation.Reset();
-			respawn();
-		}
+		animtype = AnimationType::DIE;
 	}
 	else
 	{
@@ -130,12 +133,14 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				velocity.x = -0.4 * dt;
+				animtype = AnimationType::WALK;
 				flip = true;
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				velocity.x = 0.4 * dt;
+				animtype = AnimationType::WALK;
 				flip = false;
 			}
 
@@ -150,26 +155,30 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				velocity.x = -0.2 * dt;
+				animtype = AnimationType::WALK;
 				flip = true;
 			}
-			
+
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				velocity.x = 0.2 * dt;
+				animtype = AnimationType::WALK;
 				flip = false;
 			}
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			if (contact != nullptr) {
+			if (contact != nullptr)
+			{
+				animtype = AnimationType::JUMP;
 				b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
-				if (contactPonts.y == 0 && (contactPonts.x == 1 || contactPonts.x == -1)) 
+				if (contactPonts.y == 0 && (contactPonts.x == 1 || contactPonts.x == -1))
 				{
 					remainingJumpSteps = maxJumpSteps;
 					jumpForceReduce = 0;
 				}
-				else 
+				else
 				{
 					remainingJumpSteps = maxJumpSteps;
 					jumpForceReduce = 0;
@@ -181,18 +190,23 @@ bool Player::Update(float dt)
 			}
 		}
 
-		if (remainingJumpSteps > 0) {
+		if (remainingJumpSteps > 0)
+		{
 			float force = pbody->body->GetMass() * 10 / (1 / 30.0);
 			force /= 3.5f;
+
 			force -= jumpForceReduce;
 			jumpForceReduce = maxJumpSteps - remainingJumpSteps;
+
 			pbody->body->ApplyForceToCenter(b2Vec2(0, -(force * dt)), true);
 			remainingJumpSteps--;
-			if (jumpForceReduce > force) {
+
+			if (jumpForceReduce > force)
+			{
 				remainingJumpSteps = 0;
 				jumpForceReduce = 0;
 			}
-			if (contact != nullptr) 
+			if (contact != nullptr)
 			{
 				b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
 				if (contactPonts.y == 1) {
@@ -203,23 +217,14 @@ bool Player::Update(float dt)
 			}
 		}
 
-		if (remainingJumpSteps <= 0) 
-		{
-			jumpAnimation.Reset();
-		}
+		if (!flip)
+			app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
+		else
+			app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
 	}
 
-	pbody->body->SetLinearVelocity(velocity);
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
-
-	if (!flip) 
-		app->render->DrawTexture(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
-	else 
-		app->render->DrawTexturePR(texture, position.x + 12, position.y + 9, &currentAnimation->GetCurrentFrame());
-
-	currentAnimation->Update();
+	animationManager();
+	currentype = animtype;
 
 	return true;
 }
@@ -245,10 +250,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		if (!god_mode)
 		{
 			active = false;
-			texture = app->tex->Load(config.attribute("dietexturePath").as_string());
-			currentAnimation = &dieAnimation;
 		}
 		break;
+
+	case ColliderType::ITEM:
+		LOG("Collision ITEM");
+		app->audio->PlayFx(pickCoinFxId);
+		physB->body->SetActive(false);
+		break;
+
 	default:
 		break;
 	}
@@ -267,6 +277,71 @@ void Player::respawn()
 		app->render->camera.y = 0;
 	
 	active = true;
-	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
-	currentAnimation = &idleAnimation;
+	animtype = AnimationType::IDLE;
+}
+
+void Player::animationManager()
+{
+	if (currentype != animtype)
+	{
+		switch (animtype)
+		{
+		case AnimationType::IDLE:
+			texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+			currentAnimation = &idleAnimation;
+			break;
+
+		case AnimationType::WALK:
+			texture = app->tex->Load(config.attribute("walktexturePath").as_string());
+			currentAnimation = &walkAnimation;
+
+			if (!moveing)
+			{
+				texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+				currentAnimation = &idleAnimation;
+				attackAnimation.Reset();
+			}
+			break;
+
+		case AnimationType::JUMP:
+			texture = app->tex->Load(config.attribute("jumptexturePath").as_string());
+			currentAnimation = &jumpAnimation;
+
+			if (remainingJumpSteps <= 0)
+			{
+				jumpAnimation.Reset();
+				texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+				currentAnimation = &idleAnimation;
+			}
+			break;
+
+		case AnimationType::ATTACK:
+			texture = app->tex->Load(config.attribute("attacktexturePath").as_string());
+			currentAnimation = &attackAnimation;
+
+			if (attackAnimation.HasFinished())
+			{
+				texture = app->tex->Load(config.attribute("idletexturePath").as_string());
+				currentAnimation = &idleAnimation;
+				attackAnimation.Reset();
+			}
+			break;
+
+		case AnimationType::DIE:
+			texture = app->tex->Load(config.attribute("dietexturePath").as_string());
+			currentAnimation = &dieAnimation;
+
+			if (dieAnimation.HasFinished())
+			{
+				dieAnimation.Reset();
+				respawn();
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	currentAnimation->Update();
 }

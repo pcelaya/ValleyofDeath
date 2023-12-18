@@ -30,8 +30,6 @@ private:
 
 	const char* texturePath;
 
-	//Audio fx
-	int pickCoinFxId;
 };
 
 #endif // __ITEM_H__

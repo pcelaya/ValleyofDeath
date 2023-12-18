@@ -5,13 +5,11 @@
 		<title>My video game</title>
 		<maxFrameDuration value="16"/>
 	</app>
-
 	<renderer>
 		<vsync value="flase"/>
 		<camera x="0" y="0" />
 		<pathTile texturepath="Assets/Maps/tileSelection.png"/>
 	</renderer>
-
 	<window>
 		<resolution width="1152" height="608" scale="1"/>
 		<fullscreen value="false"/>
@@ -19,7 +17,6 @@
 		<resizable value="false"/>
 		<fullscreen_window value="flase"/>
 	</window>
-
 	<scene>
 		<player x="20" y="250" speed="0.2f" idletexturePath="Assets/Textures/IdleReaper.png" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" jumptexturePath="Assets/Textures/JumpingReaper.png" attacktexturePath="Assets/Textures/AttackReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
 			<idleAnimation speed="0.06f" loop="true">
@@ -72,18 +69,18 @@
 					<animation x="8" y="3" w="29" h="38"/>
 				</flyAnimation>
 				<pathTile texturepath="Assets/Maps/tileSelection.png"/>
-			</ghost>
+		</ghost>
 		<ghost x="50" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
-			</ghost>
+		</ghost>
 		<item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="400" y="250" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="500" y="90" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="600" y="200" texturepath="Assets/Textures/goldCoin.png"/>
 		<item x="900" y="90" texturepath="Assets/Textures/goldCoin.png"/>
 	</scene>
-	<map path="Assets/Maps/" name="Map_level1.tmx">
+	<map path="Assets/Maps/" name="Map 1.2.tmx">
 	</map>
 </config>

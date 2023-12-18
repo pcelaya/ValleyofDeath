@@ -153,7 +153,7 @@ private:
     bool mapLoaded;
     MapLayer* navigationLayer;
 
-    int blockedGid = 535;
+    int blockedGid = 896;
     int firstX, firstY;
     int lastX, lastY;
 };

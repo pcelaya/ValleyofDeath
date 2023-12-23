@@ -10,6 +10,7 @@ enum class EntityType
 {
 	PLAYER,
 	ITEM,
+	ENEMY,
 	GHOST,
 	SKELETON,
 	UNKNOWN
@@ -77,20 +78,12 @@ public:
 
 	SString name;
 	EntityType type;
-	SDL_Texture* texture = NULL;
-	uint texW, texH;
+	bool active = true;
 	pugi::xml_node config;
 	
-	bool active;
-	bool dead;
-	bool flip;
 	bool renderable = true;
-
-	PhysBody* pbody;
 	iPoint position;
-	iPoint tilePos;
-	iPoint initPosition;
-
+	bool toDelete = false;
 };
 
 #endif // __ENTITY_H__

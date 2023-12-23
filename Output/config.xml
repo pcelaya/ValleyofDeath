@@ -5,10 +5,9 @@
 		<title>My video game</title>
 		<maxFrameDuration value="16"/>
 	</app>
-	<renderer>
+	<renderer pathTile="Assets/Maps/Maps/tileSelection.png">
 		<vsync value="flase"/>
 		<camera x="0" y="0" />
-		<pathTile texturepath="Assets/Maps/Maps/tileSelection.png"/>
 	</renderer>
 	<window>
 		<resolution width="1152" height="608" scale="1"/>
@@ -18,108 +17,109 @@
 		<fullscreen_window value="flase"/>
 	</window>
 	<scene>
-		<player x="20" y="465" speed="0.2f" idletexturePath="Assets/Textures/IdleReaper.png" walktexturePath="Assets/Textures/RunningReaper.png" dietexturePath="Assets/Textures/DyingReaper.png" jumptexturePath="Assets/Textures/JumpingReaper.png" attacktexturePath="Assets/Textures/AttackReaper.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
+		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
 			<idleAnimation speed="0.06f" loop="true">
-				<animation x="14" y="6" w="19" h="34"/>
-				<animation x="45" y="6" w="19" h="34"/>
+				<animation x="14" y="13" w="21" h="34"/>
+				<animation x="45" y="13" w="21" h="34"/>
 			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
-				<animation x="14" y="9" w="19" h="31"/>
-				<animation x="61" y="9" w="20" h="31"/>
-				<animation x="109" y="9" w="20" h="31"/>
-				<animation x="158" y="9" w="19" h="31"/>
-				<animation x="206" y="9" w="19" h="31"/>
-				<animation x="253" y="9" w="20" h="31"/>
-				<animation x="350" y="9" w="20" h="31"/>
+				<animation x="14" y="60" w="21" h="32"/>
+				<animation x="61" y="60" w="22" h="32"/>
+				<animation x="109" y="60" w="22" h="32"/>
+				<animation x="158" y="60" w="21" h="32"/>
+				<animation x="206" y="60" w="21" h="32"/>
+				<animation x="253" y="60" w="22" h="32"/>
+				<animation x="301" y="60" w="22" h="32"/>
+				<animation x="350" y="60" w="21" h="32"/>
 			</walkAnimation>
 			<dieAnimation speed="0.08f" loop="false">
-				<animation x="14" y="9" w="19" h="31"/>
-				<animation x="62" y="9" w="19" h="31"/>
-				<animation x="110" y="9" w="19" h="31"/>
-				<animation x="157" y="9" w="20" h="31"/>
-				<animation x="206" y="9" w="21" h="31"/>
-				<animation x="254" y="9" w="21" h="31"/>
-				<animation x="300" y="9" w="26" h="31"/>
-				<animation x="348" y="9" w="26" h="31"/>
-				<animation x="394" y="9" w="30" h="31"/>
+				<animation x="14" y="112" w="21" h="32"/>
+				<animation x="62" y="112" w="21" h="32"/>
+				<animation x="110" y="112" w="21" h="32"/>
+				<animation x="157" y="112" w="22" h="32"/>
+				<animation x="206" y="112" w="23" h="32"/>
+				<animation x="254" y="112" w="23" h="32"/>
+				<animation x="300" y="112" w="28" h="32"/>
+				<animation x="348" y="112" w="28" h="32"/>
+				<animation x="394" y="112" w="32" h="32"/>
 			</dieAnimation>
 			<jumpAnimation speed="0.08f" loop="false">
-				<animation x="14" y="7" w="19" h="33"/>
-				<animation x="61" y="7" w="20" h="33"/>
-				<animation x="109" y="7" w="21" h="33"/>
-				<animation x="158" y="7" w="19" h="33"/>
-				<animation x="206" y="7" w="19" h="33"/>
-				<animation x="254" y="7" w="19" h="33"/>
+				<animation x="14" y="175" w="21" h="32"/>
+				<animation x="61" y="175" w="22" h="32"/>
+				<animation x="109" y="175" w="22" h="32"/>
+				<animation x="158" y="175" w="21" h="32"/>
+				<animation x="206" y="175" w="21" h="32"/>
+				<animation x="254" y="175" w="21" h="32"/>
 			</jumpAnimation>
 			<attackAnimation speed="0.08f" loop="false">
-				<animation x="14" y="7" w="28" h="39"/>
-				<animation x="62" y="7" w="23" h="39"/>
-				<animation x="98" y="7" w="32" h="39"/>
-				<animation x="147" y="7" w="31" h="39"/>
-				<animation x="197" y="7" w="42" h="39"/>
-				<animation x="246" y="7" w="41" h="39"/>
-				<animation x="295" y="7" w="40" h="39"/>
-				<animation x="350" y="7" w="31" h="39"/>
-				<animation x="398" y="7" w="31" h="39"/>
-				<animation x="446" y="7" w="32" h="39"/>
+				<animation x="14" y="232" w="29" h="40"/>
+				<animation x="62" y="232" w="23" h="40"/>
+				<animation x="98" y="232" w="34" h="40"/>
+				<animation x="147" y="232" w="33" h="40"/>
+				<animation x="197" y="232" w="44" h="40"/>
+				<animation x="246" y="232" w="43" h="40"/>
+				<animation x="295" y="232" w="42" h="40"/>
+				<animation x="350" y="232" w="33" h="40"/>
+				<animation x="398" y="232" w="33" h="40"/>
+				<animation x="446" y="232" w="34" h="40"/>
 			</attackAnimation>
 		</player>
-		<ghost x="1900" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="1900" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+			<flyAnimation speed="0.08f" loop="true">
+				<animation x="8" y="3" w="29" h="38"/>
+			</flyAnimation>
+		</ghost>
+		<ghost x="1050" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+			<flyAnimation speed="0.08f" loop="true">
+				<animation x="8" y="3" w="29" h="38"/>
+			</flyAnimation>
+		</ghost>
+		<ghost x="2100" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 				<flyAnimation speed="0.08f" loop="true">
 					<animation x="8" y="3" w="29" h="38"/>
 				</flyAnimation>
 		</ghost>
-		<ghost x="1050" y="200" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="2450" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="2100" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
-				<flyAnimation speed="0.08f" loop="true">
-					<animation x="8" y="3" w="29" h="38"/>
-				</flyAnimation>
-		</ghost>
-		<ghost x="2450" y="200" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="2700" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="2700" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
-				<flyAnimation speed="0.08f" loop="true">
-					<animation x="8" y="3" w="29" h="38"/>
-				</flyAnimation>
-		</ghost>
-		<ghost x="3500" y="200" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="3500" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="4500" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="4500" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="4850" y="200" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="4850" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="5100" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="5100" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="5500" y="200" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="5500" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="6000" y="100" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="6000" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
 		</ghost>
-		<ghost x="6100" y="200" speed="0.1f" flytexturePath="Assets/Textures/FlyingEnemy.png" dietexturePath="Assets/Textures/.png">
+		<ghost x="6100" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>

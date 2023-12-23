@@ -88,7 +88,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		entity = new Player();
 		break;
 	case EntityType::ITEM:
-		entity = new Item();
+		//entity = new Item();
 		break;
 	case EntityType::GHOST:
 		entity = new Ghost();

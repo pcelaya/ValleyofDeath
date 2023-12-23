@@ -140,8 +140,8 @@ public:
     int GetTileHeight() { return mapData.tileheight; }
 
     // Get height of the map
-    int getMapHeight() { return mapData.height * mapData.tileheight; }
-    int getMapWidth() { return mapData.width * mapData.tilewidth; }
+    int GetMapHeight() { return mapData.height * mapData.tileheight; }
+    int GetMapWidth() { return mapData.width * mapData.tilewidth; }
 
 public:
     SString name;

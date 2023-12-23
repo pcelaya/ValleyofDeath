@@ -1,22 +1,13 @@
 #include "Ghost.h"
-#include "App.h"
-#include "Textures.h"
-#include "Audio.h"
-#include "Input.h"
-#include "Render.h"
 #include "Scene.h"
-#include "Map.h"
-#include "Log.h"
-#include "Point.h"
-#include "Physics.h"
 
+
+Ghost::Ghost() : Enemy() {}
 
 
 bool Ghost::Awake()
 {
-	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
-	initPosition = position;
-	speed = config.attribute("speed").as_float();
+	Enemy::Awake();
 
 	// Initialize Ghost Flying animation
 	for (pugi::xml_node animnNode = config.child("flyAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
@@ -46,9 +37,7 @@ bool Ghost::Awake()
 
 bool Ghost::Start()
 {
-	texture = app->tex->Load(config.attribute("flytexturePath").as_string());
-
-	app->tex->GetSize(texture, texW, texH);
+	texture = app->tex->Load(texturePath);
 	currentAnimation = &flyAnimation;
 	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w /2, bodyType::DYNAMIC);
 
@@ -58,186 +47,142 @@ bool Ghost::Start()
 
 	enemyRange = 20;
 	pbody->body->SetGravityScale(0);
+	followVelovity = 0.15;
+	patrolVelocity = 0.1;
 
-	idleVelocity = 0;
-	followVelovity = speed;
-	dead = false;
-	flip = false;
-
-	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").child("pathTile").attribute("texturepath").as_string());
+	Enemy::Start();
 
 	return true;
 }
 
 bool Ghost::Update(float dt)
 {
-	tilePos = app->map->WorldToMap(position.x + texW / 4, position.y + texH / 4);
-	b2Vec2 velocity = b2Vec2(0, 0);
+	if (abs(app->scene->player->GetPlayerTileX() - getEnemyTileX()) > 50) {
+		velocity.x = 0;
+		velocity.y = 0;
+		pbody->body->SetLinearVelocity(velocity);
+		return true;
+	}
+
+	velocity = b2Vec2(0, 0);
 
 	if (!dead)
 	{	
-		iPoint origin = tilePos;
-		iPoint destiny = app->scene->player->tilePos;
-
-		if (destiny.DistanceTo(origin) < enemyRange && !app->scene->player->dead)
-		{
+		if (canChase(enemyRange)) {
 			realVelocity = followVelovity;
-
-			app->map->pathfinding->CreatePath(origin, destiny);
-			const DynArray<iPoint>* movePath = app->map->pathfinding->GetLastPath();
-			if (movePath->Count() > 1)
-			{
-				if (tilePos.x != movePath->At(1)->x)
-				{
-					if (tilePos.x > movePath->At(1)->x)
-						velocity.x = -realVelocity * dt;
-					else
-						velocity.x = realVelocity * dt;
-				}
-				else
-				{
-					if (tilePos.y != movePath->At(1)->y)
-					{
-						velocity.y = realVelocity * dt;
-					}
-					else
-					{
-						velocity.y = -realVelocity * dt;
-					}
-				}
-
-				if (movePath->Count() > 2) 
-				{
-					if (movePath->At(2)->y != tilePos.y) 
-					{
-						if (tilePos.y > movePath->At(2)->y) 
-						{
-							velocity.y = -realVelocity / 1.3 * dt;
-						}
-						else 
-						{
-							velocity.y = realVelocity / 1.3 * dt;
-						}
-						velocity.x /= 1.3;
-					}
-					else 
-					{
-						velocity.y = 0;
-					}
-				}
-				else 
-				{ 
-					if (tilePos.y > movePath->At(1)->y) 
-					{
-						velocity.y = -realVelocity * dt;
-					}
-					else 
-					{
-						velocity.y = realVelocity * dt;
-					}
-					if (movePath->Count() > 2) 
-					{
-						if (movePath->At(2)->x != tilePos.x) {
-							if (tilePos.x > movePath->At(2)->x) {
-								velocity.x = realVelocity / 1.3 * dt;
-							}
-							else {
-								velocity.x = -realVelocity / 1.3 * dt;
-							}
-							velocity.y /= 1.3;
-						}
-						else {
-							velocity.x = 0;
-						}
-					}
-				}
-			}
-			else if (movePath->Count() == 1)
-			{
-				if (app->scene->player->position.x < position.x)
-				{
-					velocity.x = -realVelocity * dt;
-				}
-				else
-				{
-					velocity.x = realVelocity * dt;
-				}
-
-				if (app->scene->player->position.y < position.y)
-				{
-					velocity.y = realVelocity * dt;
-				}
-				else
-				{
-					velocity.y = -realVelocity * dt;
-				}
-			}
+			dest = iPoint(PTileX, PTileY);
+			moveToPlayer(dt);
+			currentAnimation = &flyAnimation;
 		}
-		else
-		{
-			destiny;
+		else {
+			realVelocity = patrolVelocity;
+			Enemy::Patrol();
+			moveToPlayer(dt);
+			currentAnimation = &flyAnimation;
 		}
-
-
-		if (app->scene->debug)
-		{
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-			{
-				//Get the latest calculated path and draw
-				const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
-				for (uint i = 0; i < path->Count(); ++i)
-				{
-					iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-					app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
-				}
-			}
-		}
-
-		if (!flip)
-			app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-		else
-			app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 	}
 	else
 	{
-		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
-		pbody->body->SetTransform(diePos, 0);
+		if (dieAnimation.HasFinished()) {
+			dead = true;
+		}
 	}
 
-	pbody->body->SetLinearVelocity(velocity);
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (currentAnimation->GetCurrentFrame().w / 2);
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (currentAnimation->GetCurrentFrame().h / 2);
-
-	currentAnimation->Update();
+	Enemy::Update(dt);
 
 	return true;
 }
 
-bool Ghost::CleanUp()
+void Ghost::moveToPlayer(float dt)
 {
-	return true;
+	const DynArray<iPoint>* path = FindPath();
+
+	if (path->Count() > 1) 
+	{
+		if (TileX != path->At(1)->x) 
+		{
+			if (TileX > path->At(1)->x) 
+				velocity.x = -realVelocity * dt;
+
+			else 
+				velocity.x = realVelocity * dt;
+
+			if (path->Count() > 2) 
+			{
+				if (path->At(2)->y != TileY) 
+				{
+					if (TileY > path->At(2)->y)
+					{
+						velocity.y = -realVelocity / 1.3 * dt;
+					}
+					else 
+					{
+						velocity.y = realVelocity / 1.3 * dt;
+					}
+
+					velocity.x /= 1.3;
+
+				}
+				else 
+					velocity.y = 0;
+				
+			}
+		}
+		else {
+			if (TileY > path->At(1)->y) 
+				velocity.y = -realVelocity * dt;
+			
+			else 
+				velocity.y = realVelocity * dt;
+			
+
+			if (path->Count() > 2) 
+			{
+				if (path->At(2)->x != TileX) 
+				{
+					if (TileX > path->At(2)->x) 
+					{
+						velocity.x = -realVelocity / 1.3 * dt;
+					}
+					else 
+					{
+						velocity.x = realVelocity / 1.3 * dt;
+					}
+					velocity.y /= 1.3;
+				}
+				else 
+					velocity.x = 0;
+				
+			}
+		}
+	}
+	else if (path->Count() == 1) 
+	{
+		if (app->scene->player->position.x < position.x) 
+			velocity.x = -realVelocity * dt;
+		
+		else 
+			velocity.x = realVelocity * dt;
+		
+
+
+		if (app->scene->player->position.y < position.y) 
+			velocity.y = -realVelocity * dt;
+		
+		else 
+			velocity.y = realVelocity * dt;
+	}
 }
+
 
 void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	b2ContactEdge* contact = pbody->body->GetContactList();
-	b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
-
 	switch (physB->ctype)
 	{
-	case ColliderType::PLATFORM:
-		LOG("Collision PLATFORM");
-		break;
-
 	case ColliderType::PLAYER:
-		LOG("Collision PLAYER");
-		if (app->scene->player->currentAnimation = &attackAnimation)
-		{
-			dead = true;
-		}
+		dead = true;
+		currentAnimation = &dieAnimation;
 		break;
-
 	default:
 		break;
 	}

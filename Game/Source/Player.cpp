@@ -31,13 +31,8 @@ bool Player::Awake()
 		idleAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
 	idleAnimation.speed = config.child("idleAnimation").attribute("speed").as_float();
+	idleAnimation.loop = config.child("idleAnimation").attribute("loop").as_bool();
 
-	// Initialize Jump Animation
-	for (pugi::xml_node animationNode = config.child("jumpAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
-	{
-		jumpAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
-	}
-	jumpAnimation.speed = config.child("jumpAnimation").attribute("speed").as_float();
 
 	//Initialize Walk Animation
 	for (pugi::xml_node animationNode = config.child("walkAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
@@ -45,14 +40,8 @@ bool Player::Awake()
 		walkAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
 	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_float();
+	walkAnimation.loop = config.child("walkAnimation").attribute("loop").as_bool();
 
-	// Initialize Attack Animation
-	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
-	{
-		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
-	}
-	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
-	attackAnimation.loop = config.child("attackAnimation").attribute("loop").as_bool();
 
 	//Initialize Die Animation
 	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
@@ -62,16 +51,32 @@ bool Player::Awake()
 	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
 	dieAnimation.loop = config.child("dieAnimation").attribute("loop").as_bool();
 
+
+	// Initialize Jump Animation
+	for (pugi::xml_node animationNode = config.child("jumpAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	{
+		jumpAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
+	}
+	jumpAnimation.speed = config.child("jumpAnimation").attribute("speed").as_float();
+	jumpAnimation.loop = config.child("jumpAnimation").attribute("loop").as_bool();
+
+
+	// Initialize Attack Animation
+	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	{
+		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+	}
+	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
+	attackAnimation.loop = config.child("attackAnimation").attribute("loop").as_bool();
+
 	return true;
 }
 
 bool Player::Start() {
 
 	//initialize animation type
-	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
-
-	//initialize audio effect
-	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
+	texture = app->tex->Load(config.attribute("texturePath").as_string());
+	state = IDLE;
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
@@ -81,11 +86,12 @@ bool Player::Start() {
 	pbody->listener = this;
 	pbody->ctype = ColliderType::PLAYER;
 
+	//initialize audio effect
+	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
+
 	dead = false;
 	flip = false;
 	god_mode = false;
-	onAir = false;
-	attack = false;
 
 	return true;
 }
@@ -93,10 +99,7 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
-	tilePos = app->map->WorldToMap(position.x +texW/4, position.y +texH / 4);
-
-	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-		respawn();
+	//tilePos = app->map->WorldToMap(position.x +texW/4, position.y +texH / 4);
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !god_mode)
 	{
@@ -107,162 +110,131 @@ bool Player::Update(float dt)
 		god_mode = !god_mode;
 	}
 
+	switch (state)
+	{
+	case IDLE:
+		currentAnimation = &idleAnimation;
+		break;
+	case WALIKING:
+		currentAnimation = &walkAnimation;
+		break;
+	case DIE:
+		currentAnimation = &dieAnimation;
+		break;
+	case JUMP:
+		currentAnimation = &jumpAnimation;
+		break;
+	case ATTACK:
+		currentAnimation = &attackAnimation;
+		break;
+	default:
+		break;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		respawn();
 	if (god_mode)
 	{
 		velocity = b2Vec2(0, 0);
 		pbody->body->SetGravityScale(0);
 	}
 
-	if (dead) 
+	if (dead)
 	{
-		texture = app->tex->Load(config.attribute("dietexturePath").as_string());
-		currentAnimation = &dieAnimation;
+		state = DIE;
+		if (dieAnimation.HasFinished())
+		{
+			dieAnimation.Reset();
+			state = IDLE;
+			respawn();
+			dead = false;
+		}
 	}
 	else
 	{
-		b2ContactEdge* contact = pbody->body->GetContactList();
-		if (contact != nullptr) {
-			b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
-			if (contactPonts.y == -1) {
-				jumpAnimation.Reset();
-			}
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+		{
+			velocity.x = -0.2 * dt;
+			flip = true;
+
+			if (state == IDLE)
+				state = WALIKING;
 		}
 
-		if (god_mode)
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 		{
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				velocity.x = -0.4 * dt;
-				texture = app->tex->Load(config.attribute("walktexturePath").as_string());
-				currentAnimation = &walkAnimation;
-				flip = true;
-			}
-			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				velocity.x = 0.4 * dt;
-				texture = app->tex->Load(config.attribute("walktexturePath").as_string());
-				currentAnimation = &walkAnimation;
-				flip = false;
-			}
-			else
-			{
-				texture = app->tex->Load(config.attribute("idletexturePath").as_string());
-				currentAnimation = &idleAnimation;
-				walkAnimation.Reset();
-			}
+			velocity.x = 0.2 * dt;
+			flip = false;
 
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-				velocity.y = -0.4 * dt;
-
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-				velocity.y = 0.4 * dt;
-		}
-		else
-		{
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				velocity.x = -0.2 * dt;
-				texture = app->tex->Load(config.attribute("walktexturePath").as_string());
-				currentAnimation = &walkAnimation;
-				flip = true;
-			}
-			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				velocity.x = 0.2 * dt;
-				texture = app->tex->Load(config.attribute("walktexturePath").as_string());
-				currentAnimation = &walkAnimation;
-				flip = false;
-			}
-			else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-			{
-				attack = true;
-				texture = app->tex->Load(config.attribute("attacktexturePath").as_string());
-				currentAnimation = &attackAnimation;
-			}
+			if (state == IDLE)
+				state = WALIKING;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !onAir)
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) 
 		{
-			if (contact != nullptr)
-			{
-				texture = app->tex->Load(config.attribute("jumptexturePath").as_string());
-				currentAnimation = &jumpAnimation;
-				b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
-				if (contactPonts.y == 0 && (contactPonts.x == 1 || contactPonts.x == -1))
-				{
-					remainingJumpSteps = maxJumpSteps;
-					jumpForceReduce = 0;
-				}
-				else
-				{
-					remainingJumpSteps = maxJumpSteps;
-					jumpForceReduce = 0;
-				}
-			}
-			else {
-				remainingJumpSteps = maxJumpSteps;
+			if (state == WALIKING)
+				state = IDLE;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			if (jumps > 0) {
+				state = JUMP;
+				jumps--;
+				remainJumpSteps = maxJumpSteps;
 				jumpForceReduce = 0;
 			}
-
-			onAir = true;
 		}
-		if (remainingJumpSteps > 0)
-		{
-			float force = pbody->body->GetMass() * 10 / (1 / 30.0);
-			force /= 2.8f;
 
+		if (remainJumpSteps > 0) {
+			force = pbody->body->GetMass() * 10 / (1 / 30.0);
+			force /= 2.7f;
 			force -= jumpForceReduce;
-			jumpForceReduce = maxJumpSteps - remainingJumpSteps;
-
+			jumpForceReduce = maxJumpSteps - remainJumpSteps;
 			pbody->body->ApplyForceToCenter(b2Vec2(0, -(force * dt)), true);
-			remainingJumpSteps--;
-
-			if (jumpForceReduce > force)
+			remainJumpSteps--;
+			if (jumpForceReduce > force) 
 			{
-				remainingJumpSteps = 0;
+				remainJumpSteps = 0;
 				jumpForceReduce = 0;
 			}
-			if (contact != nullptr)
-			{
-				b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
-				if (contactPonts.y == 1) {
-					force = 0;
-					remainingJumpSteps = 0;
-					jumpForceReduce = 0;
-				}
-			}
 		}
-		else if (remainingJumpSteps <= 0)
-		{
-			jumpAnimation.Reset();
-			onAir = false;
+
+		if (remainJumpSteps <= 0) {
+			if (state == JUMP) {
+				jumpAnimation.Reset();
+				state = IDLE;
+			}
+			jumps = 2;
 		}
 	}
 	
-	if (dieAnimation.HasFinished())
-	{
-		respawn();
-	}
+	if (!god_mode) {
+		pbody->body->SetLinearVelocity(velocity);
+		b2Transform pbodyPos = pbody->body->GetTransform();
 
-	if (attack)
-	{
-		if (attackAnimation.HasFinished())
-		{
-			attack = false;
-			attackAnimation.Reset();
+		//preguntar al profe tema camera (el problema es en y) estaba  &blendFadeOut.GetCurrentFrame().h
+		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2;
+		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
+	}
+	else {
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			position.y += -0.5 * dt;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			position.y += 0.5 * dt;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			position.x += -0.5 * dt;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			position.x += 0.5 * dt;
 		}
 	}
 
-	pbody->body->SetLinearVelocity(velocity);
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texH / 2;
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
-
-
 	if (!flip)
-		app->render->DrawTexture(texture, position.x+12, position.y+5, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 	else
-		app->render->DrawTexturePR(texture, position.x+12, position.y+5, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -283,6 +255,21 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+		if (contactPonts.y == 1) 
+		{
+			force = 0;
+			remainJumpSteps = 0;
+			jumpForceReduce = 0;
+		}
+		break;
+
+	case ColliderType::ITEM:
+		LOG("Collision ITEM");
+		if (physB->ctype == ColliderType::ITEM) 
+		{
+			app->entityManager->DestroyEntity(physB->listener);
+		}
+		app->audio->PlayFx(pickCoinFxId);
 		break;
 
 	case ColliderType::DEADLY:
@@ -290,6 +277,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 		if (!god_mode)
 			dead = true;
 		break;
+
 	default:
 		break;
 	}
@@ -297,18 +285,24 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 void Player::respawn()
 {
-	dead = false;
-	dieAnimation.Reset();
-
 	b2Vec2 initPos = b2Vec2(PIXEL_TO_METERS(initPosition.x), PIXEL_TO_METERS(initPosition.y));
 	pbody->body->SetTransform(initPos, 0);
 	position = initPosition;
 
 	if (app->render->camera.x < 0)
 		app->render->camera.x = 0;
+
 	if (app->render->camera.y < 0)
 		app->render->camera.y = 0;
-	
-	texture = app->tex->Load(config.attribute("idletexturePath").as_string());
-	currentAnimation = &idleAnimation;
+}
+
+
+int Player::GetPlayerTileX()
+{
+	return (position.x + (currentAnimation->GetCurrentFrame().w / 2)) / app->map->GetTileWidth();
+}
+
+int Player::GetPlayerTileY()
+{
+	return (position.y + (currentAnimation->GetCurrentFrame().h / 2)) / app->map->GetTileHeight();
 }

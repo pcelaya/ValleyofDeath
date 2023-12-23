@@ -1,38 +1,30 @@
 #include "Skeleton.h"
-#include "App.h"
-#include "Textures.h"
-#include "Audio.h"
-#include "Input.h"
-#include "Render.h"
 #include "Scene.h"
-#include "Map.h"
 #include "Log.h"
-#include "Point.h"
-#include "Physics.h"
 
-
+Skeleton::Skeleton() : Enemy() {}
 
 bool Skeleton::Awake()
 {
-	position = iPoint(config.attribute("x").as_int(), config.attribute("y").as_int());
-	initPosition = position;
-	speed = config.attribute("speed").as_float();
+	Enemy::Awake();
 
 	// Initialize Skeleton Walk Animation
 	for (pugi::xml_node animnNode = config.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
 	{
 		walkAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
-	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_int();
+	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_float();
+	walkAnimation.loop = config.child("walkAnimation").attribute("loop").as_bool();
 
 	return true;
 }
 
 bool Skeleton::Start()
 {
-	texture = app->tex->Load(config.attribute("walktexturePath").as_string());
+	enemyRange = 10;
+	initPosition = position;
 
-	app->tex->GetSize(texture, texW, texH);
+	texture = app->tex->Load(texturePath);
 	currentAnimation = &walkAnimation;
 	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
 
@@ -40,110 +32,118 @@ bool Skeleton::Start()
 	pbody->listener = this;
 	pbody->ctype = ColliderType::DEADLY;
 
-	enemyRange = 20;
+	followVelovity = 0.12;
+	patrolVelocity = 0.1;
 
-	idleVelocity = 0;
-	followVelovity = speed;
-	dead = false;
-	flip = false;
-
-	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").child("pathTile").attribute("texturepath").as_string());
+	Enemy::Start();
 
 	return true;
 }
 
 bool Skeleton::Update(float dt)
 {
-	tilePos = app->map->WorldToMap(position.x+10, position.y+10);
-	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
+	if (abs(app->scene->player->GetPlayerTileX() - getEnemyTileX()) > 50) {
+		velocity.x = 0;
+		velocity.y = 0;
+		pbody->body->SetLinearVelocity(velocity);
+		return true;
+	}
+
+	velocity = b2Vec2(0, -GRAVITY_Y);
 
 	if (!dead)
 	{
-		iPoint origin = tilePos;
-		iPoint destiny = app->scene->player->tilePos;
-
-		if (destiny.DistanceTo(origin) < enemyRange && !app->scene->player->dead)
-		{
+		if (canChase(enemyRange) && PTileX >= Patrol1.x && PTileX <= Patrol2.x && PTileY <= Patrol1.y) {
 			realVelocity = followVelovity;
-
-			app->map->pathfinding->CreatePath(origin, destiny);
-			const DynArray<iPoint>* movePath = app->map->pathfinding->GetLastPath();
-			if (movePath->Count() > 1)
-			{
-				if (tilePos.x > movePath->At(1)->x)
-					velocity.x = -realVelocity * dt;
-				else
-					velocity.x = realVelocity * dt;
-			}
-			else if (movePath->Count() == 1)
-			{
-				if (app->scene->player->position.x < position.x)
-					velocity.x = -realVelocity * dt;
-				else
-					velocity.x = realVelocity * dt;
-			}
+			dest = iPoint(PTileX, PTileY);
+			moveToPlayer(dt);
+			currentAnimation = &walkAnimation;
+		}
+		else {
+			realVelocity = patrolVelocity;
+			moveToPoint(dt);
 		}
 	}
 	else
 	{
-		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
-		pbody->body->SetTransform(diePos, 0);
-	}
-
-	pbody->body->SetLinearVelocity(velocity);
-	b2Transform pbodyPos = pbody->body->GetTransform();
-	position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (currentAnimation->GetCurrentFrame().w / 2);
-	position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (currentAnimation->GetCurrentFrame().h / 2);
-
-	if (app->scene->debug)
-	{
-		if (app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		{
-			//Get the latest calculated path and draw
-			const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
-			for (uint i = 0; i < path->Count(); ++i)
-			{
-				iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-				app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
-			}
+		if (dieAnimation.HasFinished()) {
+			dead = true;
 		}
 	}
 
-	if (!flip)
-		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-	else
-		app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-
-	currentAnimation->Update();
+	Enemy::Update(dt);
 
 	return true;
 }
 
-bool Skeleton::CleanUp()
+void Skeleton::moveToPlayer(float dt)
 {
-	return true;
+	const DynArray<iPoint>* path = FindPath();
+
+	if (path->Count() > 1) 
+	{
+		if (TileX > path->At(1)->x) 
+			velocity.x = -realVelocity * dt;
+
+		else
+			velocity.x = realVelocity * dt;
+
+	}
+	else if (path->Count() == 1) 
+	{
+		if (app->scene->player->position.x < position.x) 
+			velocity.x = -realVelocity * dt;
+
+		else
+			velocity.x = realVelocity * dt;
+	}
 }
 
 void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	b2ContactEdge* contact = pbody->body->GetContactList();
-	b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
-
 	switch (physB->ctype)
 	{
-	case ColliderType::PLATFORM:
-		LOG("Collision PLATFORM");
-		break;
-
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		if (app->scene->player->currentAnimation = &attackAnimation)
-		{
-			dead = true;
-		}
+		dead = true;
+		velocity.x = 0;
+		currentAnimation = &dieAnimation;
+		break;
+
+	case ColliderType::DEADLY:
+		dead = true;
+		velocity.x = 0;
+		currentAnimation = &dieAnimation;
+		break;
+
+	case ColliderType::PLATFORM:
 		break;
 
 	default:
 		break;
+	}
+}
+
+void Skeleton::moveToPoint(float dt)
+{
+	Enemy::Patrol();
+	const DynArray<iPoint>* path = FindPath();
+	//check if t has arrivied
+	if (path->Count() > 1) {
+		//check if it shall move to x
+		if (TileX > path->At(1)->x) {
+			velocity.x = -realVelocity * dt;
+		}
+		else {
+			velocity.x = realVelocity * dt;
+		}
+	}
+	else if (path->Count() == 1) {
+		if (app->scene->player->position.x < position.x) {
+			velocity.x = -realVelocity * dt;
+		}
+		else {
+			velocity.x = realVelocity * dt;
+		}
 	}
 }

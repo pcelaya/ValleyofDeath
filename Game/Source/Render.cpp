@@ -297,57 +297,57 @@ SDL_Texture* Render::LoadTexture(SDL_Renderer* renderer, const char* filePath)
 
 bool Render::LoadState(pugi::xml_node save)
 {
-	if (app->render->camera.x < 0)
-		camera.x = save.child("camera").attribute("x").as_int();
+	//if (app->render->camera.x < 0)
+	//	camera.x = save.child("camera").attribute("x").as_int();
 
-	if (app->render->camera.y < 0)
-		camera.y = save.child("camera").attribute("y").as_int();
+	//if (app->render->camera.y < 0)
+	//	camera.y = save.child("camera").attribute("y").as_int();
 
-	//Iterates over the entities and changes its attributes
-	ListItem<Entity*>* item = app->entityManager->entities.start;
+	////Iterates over the entities and changes its attributes
+	//ListItem<Entity*>* item = app->entityManager->entities.start;
 
-	for (pugi::xml_node configEntity = config.first_child(); configEntity && item != NULL; configEntity = configEntity.next_sibling())
-	{
-		pugi::xml_node newEntity = save.parent().child("scene").child(configEntity.name());
-		
-		if (!item->data->dead)
-		{
-			item->data->position.x = newEntity.attribute("x").as_int();
-			item->data->position.y = newEntity.attribute("y").as_int();
-			b2Vec2 savedPos = b2Vec2(PIXEL_TO_METERS(item->data->position.x), PIXEL_TO_METERS(item->data->position.y));
-			item->data->pbody->body->SetTransform(savedPos, 0);
-		}
+	//for (pugi::xml_node configEntity = config.first_child(); configEntity && item != NULL; configEntity = configEntity.next_sibling())
+	//{
+	//	pugi::xml_node newEntity = save.parent().child("scene").child(configEntity.name());
+	//	
+	//	if (!item->data->dead)
+	//	{
+	//		item->data->position.x = newEntity.attribute("x").as_int();
+	//		item->data->position.y = newEntity.attribute("y").as_int();
+	//		b2Vec2 savedPos = b2Vec2(PIXEL_TO_METERS(item->data->position.x), PIXEL_TO_METERS(item->data->position.y));
+	//		item->data->pbody->body->SetTransform(savedPos, 0);
+	//	}
 
-		item->data->dead = newEntity.attribute("dead").as_bool();
-		item = item->next;
-	}
+	//	item->data->dead = newEntity.attribute("dead").as_bool();
+	//	item = item->next;
+	//}
 
 	return true;
 }
 
 bool Render::SaveState(pugi::xml_node save)
 {
-	//Saves camera position
-	pugi::xml_node camNode = save.parent().child("renderer").append_child("camera");
-	camNode.append_attribute("x").set_value(camera.x);
-	camNode.append_attribute("y").set_value(camera.y);
+	////Saves camera position
+	//pugi::xml_node camNode = save.parent().child("renderer").append_child("camera");
+	//camNode.append_attribute("x").set_value(camera.x);
+	//camNode.append_attribute("y").set_value(camera.y);
 
-	//Iterates over the entities and saves its attributes
-	ListItem<Entity*>* item = app->entityManager->entities.start;
+	////Iterates over the entities and saves its attributes
+	//ListItem<Entity*>* item = app->entityManager->entities.start;
 
-	for (pugi::xml_node configEntity = config.first_child(); configEntity && item != NULL; configEntity = configEntity.next_sibling())
-	{
-		pugi::xml_node newEntity = save.parent().child("scene").append_child(configEntity.name());
+	//for (pugi::xml_node configEntity = config.first_child(); configEntity && item != NULL; configEntity = configEntity.next_sibling())
+	//{
+	//	pugi::xml_node newEntity = save.parent().child("scene").append_child(configEntity.name());
 
-		if (!item->data->dead)
-		{
-			newEntity.append_attribute("x").set_value(item->data->position.x);
-			newEntity.append_attribute("y").set_value(item->data->position.y);
-		}
+	//	if (!item->data->dead)
+	//	{
+	//		newEntity.append_attribute("x").set_value(item->data->position.x);
+	//		newEntity.append_attribute("y").set_value(item->data->position.y);
+	//	}
 
-		newEntity.append_attribute("dead").set_value(item->data->dead);
-		item = item->next;
-	}
+	//	newEntity.append_attribute("dead").set_value(item->data->dead);
+	//	item = item->next;
+	//}
 
 	return true;
 }

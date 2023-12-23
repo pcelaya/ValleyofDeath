@@ -92,7 +92,7 @@ bool Scene::Update(float dt)
 	float camSpeed = 1; 
 	
 	limitCamera = player->position.x - windowW + 32;
-	if (limitCamera > 0 && limitCamera < (app->map->getMapWidth() - windowW) && limitCamera < app->map->getMapWidth())
+	if (limitCamera > 0 && limitCamera < (app->map->GetMapWidth() - windowW) && limitCamera < app->map->GetMapWidth())
 		app->render->camera.x = (player->position.x - windowW / 2) * -1; 
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)

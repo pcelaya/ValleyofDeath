@@ -1,19 +1,15 @@
 #ifndef __GHOST_H__
 #define __GHOST_H__
 
-#include "Entity.h"
-#include "Point.h"
-#include "Animation.h"
-#include "Render.h"
-#include "SDL/include/SDL.h"
+#include "Enemy.h"
 
 struct SDL_Texture;
 
-class Ghost : public Entity
+class Ghost : public Enemy
 {
 public:
 
-	Ghost() : Entity(EntityType::GHOST) {}
+	Ghost();
 
 	bool Awake();
 
@@ -21,28 +17,11 @@ public:
 
 	bool Update(float dt);
 
-	bool CleanUp();
+	void moveToPlayer(float dt);
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-public:
-	float speed;
-	SDL_Texture* texture = NULL;
-	uint texW, texH;
-	SDL_Texture* mouseTileTex = nullptr;
-
-	iPoint initPosition;
-	int enemyRange;
-
-	uint lives;
-
-	// moving the enemy
-	float realVelocity;
-	float followVelovity;
-	float idleVelocity;
-
 	// ANIMATION
-	Animation* currentAnimation = nullptr;
 	Animation flyAnimation;
 	Animation dieAnimation;
 	Animation attackAnimation;

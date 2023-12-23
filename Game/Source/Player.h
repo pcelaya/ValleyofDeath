@@ -9,6 +9,14 @@
 
 struct SDL_Texture;
 
+enum AnimSates {
+	IDLE,
+	WALIKING,
+	DIE,
+	JUMP,
+	ATTACK
+};
+
 class Player : public Entity
 {
 public:
@@ -29,27 +37,39 @@ public:
 
 	void respawn();
 
+	// obtein the current tile which player stays
+	int GetPlayerTileX();
+	int GetPlayerTileY();
+
 public:
 	float speed;
+	SDL_Texture* texture = NULL;
+	uint texW, texH;
+	iPoint initPosition;
+	AnimSates state;
+	float force;
 	bool god_mode = false;
+	bool flip;
+	bool dead;
 
 	// jumping
-	int remainingJumpSteps = 0;
+	PhysBody* pbody;
+	int maxJumpSteps = 30;
+	int remainJumpSteps = 0;
 	int jumpForceReduce = 0;
-	int maxJumpSteps = 20;
-	bool onAir;
-	bool attack;
+	int jumps = 2;
 
 	// ANIMATION
 	Animation* currentAnimation = nullptr;
 	Animation idleAnimation;
 	Animation walkAnimation;
-	Animation jumpAnimation;
 	Animation dieAnimation;
+	Animation jumpAnimation;
 	Animation attackAnimation;
 
 	//Audio fx
 	int pickCoinFxId;
+	int endLevel;
 };
 
 #endif // __PLAYER_H__

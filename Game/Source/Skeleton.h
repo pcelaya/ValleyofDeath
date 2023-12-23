@@ -1,55 +1,28 @@
 #ifndef __SKELETON_H__
 #define __SKELETON_H__
 
-#include "Entity.h"
-#include "Point.h"
-#include "Animation.h"
-#include "Render.h"
-#include "SDL/include/SDL.h"
+#include "Enemy.h"
 
-struct SDL_Texture;
-
-class Skeleton : public Entity
+class Skeleton : public Enemy
 {
 public:
-
-	Skeleton() : Entity(EntityType::SKELETON) {}
-
+	Skeleton();
 	bool Awake();
 
 	bool Start();
 
 	bool Update(float dt);
 
-	bool CleanUp();
+	void moveToPlayer(float dt);
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	//void respawn();
+	void moveToPoint(float dt);
 
-public:
-	float speed;
-	SDL_Texture* texture = NULL;
-	uint texW, texH;
-	SDL_Texture* mouseTileTex = nullptr;
-
-	iPoint initPosition;
-	int enemyRange;
-
-	uint lives;
-
-	// moving the enemy
-	float realVelocity;
-	float followVelovity;
-	float idleVelocity;
-
-	// ANIMATION
-	Animation* currentAnimation = nullptr;
+	Animation idleAnimation;
 	Animation walkAnimation;
 	Animation dieAnimation;
 	Animation attackAnimation;
 };
 
-#endif // __SKELETON_H__
-
-
+#endif

@@ -28,12 +28,6 @@
     <ClCompile Include="Source\PerfTimer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Skeleton.cpp">
-      <Filter>Game\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Ghost.cpp">
-      <Filter>Game\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Audio.cpp">
       <Filter>Game\Modules\Body</Filter>
     </ClCompile>
@@ -60,6 +54,15 @@
     </ClCompile>
     <ClCompile Include="Source\Window.cpp">
       <Filter>Game\Modules\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ghost.cpp">
+      <Filter>Game\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Skeleton.cpp">
+      <Filter>Game\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Game\Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,12 +117,6 @@
     <ClInclude Include="Source\Entity.h">
       <Filter>Game\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ghost.h">
-      <Filter>Game\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Skeleton.h">
-      <Filter>Game\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Audio.h">
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
@@ -150,6 +147,15 @@
     <ClInclude Include="Animation.h">
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Ghost.h">
+      <Filter>Game\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Skeleton.h">
+      <Filter>Game\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Game\Entities\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -178,6 +184,9 @@
     </Filter>
     <Filter Include="Game\Modules\Body">
       <UniqueIdentifier>{d44a0483-87dd-4415-8e20-d717d105d460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entities\Enemies">
+      <UniqueIdentifier>{11725aa7-0e1d-415d-8947-8b6863c33221}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 ## Description
 
 In this game you encanate Death himself in his daily job of recolecting the souls of the dead.
+Now with a bigger map.
 
 ## Key Features
 
@@ -12,6 +13,7 @@ In this game you encanate Death himself in his daily job of recolecting the soul
  - Path finding
  - Enemies, one walks, the other flies
  - Load and save
+ - Killing enemies, attacking them or jumping on them
 
  
 ## Controls

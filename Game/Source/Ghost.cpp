@@ -1,5 +1,7 @@
 #include "Ghost.h"
 #include "Scene.h"
+#include "Log.h"
+#include "Map.h"
 
 
 Ghost::Ghost() : Enemy() {}
@@ -16,15 +18,6 @@ bool Ghost::Awake()
 	}
 	flyAnimation.speed = config.child("flyAnimation").attribute("speed").as_int();
 
-
-	// Initialize Ghost Attack animation
-	for (pugi::xml_node animnNode = config.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
-	{
-		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
-	}
-	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
-
-
 	//Initialize Ghost Die animation
 	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
@@ -38,6 +31,9 @@ bool Ghost::Awake()
 bool Ghost::Start()
 {
 	texture = app->tex->Load(texturePath);
+	state = WALIKING;
+
+	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &flyAnimation;
 	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w /2, bodyType::DYNAMIC);
 
@@ -57,7 +53,7 @@ bool Ghost::Start()
 
 bool Ghost::Update(float dt)
 {
-	if (abs(app->scene->player->GetPlayerTileX() - getEnemyTileX()) > 50) {
+	if (abs(app->scene->player->getTilePosition().x - getTilePosition().x) > 100) {
 		velocity.x = 0;
 		velocity.y = 0;
 		pbody->body->SetLinearVelocity(velocity);
@@ -65,26 +61,39 @@ bool Ghost::Update(float dt)
 	}
 
 	velocity = b2Vec2(0, 0);
+	
+	switch (state)
+	{
+	case WALIKING:
+		currentAnimation = &flyAnimation;
+		break;
+	case DIE:
+		currentAnimation = &dieAnimation;
+		break;
+	default:
+		break;
+	}
 
 	if (!dead)
 	{	
 		if (canChase(enemyRange)) {
 			realVelocity = followVelovity;
-			dest = iPoint(PTileX, PTileY);
+			destiny = ptilePos;
 			moveToPlayer(dt);
-			currentAnimation = &flyAnimation;
 		}
 		else {
 			realVelocity = patrolVelocity;
 			Enemy::Patrol();
 			moveToPlayer(dt);
-			currentAnimation = &flyAnimation;
 		}
 	}
 	else
 	{
+		state = DIE;
 		if (dieAnimation.HasFinished()) {
-			dead = true;
+			dieAnimation.Reset();
+			state = WALIKING;
+			dead = false;
 		}
 	}
 
@@ -99,9 +108,9 @@ void Ghost::moveToPlayer(float dt)
 
 	if (path->Count() > 1) 
 	{
-		if (TileX != path->At(1)->x) 
+		if (tilePos.x != path->At(1)->x) 
 		{
-			if (TileX > path->At(1)->x) 
+			if (tilePos.x > path->At(1)->x)
 				velocity.x = -realVelocity * dt;
 
 			else 
@@ -109,9 +118,9 @@ void Ghost::moveToPlayer(float dt)
 
 			if (path->Count() > 2) 
 			{
-				if (path->At(2)->y != TileY) 
+				if (path->At(2)->y != tilePos.y)
 				{
-					if (TileY > path->At(2)->y)
+					if (tilePos.y > path->At(2)->y)
 					{
 						velocity.y = -realVelocity / 1.3 * dt;
 					}
@@ -129,7 +138,7 @@ void Ghost::moveToPlayer(float dt)
 			}
 		}
 		else {
-			if (TileY > path->At(1)->y) 
+			if (tilePos.y > path->At(1)->y)
 				velocity.y = -realVelocity * dt;
 			
 			else 
@@ -138,9 +147,9 @@ void Ghost::moveToPlayer(float dt)
 
 			if (path->Count() > 2) 
 			{
-				if (path->At(2)->x != TileX) 
+				if (path->At(2)->x != tilePos.x)
 				{
-					if (TileX > path->At(2)->x) 
+					if (tilePos.x > path->At(2)->x)
 					{
 						velocity.x = -realVelocity / 1.3 * dt;
 					}
@@ -180,9 +189,16 @@ void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 	switch (physB->ctype)
 	{
 	case ColliderType::PLAYER:
-		dead = true;
-		currentAnimation = &dieAnimation;
+		LOG("Collision PLAYER");
+		if (app->scene->player->state == ATTACK)
+		{
+			dead = true;
+		}
 		break;
+
+	case ColliderType::PLATFORM:
+		break;
+
 	default:
 		break;
 	}

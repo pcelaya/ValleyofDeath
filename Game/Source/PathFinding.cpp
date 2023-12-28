@@ -84,68 +84,71 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	int ret = -1;
 
-	if (!IsWalkable(origin) || !IsWalkable(destination))
-		return ret;
+	bool debug = IsWalkable(origin);
+	bool debug2 = IsWalkable(destination);
 
-	PathList frontier;
-	PathList visited;
-
-	frontier.list.Add(PathNode(0, 0, origin, NULL));
-
-	// Iterate while there are nodes in the frontier list
-	while (frontier.list.Count() > 0)
+	if (IsWalkable(origin) && IsWalkable(destination))
 	{
-		ListItem<PathNode>* low = frontier.GetNodeLowestScore();
-		ListItem<PathNode>* node = new ListItem<PathNode>(*low);
-		
-		visited.list.Add(low->data);
-		frontier.list.Del(low);
+		PathList frontier;
+		PathList visited;
 
+		frontier.list.Add(PathNode(0, 0, origin, NULL));
 
-		if (node->data.pos == destination)
+		// Iterate while there are nodes in the frontier list
+		while (frontier.list.Count() > 0)
 		{
-			lastPath.Clear();
+			ListItem<PathNode>* low = frontier.GetNodeLowestScore();
+			ListItem<PathNode>* node = new ListItem<PathNode>(*low);
 
-			const PathNode* pathNode = &node->data;
+			visited.list.Add(low->data);
+			frontier.list.Del(low);
 
-			while (pathNode)
+
+			if (node->data.pos == destination)
 			{
-				lastPath.PushBack(pathNode->pos);
-				pathNode = pathNode->parent;
+				lastPath.Clear();
+
+				const PathNode* pathNode = &node->data;
+
+				while (pathNode)
+				{
+					lastPath.PushBack(pathNode->pos);
+					pathNode = pathNode->parent;
+				}
+
+				lastPath.Flip();
+				ret = lastPath.Count();
+				break;
 			}
 
-			lastPath.Flip();
-			ret = lastPath.Count();
-			break;
-		}
 
+			PathList adjacent;
+			node->data.FindWalkableAdjacents(adjacent);
 
-		PathList adjacent;
-		node->data.FindWalkableAdjacents(adjacent);
-
-		ListItem<PathNode>* neighbour = adjacent.list.start;
-		while (neighbour != NULL)
-		{
-			if (visited.Find(neighbour->data.pos) == NULL)
+			ListItem<PathNode>* neighbour = adjacent.list.start;
+			while (neighbour != NULL)
 			{
-				visited.list.Add(neighbour->data);
+				if (visited.Find(neighbour->data.pos) == NULL)
+				{
+					visited.list.Add(neighbour->data);
 
-				if (frontier.Find(neighbour->data.pos) == NULL)
-				{
-					neighbour->data.CalculateF(destination);
-					frontier.list.Add(neighbour->data);
-				}
-				else
-				{
-					if (frontier.Find(neighbour->data.pos)->data.g > neighbour->data.g + 1)
+					if (frontier.Find(neighbour->data.pos) == NULL)
 					{
-						frontier.Find(neighbour->data.pos)->data.parent = neighbour->data.parent;
-						frontier.Find(neighbour->data.pos)->data.CalculateF(destination);
+						neighbour->data.CalculateF(destination);
+						frontier.list.Add(neighbour->data);
+					}
+					else
+					{
+						if (frontier.Find(neighbour->data.pos)->data.g > neighbour->data.g + 1)
+						{
+							frontier.Find(neighbour->data.pos)->data.parent = neighbour->data.parent;
+							frontier.Find(neighbour->data.pos)->data.CalculateF(destination);
+						}
 					}
 				}
-			}
 
-			neighbour = neighbour->next;
+				neighbour = neighbour->next;
+			}
 		}
 	}
 

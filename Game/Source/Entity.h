@@ -16,6 +16,15 @@ enum class EntityType
 	UNKNOWN
 };
 
+enum AnimSates {
+	IDLE,
+	WALIKING,
+	DIE,
+	JUMP,
+	ATTACK
+};
+
+
 class PhysBody;
 
 class Entity
@@ -81,6 +90,8 @@ public:
 	bool active = true;
 	pugi::xml_node config;
 	
+	iPoint tilePos;
+
 	bool renderable = true;
 	iPoint position;
 	bool toDelete = false;

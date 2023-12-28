@@ -34,10 +34,6 @@ public:
 	// L07 DONE 6: Define OnCollision function for the player. 
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	int getEnemyTileX();
-
-	int getEnemyTileY();
-
 	const DynArray<iPoint>* FindPath();
 
 	bool canChase(int dist);
@@ -46,36 +42,36 @@ public:
 
 	void Patrol();
 
-	bool dark;
+	// obtain tile position of enemy
+	iPoint getTilePosition();
 
 protected:
 	const char* texturePath;
+	uint texW, texH;
 	SDL_Texture* texture;
-	int lives;
 	Animation* currentAnimation = nullptr;
+	AnimSates state;
 	PhysBody* pbody;
-	iPoint initPosition;
 	SDL_Texture* mouseTileTex;
+
+	iPoint initPosition;
+	iPoint ptilePos;
+
+	b2Vec2 velocity;
 	float realVelocity;
 	float followVelovity;
 	float patrolVelocity;
-	bool dead;
-	bool hit;
-	bool flip;
+	
+	iPoint Patrolinit;
+	iPoint Patrolfinal;
+	bool patrol;
 
 	int enemyRange;
-	iPoint dest;
+	iPoint destiny;
 
-	int TileX;
-	int TileY;
-	int PTileX;
-	int PTileY;
-
-	b2Vec2 velocity;
-
-	iPoint Patrol1;
-	iPoint Patrol2;
-	bool patrol;
+	bool dead;
+	bool hit;
+	int lives;
 
 };
 

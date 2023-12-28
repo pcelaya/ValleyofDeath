@@ -66,7 +66,7 @@ bool Player::Awake()
 	{
 		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
-	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_int();
+	attackAnimation.speed = config.child("attackAnimation").attribute("speed").as_float();
 	attackAnimation.loop = config.child("attackAnimation").attribute("loop").as_bool();
 
 	return true;
@@ -92,6 +92,7 @@ bool Player::Start() {
 	dead = false;
 	flip = false;
 	god_mode = false;
+	attack = false;
 
 	return true;
 }
@@ -99,8 +100,7 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	b2Vec2 velocity = b2Vec2(0, -GRAVITY_Y);
-	//tilePos = app->map->WorldToMap(position.x +texW/4, position.y +texH / 4);
-
+	
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !god_mode)
 	{
 		god_mode = !god_mode;
@@ -181,7 +181,23 @@ bool Player::Update(float dt)
 				state = JUMP;
 				jumps--;
 				remainJumpSteps = maxJumpSteps;
-				jumpForceReduce = 0;
+				jumpForceReduce = 1;
+			}
+		}
+
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !attack)
+		{
+			attack = true;
+		}
+
+		if (attack)
+		{
+			state = ATTACK;
+			if (attackAnimation.HasFinished())
+			{
+				attackAnimation.Reset();
+				state = IDLE;
+				attack = false;
 			}
 		}
 
@@ -212,7 +228,7 @@ bool Player::Update(float dt)
 		pbody->body->SetLinearVelocity(velocity);
 		b2Transform pbodyPos = pbody->body->GetTransform();
 
-		//preguntar al profe tema camera (el problema es en y) estaba  &blendFadeOut.GetCurrentFrame().h
+
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2;
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 	}
@@ -232,9 +248,9 @@ bool Player::Update(float dt)
 	}
 
 	if (!flip)
-		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x + (texW / 2) -12, position.y + (texH / 2) -15, &currentAnimation->GetCurrentFrame());
 	else
-		app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexturePR(texture, position.x + (texW / 2) -12, position.y + (texH / 2) -15, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -255,27 +271,30 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+
 		if (contactPonts.y == 1) 
 		{
 			force = 0;
 			remainJumpSteps = 0;
 			jumpForceReduce = 0;
 		}
+
 		break;
 
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
-		if (physB->ctype == ColliderType::ITEM) 
-		{
-			app->entityManager->DestroyEntity(physB->listener);
-		}
+
+		app->entityManager->DestroyEntity(physB->listener);
 		app->audio->PlayFx(pickCoinFxId);
+
 		break;
 
 	case ColliderType::DEADLY:
 		LOG("Collision DEADLY");
-		if (!god_mode)
+
+		if (!god_mode && state != ATTACK)
 			dead = true;
+
 		break;
 
 	default:
@@ -296,13 +315,7 @@ void Player::respawn()
 		app->render->camera.y = 0;
 }
 
-
-int Player::GetPlayerTileX()
+iPoint Player::getTilePosition()
 {
-	return (position.x + (currentAnimation->GetCurrentFrame().w / 2)) / app->map->GetTileWidth();
-}
-
-int Player::GetPlayerTileY()
-{
-	return (position.y + (currentAnimation->GetCurrentFrame().h / 2)) / app->map->GetTileHeight();
+	return app->map->WorldToMap(position.x + (texW / 2) + (currentAnimation->GetCurrentFrame().w / 2), position.y + (texH / 2) + (currentAnimation->GetCurrentFrame().h / 2));
 }

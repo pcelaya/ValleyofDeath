@@ -170,9 +170,6 @@
     <Filter Include="Game\Modules">
       <UniqueIdentifier>{2d668d91-7cdc-4fbc-8109-19b68ea1154d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Modules\Scene">
-      <UniqueIdentifier>{468c740a-ba0b-494e-aa2e-821f74e47f5a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Entities">
       <UniqueIdentifier>{b1273295-54f3-4913-8110-89e23a6295e1}</UniqueIdentifier>
     </Filter>
@@ -187,6 +184,9 @@
     </Filter>
     <Filter Include="Game\Entities\Enemies">
       <UniqueIdentifier>{11725aa7-0e1d-415d-8947-8b6863c33221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Scene">
+      <UniqueIdentifier>{468c740a-ba0b-494e-aa2e-821f74e47f5a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

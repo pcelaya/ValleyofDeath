@@ -92,7 +92,7 @@ bool Scene::Update(float dt)
 	float camSpeed = 1; 
 	
 	limitCamera = player->position.x - windowW + 32;
-	if (limitCamera > 0 && limitCamera < (app->map->GetMapWidth() - windowW) && limitCamera < app->map->GetMapWidth())
+	if (limitCamera > 0 && limitCamera < (app->map->GetMapWidth() - windowW) && limitCamera < app->map->GetMapWidth() && !player->god_mode)
 		app->render->camera.x = (player->position.x - windowW / 2) * -1; 
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -100,6 +100,11 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= (int)ceil(camSpeed * dt);
+
+	//if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	//	app->render->camera.y += (int)ceil(camSpeed * dt);
+	//if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	//	app->render->camera.y -= (int)ceil(camSpeed * dt);
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) 
 		app->SaveRequest();

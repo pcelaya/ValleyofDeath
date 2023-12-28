@@ -9,14 +9,6 @@
 
 struct SDL_Texture;
 
-enum AnimSates {
-	IDLE,
-	WALIKING,
-	DIE,
-	JUMP,
-	ATTACK
-};
-
 class Player : public Entity
 {
 public:
@@ -38,8 +30,7 @@ public:
 	void respawn();
 
 	// obtein the current tile which player stays
-	int GetPlayerTileX();
-	int GetPlayerTileY();
+	iPoint getTilePosition();
 
 public:
 	float speed;
@@ -51,6 +42,7 @@ public:
 	bool god_mode = false;
 	bool flip;
 	bool dead;
+	bool attack;
 
 	// jumping
 	PhysBody* pbody;

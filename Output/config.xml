@@ -5,7 +5,7 @@
 		<title>My video game</title>
 		<maxFrameDuration value="16"/>
 	</app>
-	<renderer pathTile="Assets/Maps/Maps/tileSelection.png">
+	<renderer pathTile="Assets/Maps/Maps/tileSelection.png" renderRange="100">
 		<vsync value="flase"/>
 		<camera x="0" y="0" />
 	</renderer>
@@ -16,13 +16,14 @@
 		<resizable value="false"/>
 		<fullscreen_window value="flase"/>
 	</window>
+	
 	<scene>
 		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
-			<idleAnimation speed="0.06f" loop="true">
+			<idleAnimation speed="0.1f" loop="true">
 				<animation x="14" y="13" w="21" h="34"/>
 				<animation x="45" y="13" w="21" h="34"/>
 			</idleAnimation>
-			<walkAnimation speed="0.08f" loop="true">
+			<walkAnimation speed="0.1f" loop="true">
 				<animation x="14" y="60" w="21" h="32"/>
 				<animation x="61" y="60" w="22" h="32"/>
 				<animation x="109" y="60" w="22" h="32"/>
@@ -32,7 +33,7 @@
 				<animation x="301" y="60" w="22" h="32"/>
 				<animation x="350" y="60" w="21" h="32"/>
 			</walkAnimation>
-			<dieAnimation speed="0.08f" loop="false">
+			<dieAnimation speed="0.15f" loop="false">
 				<animation x="14" y="112" w="21" h="32"/>
 				<animation x="62" y="112" w="21" h="32"/>
 				<animation x="110" y="112" w="21" h="32"/>
@@ -43,7 +44,7 @@
 				<animation x="348" y="112" w="28" h="32"/>
 				<animation x="394" y="112" w="32" h="32"/>
 			</dieAnimation>
-			<jumpAnimation speed="0.08f" loop="false">
+			<jumpAnimation speed="0.1f" loop="false">
 				<animation x="14" y="175" w="21" h="32"/>
 				<animation x="61" y="175" w="22" h="32"/>
 				<animation x="109" y="175" w="22" h="32"/>
@@ -51,7 +52,7 @@
 				<animation x="206" y="175" w="21" h="32"/>
 				<animation x="254" y="175" w="21" h="32"/>
 			</jumpAnimation>
-			<attackAnimation speed="0.08f" loop="false">
+			<attackAnimation speed="0.25f" loop="false">
 				<animation x="14" y="232" w="29" h="40"/>
 				<animation x="62" y="232" w="23" h="40"/>
 				<animation x="98" y="232" w="34" h="40"/>
@@ -64,69 +65,86 @@
 				<animation x="446" y="232" w="34" h="40"/>
 			</attackAnimation>
 		</player>
-		<ghost x="1900" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<flyingEnemy eRange="20" followVelocity="0.15" patrolVel="0.1"></flyingEnemy>
+		<ghost x="20" y="10" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="3" y="2"/>
+				<final x="39" y="2"/>
+			</patrol>
 		</ghost>
-		<ghost x="1050" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="1050" y="220" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="68" y="18"/>
+				<final x="79" y="26"/>
+			</patrol>
 		</ghost>
-		<ghost x="2100" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="1300" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 				<flyAnimation speed="0.08f" loop="true">
 					<animation x="8" y="3" w="29" h="38"/>
 				</flyAnimation>
+			<patrol>
+				<init x="87" y="14"/>
+				<final x="116" y="22"/>
+			</patrol>
 		</ghost>
-		<ghost x="2450" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="2050" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="123" y="11"/>
+				<final x="169" y="2"/>
+			</patrol>
 		</ghost>
-		<ghost x="2700" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="2800" y="170" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="174" y="10"/>
+				<final x="208" y="8"/>
+			</patrol>
 		</ghost>
-		<ghost x="3500" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="3500" y="250" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="218" y="16"/>
+				<final x="262" y="18"/>
+			</patrol>
 		</ghost>
-		<ghost x="4500" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="4600" y="160" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="346" y="27"/>
+				<final x="377" y="20"/>
+			</patrol>
 		</ghost>
-		<ghost x="4850" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
+		<ghost x="6200" y="150" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
 			</flyAnimation>
+			<patrol>
+				<init x="394" y="16"/>
+				<final x="422" y="16"/>
+			</patrol>
 		</ghost>
-		<ghost x="5100" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
-			<flyAnimation speed="0.08f" loop="true">
-				<animation x="8" y="3" w="29" h="38"/>
-			</flyAnimation>
-		</ghost>
-		<ghost x="5500" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
-			<flyAnimation speed="0.08f" loop="true">
-				<animation x="8" y="3" w="29" h="38"/>
-			</flyAnimation>
-		</ghost>
-		<ghost x="6000" y="100" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
-			<flyAnimation speed="0.08f" loop="true">
-				<animation x="8" y="3" w="29" h="38"/>
-			</flyAnimation>
-		</ghost>
-		<ghost x="6100" y="200" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
-			<flyAnimation speed="0.08f" loop="true">
-				<animation x="8" y="3" w="29" h="38"/>
-			</flyAnimation>
-		</ghost>
-		
-		<skeleton x="550" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
-			<walkAnimation speed="0.08f" loop="true">
+
+		<groundEnemy eRange="20" followVelocity="0.15" patrolVel="0.1"></groundEnemy>
+		<skeleton x="550" y="400" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
+			<walkAnimation speed="0.1" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
 				<animation x="111" y="6" w="14" h="40"/>
@@ -137,8 +155,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="28" y="24"/>
+				<final x="49" y="24"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="900" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="900" y="465" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -150,8 +175,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="54" y="28"/>
+				<final x="79" y="28"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="1700" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="1700" y="465" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -163,8 +195,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="102" y="28"/>
+				<final x="115" y="28"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="2500" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="2500" y="465" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -176,8 +215,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="124" y="28"/>
+				<final x="164" y="28"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="3000" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="3050" y="400" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -189,8 +235,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="190" y="24"/>
+				<final x="193" y="24"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="4000" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="4100" y="400" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -202,8 +255,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="256" y="26"/>
+				<final x="289" y="28"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="5000" y="300" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="5000" y="300" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -215,8 +275,15 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="306" y="117"/>
+				<final x="341" y="18"/>
+			</patrol>
 		</skeleton>
-		<skeleton x="6000" y="400" speed="0.1f" walktexturePath="Assets/Textures/skeletonwalking.png">
+		<skeleton x="5300" y="300" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
 			<walkAnimation speed="0.08f" loop="true">
 				<animation x="13" y="6" w="24" h="40"/>
 				<animation x="61" y="6" w="24" h="40"/>
@@ -228,6 +295,30 @@
 				<animation x="351" y="6" w="20" h="40"/>
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
+			<patrol>
+				<init x="306" y="117"/>
+				<final x="341" y="18"/>
+			</patrol>
+		</skeleton>
+		<skeleton x="6000" y="400" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
+			<walkAnimation speed="0.08f" loop="true">
+				<animation x="13" y="6" w="24" h="40"/>
+				<animation x="61" y="6" w="24" h="40"/>
+				<animation x="111" y="6" w="14" h="40"/>
+				<animation x="159" y="6" w="13" h="40"/>
+				<animation x="207" y="6" w="15" h="40"/>
+				<animation x="255" y="6" w="17" h="40"/>
+				<animation x="303" y="6" w="18" h="40"/>
+				<animation x="351" y="6" w="20" h="40"/>
+				<animation x="397" y="6" w="24" h="40"/>
+			</walkAnimation>
+			<patrol>
+				<init x="346" y="28"/>
+				<final x="378" y="28"/>
+			</patrol>
 		</skeleton>
 		<!-- <item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>-->
 		<!-- <item x="400" y="250" texturepath="Assets/Textures/goldCoin.png"/>-->

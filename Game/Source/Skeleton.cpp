@@ -1,12 +1,20 @@
 #include "Skeleton.h"
 #include "Scene.h"
 #include "Log.h"
+#include "Map.h"
+
 
 Skeleton::Skeleton() : Enemy() {}
 
 bool Skeleton::Awake()
 {
 	Enemy::Awake();
+
+	// Initilize Skeleton Idle Animation
+	pugi::xml_node animNode = config.child("idleAnimation").first_child();
+	idleAnimation.PushBack({ animNode.attribute("x").as_int(), animNode.attribute("y").as_int(), animNode.attribute("w").as_int(), animNode.attribute("h").as_int() });
+	idleAnimation.speed = config.child("idleAnimation").first_child().attribute("speed").as_float();
+	idleAnimation.loop = config.child("idleAnimation").first_child().attribute("loop").as_float();
 
 	// Initialize Skeleton Walk Animation
 	for (pugi::xml_node animnNode = config.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
@@ -21,17 +29,18 @@ bool Skeleton::Awake()
 
 bool Skeleton::Start()
 {
-	enemyRange = 10;
-	initPosition = position;
-
 	texture = app->tex->Load(texturePath);
-	currentAnimation = &walkAnimation;
-	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
+	state = IDLE;
+
+	app->tex->GetSize(texture, texW, texH);
+	currentAnimation = &idleAnimation;
+	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w -5, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
 	pbody->ctype = ColliderType::DEADLY;
 
+	enemyRange = 10;
 	followVelovity = 0.12;
 	patrolVelocity = 0.1;
 
@@ -42,7 +51,7 @@ bool Skeleton::Start()
 
 bool Skeleton::Update(float dt)
 {
-	if (abs(app->scene->player->GetPlayerTileX() - getEnemyTileX()) > 50) {
+	if (abs(app->scene->player->getTilePosition().x - tilePos.x) > 100) {
 		velocity.x = 0;
 		velocity.y = 0;
 		pbody->body->SetLinearVelocity(velocity);
@@ -50,24 +59,51 @@ bool Skeleton::Update(float dt)
 	}
 
 	velocity = b2Vec2(0, -GRAVITY_Y);
+	
+	switch (state)
+	{
+	case IDLE:
+		currentAnimation = &idleAnimation;
+		break;
+	case WALIKING:
+		currentAnimation = &walkAnimation;
+		break;
+	case DIE:
+		currentAnimation = &dieAnimation;
+		break;
+	case ATTACK:
+		currentAnimation = &attackAnimation;
+		break;
+	default:
+		break;
+	}
 
 	if (!dead)
 	{
-		if (canChase(enemyRange) && PTileX >= Patrol1.x && PTileX <= Patrol2.x && PTileY <= Patrol1.y) {
+		if (canChase(enemyRange) && ptilePos.x >= Patrolinit.x && ptilePos.x <= Patrolfinal.x && ptilePos.y <= Patrolinit.y) {
 			realVelocity = followVelovity;
-			dest = iPoint(PTileX, PTileY);
+			destiny = ptilePos;
 			moveToPlayer(dt);
-			currentAnimation = &walkAnimation;
+
+			if (state == IDLE)
+				state = WALIKING;
 		}
 		else {
 			realVelocity = patrolVelocity;
 			moveToPoint(dt);
+
+			if (state == IDLE)
+				state = WALIKING;
 		}
 	}
 	else
 	{
-		if (dieAnimation.HasFinished()) {
-			dead = true;
+		state = DIE;
+		if (dieAnimation.HasFinished()) 
+		{
+			dieAnimation.Reset();
+			state = IDLE;
+			dead = false;
 		}
 	}
 
@@ -82,7 +118,7 @@ void Skeleton::moveToPlayer(float dt)
 
 	if (path->Count() > 1) 
 	{
-		if (TileX > path->At(1)->x) 
+		if (tilePos.x > path->At(1)->x) 
 			velocity.x = -realVelocity * dt;
 
 		else
@@ -91,6 +127,7 @@ void Skeleton::moveToPlayer(float dt)
 	}
 	else if (path->Count() == 1) 
 	{
+		state = ATTACK;
 		if (app->scene->player->position.x < position.x) 
 			velocity.x = -realVelocity * dt;
 
@@ -105,15 +142,14 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		dead = true;
-		velocity.x = 0;
-		currentAnimation = &dieAnimation;
+		if (app->scene->player->state == ATTACK)
+		{
+			dead = true;
+		}
 		break;
 
 	case ColliderType::DEADLY:
 		dead = true;
-		velocity.x = 0;
-		currentAnimation = &dieAnimation;
 		break;
 
 	case ColliderType::PLATFORM:
@@ -127,23 +163,24 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 void Skeleton::moveToPoint(float dt)
 {
 	Enemy::Patrol();
+
 	const DynArray<iPoint>* path = FindPath();
-	//check if t has arrivied
-	if (path->Count() > 1) {
-		//check if it shall move to x
-		if (TileX > path->At(1)->x) {
+
+	if (path->Count() > 1)
+	{
+		if (tilePos.x > path->At(1)->x)
 			velocity.x = -realVelocity * dt;
-		}
-		else {
+
+		else
 			velocity.x = realVelocity * dt;
-		}
+
 	}
-	else if (path->Count() == 1) {
-		if (app->scene->player->position.x < position.x) {
+	else if (path->Count() == 1)
+	{
+		if (app->scene->player->position.x < position.x)
 			velocity.x = -realVelocity * dt;
-		}
-		else {
+
+		else
 			velocity.x = realVelocity * dt;
-		}
 	}
 }

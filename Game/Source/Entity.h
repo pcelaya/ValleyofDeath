@@ -16,7 +16,8 @@ enum class EntityType
 	UNKNOWN
 };
 
-enum AnimSates {
+enum class AnimSates 
+{
 	IDLE,
 	WALIKING,
 	DIE,

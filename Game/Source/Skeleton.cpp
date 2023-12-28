@@ -30,7 +30,7 @@ bool Skeleton::Awake()
 bool Skeleton::Start()
 {
 	texture = app->tex->Load(texturePath);
-	state = IDLE;
+	state = AnimSates::IDLE;
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
@@ -40,7 +40,7 @@ bool Skeleton::Start()
 	pbody->listener = this;
 	pbody->ctype = ColliderType::DEADLY;
 
-	enemyRange = 10;
+	enemyRange = 20;
 	followVelovity = 0.12;
 	patrolVelocity = 0.1;
 
@@ -51,7 +51,7 @@ bool Skeleton::Start()
 
 bool Skeleton::Update(float dt)
 {
-	if (abs(app->scene->player->getTilePosition().x - tilePos.x) > 100) {
+	if (abs(app->scene->player->getTilePosition().x - getTilePosition().x) > 100) {
 		velocity.x = 0;
 		velocity.y = 0;
 		pbody->body->SetLinearVelocity(velocity);
@@ -62,16 +62,16 @@ bool Skeleton::Update(float dt)
 	
 	switch (state)
 	{
-	case IDLE:
+	case AnimSates::IDLE:
 		currentAnimation = &idleAnimation;
 		break;
-	case WALIKING:
+	case AnimSates::WALIKING:
 		currentAnimation = &walkAnimation;
 		break;
-	case DIE:
+	case AnimSates::DIE:
 		currentAnimation = &dieAnimation;
 		break;
-	case ATTACK:
+	case AnimSates::ATTACK:
 		currentAnimation = &attackAnimation;
 		break;
 	default:
@@ -80,29 +80,29 @@ bool Skeleton::Update(float dt)
 
 	if (!dead)
 	{
-		if (canChase(enemyRange) && ptilePos.x >= Patrolinit.x && ptilePos.x <= Patrolfinal.x && ptilePos.y <= Patrolinit.y) {
+		if (canChase(enemyRange)) {
 			realVelocity = followVelovity;
 			destiny = ptilePos;
 			moveToPlayer(dt);
 
-			if (state == IDLE)
-				state = WALIKING;
+			if (state == AnimSates::IDLE)
+				state = AnimSates::WALIKING;
 		}
 		else {
 			realVelocity = patrolVelocity;
 			moveToPoint(dt);
 
-			if (state == IDLE)
-				state = WALIKING;
+			if (state == AnimSates::IDLE)
+				state = AnimSates::WALIKING;
 		}
 	}
 	else
 	{
-		state = DIE;
+		state = AnimSates::DIE;
 		if (dieAnimation.HasFinished()) 
 		{
 			dieAnimation.Reset();
-			state = IDLE;
+			state = AnimSates::IDLE;
 			dead = false;
 		}
 	}
@@ -127,7 +127,7 @@ void Skeleton::moveToPlayer(float dt)
 	}
 	else if (path->Count() == 1) 
 	{
-		state = ATTACK;
+		state = AnimSates::ATTACK;
 		if (app->scene->player->position.x < position.x) 
 			velocity.x = -realVelocity * dt;
 
@@ -142,7 +142,7 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		if (app->scene->player->state == ATTACK)
+		if (app->scene->player->state == AnimSates::ATTACK)
 		{
 			dead = true;
 		}
@@ -153,6 +153,9 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 		break;
 
 	case ColliderType::PLATFORM:
+		break;
+
+	case ColliderType::ENEMY:
 		break;
 
 	default:

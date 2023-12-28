@@ -129,9 +129,6 @@
     <ClInclude Include="Source\Map.h">
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
-    <ClInclude Include="PathFinding.h">
-      <Filter>Game\Modules\Heathers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics.h">
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
@@ -144,9 +141,6 @@
     <ClInclude Include="Source\Window.h">
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Game\Modules\Heathers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Ghost.h">
       <Filter>Game\Entities\Enemies</Filter>
     </ClInclude>
@@ -155,6 +149,12 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
       <Filter>Game\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PathFinding.h">
+      <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

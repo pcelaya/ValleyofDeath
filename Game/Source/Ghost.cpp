@@ -31,7 +31,7 @@ bool Ghost::Awake()
 bool Ghost::Start()
 {
 	texture = app->tex->Load(texturePath);
-	state = WALIKING;
+	state = AnimSates::WALIKING;
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &flyAnimation;
@@ -64,10 +64,10 @@ bool Ghost::Update(float dt)
 	
 	switch (state)
 	{
-	case WALIKING:
+	case AnimSates::WALIKING:
 		currentAnimation = &flyAnimation;
 		break;
-	case DIE:
+	case AnimSates::DIE:
 		currentAnimation = &dieAnimation;
 		break;
 	default:
@@ -89,10 +89,10 @@ bool Ghost::Update(float dt)
 	}
 	else
 	{
-		state = DIE;
+		state = AnimSates::DIE;
 		if (dieAnimation.HasFinished()) {
 			dieAnimation.Reset();
-			state = WALIKING;
+			state = AnimSates::WALIKING;
 			dead = false;
 		}
 	}
@@ -190,13 +190,16 @@ void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		if (app->scene->player->state == ATTACK)
+		if (app->scene->player->state == AnimSates::ATTACK)
 		{
 			dead = true;
 		}
 		break;
 
 	case ColliderType::PLATFORM:
+		break;
+
+	case ColliderType::ENEMY:
 		break;
 
 	default:

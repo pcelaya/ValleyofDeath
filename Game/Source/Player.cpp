@@ -76,7 +76,7 @@ bool Player::Start() {
 
 	//initialize animation type
 	texture = app->tex->Load(config.attribute("texturePath").as_string());
-	state = IDLE;
+	state = AnimSates::IDLE;
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
@@ -112,19 +112,19 @@ bool Player::Update(float dt)
 
 	switch (state)
 	{
-	case IDLE:
+	case AnimSates::IDLE:
 		currentAnimation = &idleAnimation;
 		break;
-	case WALIKING:
+	case AnimSates::WALIKING:
 		currentAnimation = &walkAnimation;
 		break;
-	case DIE:
+	case AnimSates::DIE:
 		currentAnimation = &dieAnimation;
 		break;
-	case JUMP:
+	case AnimSates::JUMP:
 		currentAnimation = &jumpAnimation;
 		break;
-	case ATTACK:
+	case AnimSates::ATTACK:
 		currentAnimation = &attackAnimation;
 		break;
 	default:
@@ -141,11 +141,11 @@ bool Player::Update(float dt)
 
 	if (dead)
 	{
-		state = DIE;
+		state = AnimSates::DIE;
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();
-			state = IDLE;
+			state = AnimSates::IDLE;
 			respawn();
 			dead = false;
 		}
@@ -157,8 +157,8 @@ bool Player::Update(float dt)
 			velocity.x = -0.2 * dt;
 			flip = true;
 
-			if (state == IDLE)
-				state = WALIKING;
+			if (state == AnimSates::IDLE)
+				state = AnimSates::WALIKING;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
@@ -166,19 +166,19 @@ bool Player::Update(float dt)
 			velocity.x = 0.2 * dt;
 			flip = false;
 
-			if (state == IDLE)
-				state = WALIKING;
+			if (state == AnimSates::IDLE)
+				state = AnimSates::WALIKING;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE) 
 		{
-			if (state == WALIKING)
-				state = IDLE;
+			if (state == AnimSates::WALIKING)
+				state = AnimSates::IDLE;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 			if (jumps > 0) {
-				state = JUMP;
+				state = AnimSates::JUMP;
 				jumps--;
 				remainJumpSteps = maxJumpSteps;
 				jumpForceReduce = 1;
@@ -192,11 +192,11 @@ bool Player::Update(float dt)
 
 		if (attack)
 		{
-			state = ATTACK;
+			state = AnimSates::ATTACK;
 			if (attackAnimation.HasFinished())
 			{
 				attackAnimation.Reset();
-				state = IDLE;
+				state = AnimSates::IDLE;
 				attack = false;
 			}
 		}
@@ -216,9 +216,9 @@ bool Player::Update(float dt)
 		}
 
 		if (remainJumpSteps <= 0) {
-			if (state == JUMP) {
+			if (state == AnimSates::JUMP) {
 				jumpAnimation.Reset();
-				state = IDLE;
+				state = AnimSates::IDLE;
 			}
 			jumps = 2;
 		}
@@ -292,9 +292,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::DEADLY:
 		LOG("Collision DEADLY");
 
-		if (!god_mode && state != ATTACK)
+		if (!god_mode && state != AnimSates::ATTACK)
 			dead = true;
+		break;
 
+	case ColliderType::ENEMY:
+		LOG("Collision DEADLY");
+
+		if (!god_mode && state != AnimSates::ATTACK)
+			dead = true;
 		break;
 
 	default:
@@ -317,5 +323,9 @@ void Player::respawn()
 
 iPoint Player::getTilePosition()
 {
-	return app->map->WorldToMap(position.x + (texW / 2) + (currentAnimation->GetCurrentFrame().w / 2), position.y + (texH / 2) + (currentAnimation->GetCurrentFrame().h / 2));
+	iPoint ret = app->map->WorldToMap(position.x + (texW / 2) + (currentAnimation->GetCurrentFrame().w / 2), position.y + (texH / 2) + (currentAnimation->GetCurrentFrame().h / 2));
+
+	ret.y -= 2;
+
+	return ret;
 }

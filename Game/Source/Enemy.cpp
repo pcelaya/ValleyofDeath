@@ -40,9 +40,11 @@ bool Enemy::Update(float dt)
 	pbody->body->SetLinearVelocity(velocity);
 	b2Transform pbodyPos = pbody->body->GetTransform();
 
-	if (dead) {
-		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+	if (dead) 
+	{
+		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(-100), PIXEL_TO_METERS(600));
 		pbody->body->SetTransform(diePos, 0);
+		app->entityManager->DestroyEntity(this);
 	}
 	else {
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (currentAnimation->GetCurrentFrame().w / 2);
@@ -101,7 +103,12 @@ bool Enemy::canChase(int dist)
 
 	ptilePos = app->scene->player->getTilePosition();
 
-	if ((abs(tilePos.x - ptilePos.x) + abs(tilePos.y - ptilePos.x)) < dist && !app->scene->player->god_mode)
+	if ((abs(ptilePos.x - tilePos.x) + abs(ptilePos.y - tilePos.y)) < dist)
+	{
+		canChase = true;
+	}
+
+	if (canChase && app->scene->player->god_mode == false)
 	{
 		canChase = true;
 	}
@@ -121,7 +128,7 @@ void Enemy::Patrol()
 	{
 		destiny.x = Patrolinit.x;
 		destiny.y = Patrolinit.y;
-		if (tilePos.x == destiny.x)
+		if (tilePos.x == destiny.x && tilePos.y == destiny.y)
 		{
 			patrol = false;
 		}
@@ -130,7 +137,7 @@ void Enemy::Patrol()
 	{
 		destiny.x = Patrolfinal.x;
 		destiny.y = Patrolfinal.y;
-		if (tilePos.x == destiny.x)
+		if (tilePos.x == destiny.x && tilePos.y == destiny.y)
 		{
 			patrol = true;
 		}

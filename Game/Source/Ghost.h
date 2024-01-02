@@ -25,6 +25,10 @@ public:
 	Animation flyAnimation;
 	Animation dieAnimation;
 	Animation attackAnimation;
+
+	// Load and Saves Ghosts atributtes
+	bool LoadEntity(pugi::xml_node& load);
+	bool SaveEntity(pugi::xml_node& save);
 };
 
 #endif // __GHOST_H__

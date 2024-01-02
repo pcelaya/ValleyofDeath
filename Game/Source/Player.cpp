@@ -80,7 +80,7 @@ bool Player::Start() {
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
-	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x + (texW/2) - 12, position.y + (texH / 2) -15, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -248,9 +248,9 @@ bool Player::Update(float dt)
 	}
 
 	if (!flip)
-		app->render->DrawTexture(texture, position.x + (texW / 2) -12, position.y + (texH / 2) -15, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x + (texW / 2), position.y + (texH / 2), &currentAnimation->GetCurrentFrame());
 	else
-		app->render->DrawTexturePR(texture, position.x + (texW / 2) -12, position.y + (texH / 2) -15, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexturePR(texture, position.x + (texW / 2), position.y + (texH / 2), &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -328,4 +328,28 @@ iPoint Player::getTilePosition()
 	ret.y -= 2;
 
 	return ret;
+}
+
+bool Player::LoadEntity(pugi::xml_node& load)
+{
+	pugi::xml_node PlayerNode = load.child(name.GetString());
+
+	position.x = PlayerNode.attribute("x").as_int();
+	position.y = PlayerNode.attribute("y").as_int();
+	position.x += (texW / 2);
+	position.y += (texH / 2);
+
+	b2Vec2 pPosition = b2Vec2(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y));
+	pbody->body->SetTransform(pPosition, 0);
+
+	return true;
+}
+
+bool Player::SaveEntity(pugi::xml_node& save)
+{
+	pugi::xml_node PlayerNode = save.append_child(name.GetString());
+	PlayerNode.append_attribute("x").set_value(position.x);
+	PlayerNode.append_attribute("y").set_value(position.y);
+
+	return true;
 }

@@ -23,6 +23,10 @@ public:
 	Animation walkAnimation;
 	Animation dieAnimation;
 	Animation attackAnimation;
+
+	// Load and Saves Skeleton atributtes
+	bool LoadEntity(pugi::xml_node& load);
+	bool SaveEntity(pugi::xml_node& save);
 };
 
 #endif

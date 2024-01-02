@@ -32,6 +32,10 @@ public:
 	// obtein the current tile which player stays
 	iPoint getTilePosition();
 
+	// Load and Saves Player position
+	bool LoadEntity(pugi::xml_node& load);
+	bool SaveEntity(pugi::xml_node& save);
+
 public:
 	float speed;
 	SDL_Texture* texture = NULL;

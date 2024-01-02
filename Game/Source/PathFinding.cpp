@@ -9,6 +9,7 @@
 
 PathFinding::PathFinding()
 {
+	name.Create("pathfinding");
 	map = NULL;
 	width = 0;
 	height = 0;

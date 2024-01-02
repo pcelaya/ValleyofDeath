@@ -121,6 +121,40 @@ void EntityManager::AddEntity(Entity* entity)
 	if ( entity != nullptr) entities.Add(entity);
 }
 
+bool EntityManager::LoadState(pugi::xml_node load)
+{
+	bool ret = true;
+
+	//Iterates over the entities and calls Start
+	ListItem<Entity*>* item;
+	pugi::xml_node EntityNode = load.child("Enemy");
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
+	{
+		if (item->data->type == EntityType::ENEMY) 
+			item->data->LoadEntity(EntityNode);
+		else 
+			item->data->LoadEntity(load);
+	}
+
+	return ret;
+}
+
+bool EntityManager::SaveState(pugi::xml_node save)
+{
+	bool ret = true;
+
+	//Iterates over the entities and calls Start
+	ListItem<Entity*>* item;
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
+	{
+		item->data->SaveEntity(save);
+	}
+
+	return ret;
+}
+
 bool EntityManager::Update(float dt)
 {
 	bool ret = true;

@@ -18,7 +18,7 @@
 	</window>
 	
 	<scene>
-		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
+		<player x="-220" y="300" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
 			<idleAnimation speed="0.1f" loop="true">
 				<animation x="14" y="13" w="21" h="34"/>
 				<animation x="45" y="13" w="21" h="34"/>
@@ -65,7 +65,11 @@
 				<animation x="446" y="232" w="34" h="40"/>
 			</attackAnimation>
 		</player>
-		<flyingEnemy eRange="20" followVelocity="0.15" patrolVel="0.1"></flyingEnemy>
+		<flyingEnemy eRange="20" followVelocity="0.15" patrolVel="0.1" texturePath="Assets/Textures/FlyingEnemy.png">
+			<flyAnimation speed="0.08f" loop="true">
+				<animation x="8" y="3" w="29" h="38"/>
+			</flyAnimation>
+		</flyingEnemy>
 		<ghost x="20" y="10" speed="0.1f" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>
@@ -139,7 +143,22 @@
 			</patrol>
 		</ghost>
 
-		<groundEnemy eRange="20" followVelocity="0.15" patrolVel="0.1"></groundEnemy>
+		<groundEnemy eRange="10" followVelocity="0.15" patrolVel="0.1" texturePath="Assets/Textures/skeletonAnimation.png">
+			<idleAnimation speed="0.1" loop="true">
+				<animation x="13" y="119" w="24" h="40"/>
+			</idleAnimation>
+			<walkAnimation speed="0.1" loop="true">
+				<animation x="13" y="6" w="24" h="40"/>
+				<animation x="61" y="6" w="24" h="40"/>
+				<animation x="111" y="6" w="14" h="40"/>
+				<animation x="159" y="6" w="13" h="40"/>
+				<animation x="207" y="6" w="15" h="40"/>
+				<animation x="255" y="6" w="17" h="40"/>
+				<animation x="303" y="6" w="18" h="40"/>
+				<animation x="351" y="6" w="20" h="40"/>
+				<animation x="397" y="6" w="24" h="40"/>
+			</walkAnimation>
+		</groundEnemy>
 		<skeleton x="550" y="400" speed="0.1f" texturePath="Assets/Textures/skeletonAnimation.png">
 			<idleAnimation speed="0.1" loop="true">
 				<animation x="13" y="119" w="24" h="40"/>
@@ -156,7 +175,7 @@
 				<animation x="397" y="6" w="24" h="40"/>
 			</walkAnimation>
 			<patrol>
-				<init x="28" y="24"/>
+				<init x="20" y="24"/>
 				<final x="49" y="24"/>
 			</patrol>
 		</skeleton>

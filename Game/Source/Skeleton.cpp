@@ -187,3 +187,49 @@ void Skeleton::moveToPoint(float dt)
 			velocity.x = realVelocity * dt;
 	}
 }
+
+bool Skeleton::LoadEntity(pugi::xml_node& load)
+{
+	pugi::xml_node EnemyNode = load;
+
+	dead = EnemyNode.attribute("dead").as_bool();
+
+	if (dead)
+	{
+		position.x = 0;
+		position.y = 0;
+
+		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+		pbody->body->SetTransform(diePos, 0);
+
+		hit = true;
+	}
+	else
+	{
+		position.x = EnemyNode.attribute("x").as_int();
+		position.y = EnemyNode.attribute("y").as_int();
+
+		b2Vec2 pPosition = b2Vec2(PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y));
+		pbody->body->SetTransform(pPosition, 0);
+
+		currentAnimation = &idleAnimation;
+		hit = false;
+		dieAnimation.Reset();
+	}
+	load = EnemyNode.next_sibling("Enemy");
+
+
+	return true;
+}
+
+bool Skeleton::SaveEntity(pugi::xml_node& save)
+{
+	pugi::xml_node EnemyNode = save.append_child(name.GetString());
+
+	EnemyNode.append_attribute("x").set_value(position.x);
+	EnemyNode.append_attribute("y").set_value(position.y);
+
+	EnemyNode.append_attribute("dead").set_value(dead);
+
+	return true;
+}

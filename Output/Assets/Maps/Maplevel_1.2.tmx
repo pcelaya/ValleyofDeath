@@ -43698,7 +43698,7 @@
    <tile/>
    <tile/>
    <tile gid="291"/>
-   <tile gid="305"/>
+   <tile/>
    <tile gid="454"/>
    <tile gid="455"/>
    <tile gid="456"/>
@@ -49296,7 +49296,6 @@
   </properties>
   <object id="79" x="95.5" y="471" width="16" height="8"/>
   <object id="80" x="271.5" y="471" width="48.5" height="8.5"/>
-  <object id="81" x="417.5" y="406" width="15" height="8.5"/>
   <object id="82" x="800.5" y="472" width="47.5" height="8"/>
   <object id="84" x="6192" y="464" width="592" height="16"/>
   <object id="86" x="1295.5" y="357.5" width="16" height="9.5"/>
@@ -60215,7 +60214,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="896"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>

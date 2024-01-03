@@ -19,7 +19,6 @@ bool Enemy::Awake()
 	position.y = config.attribute("y").as_int();
 	initPosition = position;
 
-	texturePath = config.attribute("texturePath").as_string();
 	Patrolinit = { config.child("patrol").child("init").attribute("x").as_int(), config.child("patrol").child("init").attribute("y").as_int()};
 	Patrolfinal = { config.child("patrol").child("final").attribute("x").as_int(), config.child("patrol").child("final").attribute("y").as_int() };
 	
@@ -30,7 +29,7 @@ bool Enemy::Start()
 {
 	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").attribute("pathTile").as_string());
 	dead = false;
-	hit = false;
+	hit = dead;
 	patrol = true;
 	return true;
 }

@@ -10,19 +10,39 @@ bool Skeleton::Awake()
 {
 	Enemy::Awake();
 
+	texturePath = config.previous_sibling("groundEnemy").attribute("texturePath").as_string();
+	pugi::xml_node parentConfig = config.previous_sibling("groundEnemy");
+
 	// Initilize Skeleton Idle Animation
-	pugi::xml_node animNode = config.child("idleAnimation").first_child();
+	pugi::xml_node animNode = parentConfig.child("idleAnimation").first_child();
 	idleAnimation.PushBack({ animNode.attribute("x").as_int(), animNode.attribute("y").as_int(), animNode.attribute("w").as_int(), animNode.attribute("h").as_int() });
-	idleAnimation.speed = config.child("idleAnimation").first_child().attribute("speed").as_float();
-	idleAnimation.loop = config.child("idleAnimation").first_child().attribute("loop").as_float();
+	idleAnimation.speed = parentConfig.child("idleAnimation").first_child().attribute("speed").as_float();
+	idleAnimation.loop = parentConfig.child("idleAnimation").first_child().attribute("loop").as_bool();
 
 	// Initialize Skeleton Walk Animation
-	for (pugi::xml_node animnNode = config.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	for (pugi::xml_node animnNode = parentConfig.child("walkAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
 	{
 		walkAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
-	walkAnimation.speed = config.child("walkAnimation").attribute("speed").as_float();
-	walkAnimation.loop = config.child("walkAnimation").attribute("loop").as_bool();
+	walkAnimation.speed = parentConfig.child("walkAnimation").attribute("speed").as_float();
+	walkAnimation.loop = parentConfig.child("walkAnimation").attribute("loop").as_bool();
+
+	// Initialize Skeleton Die Animation
+	for (pugi::xml_node animnNode = parentConfig.child("dieAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	{
+		dieAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+	}
+	dieAnimation.speed = parentConfig.child("dieAnimation").attribute("speed").as_float();
+	dieAnimation.loop = parentConfig.child("dieAnimation").attribute("loop").as_bool();
+	
+	// Initialize Skeleton Attack Animation
+	for (pugi::xml_node animnNode = parentConfig.child("attackAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	{
+		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+	}
+	attackAnimation.speed = parentConfig.child("attackAnimation").attribute("speed").as_float();
+	attackAnimation.loop = parentConfig.child("attackAnimation").attribute("loop").as_bool();
+
 
 	return true;
 }
@@ -38,11 +58,11 @@ bool Skeleton::Start()
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
-	pbody->ctype = ColliderType::DEADLY;
+	pbody->ctype = ColliderType::ENEMY;
 
-	enemyRange = 20;
-	followVelovity = 0.12;
-	patrolVelocity = 0.1;
+	enemyRange = config.previous_sibling("groundEnemy").attribute("eRange").as_int();
+	followVelovity = config.previous_sibling("groundEnemy").attribute("followVel").as_float();
+	patrolVelocity = config.previous_sibling("groundEnemy").attribute("patrolVel").as_float();
 
 	Enemy::Start();
 
@@ -78,7 +98,7 @@ bool Skeleton::Update(float dt)
 		break;
 	}
 
-	if (!dead)
+	if (!hit)
 	{
 		if (canChase(enemyRange)) {
 			realVelocity = followVelovity;
@@ -103,7 +123,7 @@ bool Skeleton::Update(float dt)
 		{
 			dieAnimation.Reset();
 			state = AnimSates::IDLE;
-			dead = false;
+			dead = true;
 		}
 	}
 
@@ -144,12 +164,12 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 		LOG("Collision PLAYER");
 		if (app->scene->player->state == AnimSates::ATTACK)
 		{
-			dead = true;
+			hit = true;
 		}
 		break;
 
 	case ColliderType::DEADLY:
-		dead = true;
+		hit = true;
 		break;
 
 	case ColliderType::PLATFORM:

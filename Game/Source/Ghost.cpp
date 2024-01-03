@@ -11,19 +11,22 @@ bool Ghost::Awake()
 {
 	Enemy::Awake();
 
+	texturePath = config.previous_sibling("flyingEnemy").attribute("texturePath").as_string();
+	pugi::xml_node parentConfig = config.previous_sibling("flyingEnemy");
+
 	// Initialize Ghost Flying animation
-	for (pugi::xml_node animnNode = config.child("flyAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	for (pugi::xml_node animnNode = parentConfig.child("flyAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
 	{
 		flyAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
 	}
-	flyAnimation.speed = config.child("flyAnimation").attribute("speed").as_int();
+	flyAnimation.speed = parentConfig.child("flyAnimation").attribute("speed").as_int();
 
 	//Initialize Ghost Die animation
-	for (pugi::xml_node animationNode = config.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
+	for (pugi::xml_node animationNode = parentConfig.child("dieAnimation").child("animation"); animationNode; animationNode = animationNode.next_sibling("animation"))
 	{
 		dieAnimation.PushBack({ animationNode.attribute("x").as_int(), animationNode.attribute("y").as_int(), animationNode.attribute("w").as_int(), animationNode.attribute("h").as_int() });
 	}
-	dieAnimation.speed = config.child("dieAnimation").attribute("speed").as_float();
+	dieAnimation.speed = parentConfig.child("dieAnimation").attribute("speed").as_float();
 
 	return true;
 }
@@ -39,12 +42,12 @@ bool Ghost::Start()
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
-	pbody->ctype = ColliderType::DEADLY;
-
-	enemyRange = 20;
+	pbody->ctype = ColliderType::ENEMY;
 	pbody->body->SetGravityScale(0);
-	followVelovity = 0.15;
-	patrolVelocity = 0.1;
+
+	enemyRange = config.previous_sibling("flyingEnemy").attribute("eRange").as_int();
+	followVelovity = config.previous_sibling("flyingEnemy").attribute("followVel").as_float();
+	patrolVelocity = config.previous_sibling("flyingEnemy").attribute("patrolVel").as_float();
 
 	Enemy::Start();
 

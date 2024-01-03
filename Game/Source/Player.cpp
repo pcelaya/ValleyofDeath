@@ -80,7 +80,7 @@ bool Player::Start() {
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
-	pbody = app->physics->CreateCircle(position.x + (texW/2) - 12, position.y + (texH / 2) -15, currentAnimation->GetCurrentFrame().w - 5, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w - 10, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -248,9 +248,9 @@ bool Player::Update(float dt)
 	}
 
 	if (!flip)
-		app->render->DrawTexture(texture, position.x + (texW / 2), position.y + (texH / 2), &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x + (texW / 2) -12, position.y + (texH / 2) -20, &currentAnimation->GetCurrentFrame());
 	else
-		app->render->DrawTexturePR(texture, position.x + (texW / 2), position.y + (texH / 2), &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexturePR(texture, position.x + (texW / 2) -12, position.y + (texH / 2) -20, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -292,12 +292,12 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::DEADLY:
 		LOG("Collision DEADLY");
 
-		if (!god_mode && state != AnimSates::ATTACK)
+		if (!god_mode)
 			dead = true;
 		break;
 
 	case ColliderType::ENEMY:
-		LOG("Collision DEADLY");
+		LOG("Collision ENEMY");
 
 		if (!god_mode && state != AnimSates::ATTACK)
 			dead = true;

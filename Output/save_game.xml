@@ -8,17 +8,17 @@
 	<scene />
 	<:anonymous />
 	<entitymanager>
-		<Player x="-208" y="325" />
-		<Enemy x="258" y="15" dead="false" />
-		<Enemy x="1235" y="309" dead="false" />
-		<Enemy x="1535" y="208" dead="false" />
+		<Player x="-222" y="330" />
+		<Enemy x="462" y="15" dead="false" />
+		<Enemy x="1142" y="395" dead="false" />
+		<Enemy x="1619" y="207" dead="false" />
 		<Enemy x="2050" y="100" dead="false" />
 		<Enemy x="2800" y="170" dead="false" />
 		<Enemy x="3500" y="250" dead="false" />
 		<Enemy x="4600" y="160" dead="false" />
 		<Enemy x="6200" y="150" dead="false" />
-		<Enemy x="360" y="376" dead="false" />
-		<Enemy x="1104" y="440" dead="false" />
+		<Enemy x="568" y="376" dead="false" />
+		<Enemy x="1204" y="440" dead="false" />
 		<Enemy x="1700" y="465" dead="false" />
 		<Enemy x="2500" y="465" dead="false" />
 		<Enemy x="3050" y="400" dead="false" />

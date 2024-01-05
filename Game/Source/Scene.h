@@ -7,6 +7,12 @@
 
 struct SDL_Texture;
 
+struct limit
+{
+	int left;
+	int right;
+};
+
 class Scene : public Module
 {
 public:
@@ -39,8 +45,7 @@ public:
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;
-	float limitCamera;
-	float limitWindow;
+	limit limitCamera;
 
 	// Debug mode
 	bool debug;

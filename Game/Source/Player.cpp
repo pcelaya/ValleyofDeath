@@ -108,6 +108,12 @@ bool Player::Update(float dt)
 	else if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && god_mode)
 	{
 		god_mode = !god_mode;
+
+		if (app->render->camera.x < 0)
+			app->render->camera.x = 0;
+
+		if (app->render->camera.y < 0)
+			app->render->camera.y = 0;
 	}
 
 	switch (state)

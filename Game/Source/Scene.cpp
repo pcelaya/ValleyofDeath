@@ -90,26 +90,54 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	float camSpeed = 1; 
-	
-	limitCamera = player->position.x - windowW + 32;
-	if (limitCamera > 0 && limitCamera < (app->map->GetMapWidth() - windowW) && limitCamera < app->map->GetMapWidth() && !player->god_mode)
-		app->render->camera.x = (player->position.x - windowW / 2) * -1; 
 
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += (int)ceil(camSpeed * dt);
+	if (!debug && !player->god_mode)
+	{
+		limitCamera.right = (app->render->camera.x * -1) + app->render->camera.w - 40;
+		limitCamera.left = (app->render->camera.x * -1) + 40;
 
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= (int)ceil(camSpeed * dt);
+		if (player->position.x + player->texW / 2 > limitCamera.right)
+		{
+			app->render->camera.x -= windowW;
+		}
+		else if (player->position.x + player->texW / 2 < limitCamera.left && limitCamera.left > windowW)
+		{
+			app->render->camera.x += windowW;
+		}
+	}
+	else 
+	{
+		if (app->render->camera.x > 0)
+		{
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+				app->render->camera.x += (int)ceil(camSpeed * dt);
 
-	//if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	//	app->render->camera.y += (int)ceil(camSpeed * dt);
-	//if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	//	app->render->camera.y -= (int)ceil(camSpeed * dt);
+			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+				app->render->camera.x -= (int)ceil(camSpeed * dt);
+		}
+	}
 
+	// Request to Load or Save game information
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) 
 		app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
 		app->LoadRequest();
+
+	// Activate or deactivate debug mode
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && !debug)
+	{
+		debug = !debug;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && debug)
+	{
+		debug = !debug;
+
+		if (app->render->camera.x < 0)
+			app->render->camera.x = 0;
+
+		if (app->render->camera.y < 0)
+			app->render->camera.y = 0;
+	}
 
 	return true;
 }

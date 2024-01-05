@@ -93,32 +93,32 @@
 		</ghost>
 		<ghost x="2050" y="100">
 			<patrol>
-				<init x="123" y="11"/>
+				<init x="122" y="6"/>
 				<final x="169" y="2"/>
 			</patrol>
 		</ghost>
 		<ghost x="2800" y="170">
 			<patrol>
-				<init x="174" y="10"/>
-				<final x="208" y="8"/>
+				<init x="172" y="9"/>
+				<final x="209" y="9"/>
 			</patrol>
 		</ghost>
 		<ghost x="3500" y="250">
 			<patrol>
 				<init x="218" y="16"/>
-				<final x="262" y="18"/>
+				<final x="291" y="18"/>
 			</patrol>
 		</ghost>
 		<ghost x="4600" y="160">
 			<patrol>
-				<init x="346" y="27"/>
-				<final x="377" y="20"/>
+				<init x="292" y="7"/>
+				<final x="355" y="7"/>
 			</patrol>
 		</ghost>
 		<ghost x="6200" y="150">
 			<patrol>
-				<init x="394" y="16"/>
-				<final x="422" y="16"/>
+				<init x="385" y="16"/>
+				<final x="425" y="16"/>
 			</patrol>
 		</ghost>
 

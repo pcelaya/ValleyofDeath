@@ -224,10 +224,6 @@ bool Physics::PostUpdate()
 {
 	bool ret = true;
 
-	// Activate or deactivate debug mode
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		app->scene->debug = !app->scene->debug;
-	
 	//  Iterate all objects in the world and draw the bodies
 	if (app->scene->debug)
 	{

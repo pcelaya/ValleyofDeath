@@ -81,12 +81,9 @@ void PathFinding::ClearLastPath()
 }
 
 // Main function to request a path from A to B
-int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool isInPatrol)
 {
 	int ret = -1;
-
-	bool debug = IsWalkable(origin);
-	bool debug2 = IsWalkable(destination);
 
 	if (!IsWalkable(origin) || !IsWalkable(destination))
 		return ret;
@@ -135,7 +132,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 				if (frontier.Find(neighbour->data.pos) == NULL)
 				{
-					neighbour->data.CalculateF(destination);
+					neighbour->data.CalculateF(destination, isInPatrol);
+
 					frontier.list.Add(neighbour->data);
 				}
 				else
@@ -143,7 +141,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 					if (frontier.Find(neighbour->data.pos)->data.g > neighbour->data.g + 1)
 					{
 						frontier.Find(neighbour->data.pos)->data.parent = neighbour->data.parent;
-						frontier.Find(neighbour->data.pos)->data.CalculateF(destination);
+						frontier.Find(neighbour->data.pos)->data.CalculateF(destination, isInPatrol);
 					}
 				}
 			}
@@ -231,10 +229,16 @@ int PathNode::Score() const
 	return g + h;
 }
 
-int PathNode::CalculateF(const iPoint& destination)
+int PathNode::CalculateF(const iPoint& destination, bool isInPatrol)
 {
 	g = parent->g + 1;
 	h = pos.DistanceTo(destination);
+	
+	/*gid = app->map->pathfinding->GetTileAt(pos);
 
+	if (isInPatrol)
+		if (gid == 2)
+			return g + h - 4;
+	*/
 	return g + h;
 }

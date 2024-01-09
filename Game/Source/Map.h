@@ -154,6 +154,7 @@ private:
     MapLayer* navigationLayer;
 
     int blockedGid = 896;
+    int followGid = 898;
     int firstX, firstY;
     int lastX, lastY;
 };

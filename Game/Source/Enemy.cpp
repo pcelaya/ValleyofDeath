@@ -50,13 +50,10 @@ bool Enemy::Update(float dt)
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (currentAnimation->GetCurrentFrame().h / 2);
 	}
 
-	if (!dead) 
-	{
-		if (velocity.x < 0)
-			app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-		else
-			app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-	}
+	if (velocity.x <= 0)
+		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+	else
+		app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 
 	currentAnimation->Update();
 
@@ -78,11 +75,11 @@ const DynArray<iPoint>* Enemy::FindPath()
 {
 	iPoint origin = tilePos;
 
-	app->map->pathfinding->CreatePath(origin, destiny);
+	app->map->pathfinding->CreatePath(origin, destiny, patrol);
 
 	const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
 
-	if (app->scene->debug && app->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if (app->scene->debug)
 	{
 		for (uint i = 0; i < path->Count(); ++i)
 		{

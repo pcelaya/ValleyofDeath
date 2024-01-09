@@ -28,7 +28,7 @@ public:
 	void SetNavigationMap(uint w, uint h, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(const iPoint& origin, const iPoint& destination, bool isInPatrol);
 
 	// To request all tiles involved in the last generated path
 	const DynArray<iPoint>* GetLastPath() const;
@@ -54,6 +54,8 @@ public:
 
 	// we store the created path here
 	DynArray<iPoint> lastPath;
+
+	
 };
 
 
@@ -65,6 +67,7 @@ struct PathNode
 	const PathNode* parent;
 	int g, h;
 	iPoint pos;
+	uchar gid;
 
 	// Convenient constructors
 	PathNode();
@@ -76,7 +79,7 @@ struct PathNode
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
-	int CalculateF(const iPoint& destination);
+	int CalculateF(const iPoint& destination, bool isInPatrol);
 };
 
 struct PathList

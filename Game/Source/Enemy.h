@@ -9,13 +9,6 @@
 #include "List.h"
 #include "DynArray.h"
 
-enum class EnemyType
-{
-	GHOST,
-	SKELETON,
-	UNKNOWN
-};
-
 class Enemy : public Entity
 {
 public:

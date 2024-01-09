@@ -126,7 +126,7 @@
 			<idleAnimation speed="0.1" loop="true">
 				<animation x="7" y="118" w="24" h="40"/>
 			</idleAnimation>
-			<walkAnimation speed="0.1" loop="true">
+			<walkAnimation speed="0.15" loop="true">
 				<animation x="7" y="5" w="24" h="40"/>
 				<animation x="56" y="5" w="22" h="40"/>
 				<animation x="105" y="5" w="14" h="40"/>

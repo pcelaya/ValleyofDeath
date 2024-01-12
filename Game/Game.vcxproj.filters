@@ -29,31 +29,31 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Source\Audio.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Map.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\PathFinding.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Render.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Textures.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Window.cpp">
-      <Filter>Game\Modules\Body</Filter>
+      <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Ghost.cpp">
       <Filter>Game\Entities\Enemies</Filter>
@@ -179,14 +179,14 @@
     <Filter Include="Game\Modules\Heathers">
       <UniqueIdentifier>{847470f2-e64c-43be-8c57-5c8bb3d55c9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Modules\Body">
-      <UniqueIdentifier>{d44a0483-87dd-4415-8e20-d717d105d460}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Entities\Enemies">
       <UniqueIdentifier>{11725aa7-0e1d-415d-8947-8b6863c33221}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Modules\Scene">
       <UniqueIdentifier>{468c740a-ba0b-494e-aa2e-821f74e47f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Modules\Implementation">
+      <UniqueIdentifier>{d44a0483-87dd-4415-8e20-d717d105d460}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

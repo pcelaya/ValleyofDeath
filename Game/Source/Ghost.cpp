@@ -77,7 +77,7 @@ bool Ghost::Update(float dt)
 		break;
 	}
 
-	if (!dead)
+	if (!hit)
 	{	
 		if (canChase(enemyRange)) {
 			realVelocity = followVelovity;
@@ -93,7 +93,8 @@ bool Ghost::Update(float dt)
 	else
 	{
 		state = AnimSates::DIE;
-		if (dieAnimation.HasFinished()) {
+		if (dieAnimation.HasFinished())
+		{
 			dieAnimation.Reset();
 			state = AnimSates::WALIKING;
 			dead = false;
@@ -195,7 +196,7 @@ void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 		LOG("Collision PLAYER");
 		if (app->scene->player->state == AnimSates::ATTACK)
 		{
-			dead = true;
+			hit = true;
 		}
 		break;
 
@@ -215,16 +216,14 @@ bool Ghost::LoadEntity(pugi::xml_node& load)
 	pugi::xml_node EnemyNode = load;
 
 	dead = EnemyNode.attribute("dead").as_bool();
+	hit = EnemyNode.attribute("dead").as_bool();
 
-	if (dead) 
+	if (hit) 
 	{
-		position.x = 0;
-		position.y = 0;
+		position.x = -100;
+		position.y = 200;
 
-		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
-		pbody->body->SetTransform(diePos, 0);
-
-		hit = true;
+		dead = true;
 	}
 	else 
 	{
@@ -235,7 +234,6 @@ bool Ghost::LoadEntity(pugi::xml_node& load)
 		pbody->body->SetTransform(pPosition, 0);
 
 		currentAnimation = &flyAnimation;
-		hit = false;
 		dieAnimation.Reset();
 	}
 	load = EnemyNode.next_sibling("Enemy");
@@ -248,10 +246,16 @@ bool Ghost::SaveEntity(pugi::xml_node& save)
 {
 	pugi::xml_node EnemyNode = save.append_child(name.GetString());
 
+
+	if (hit)
+	{
+		EnemyNode.append_attribute("dead").set_value(hit);
+		return true;
+	}
+
 	EnemyNode.append_attribute("x").set_value(position.x);
 	EnemyNode.append_attribute("y").set_value(position.y);
-
-	EnemyNode.append_attribute("dead").set_value(dead);
+	EnemyNode.append_attribute("dead").set_value(hit);
 
 	return true;
 }

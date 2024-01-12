@@ -93,7 +93,6 @@ struct PathList
 	// The list itself, note they are not pointers!
 	List<PathNode> list;
 };
-
 #endif // __PATHFINDING_H__
 
 

@@ -41,11 +41,11 @@ bool Enemy::Update(float dt)
 
 	if (dead) 
 	{
-		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(-100), PIXEL_TO_METERS(600));
+		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(-100), PIXEL_TO_METERS(200));
 		pbody->body->SetTransform(diePos, 0);
-		app->entityManager->DestroyEntity(this);
 	}
-	else {
+	else 
+	{
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (currentAnimation->GetCurrentFrame().w / 2);
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (currentAnimation->GetCurrentFrame().h / 2);
 	}

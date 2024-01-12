@@ -94,27 +94,29 @@ bool Scene::Update(float dt)
 	if (!debug && !player->god_mode)
 	{
 		limitCamera.right = (app->render->camera.x * -1) + app->render->camera.w - 40;
-		limitCamera.left = (app->render->camera.x * -1) + 40;
+		limitCamera.left = (app->render->camera.x * -1);
+
+		LOG("leftCamera.left = %d", limitCamera.left);
+		LOG("player.x = %d", player->position.x);
 
 		if (player->position.x + player->texW / 2 > limitCamera.right)
 		{
-			app->render->camera.x -= windowW;
+			app->render->camera.x -= windowW - 40;
 		}
-		else if (player->position.x + player->texW / 2 < limitCamera.left && limitCamera.left > windowW)
+		else if (player->position.x + player->texW / 2 < limitCamera.left && limitCamera.left > windowW - 40)
 		{
 			app->render->camera.x += windowW;
 		}
 	}
 	else 
 	{
-		if (app->render->camera.x > 0)
-		{
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-				app->render->camera.x += (int)ceil(camSpeed * dt);
+		
+		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			app->render->camera.x += (int)ceil(camSpeed * dt);
 
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-				app->render->camera.x -= (int)ceil(camSpeed * dt);
-		}
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			app->render->camera.x -= (int)ceil(camSpeed * dt);
+
 	}
 
 	// Request to Load or Save game information
@@ -132,11 +134,14 @@ bool Scene::Update(float dt)
 	{
 		debug = !debug;
 
-		if (app->render->camera.x < 0)
-			app->render->camera.x = 0;
+		if (!app->scene->player->god_mode)
+		{
+			if (app->render->camera.x < 0)
+				app->render->camera.x = 0;
 
-		if (app->render->camera.y < 0)
-			app->render->camera.y = 0;
+			if (app->render->camera.y < 0)
+				app->render->camera.y = 0;
+		}
 	}
 
 	return true;

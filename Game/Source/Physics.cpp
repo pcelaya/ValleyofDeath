@@ -7,7 +7,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include "Render.h"
-#include "Scene.h"
+#include "Level1.h"
 #include "Player.h"
 #include "Window.h"
 #include "Box2D/Box2D/Box2D.h"
@@ -225,7 +225,7 @@ bool Physics::PostUpdate()
 	bool ret = true;
 
 	//  Iterate all objects in the world and draw the bodies
-	if (app->scene->debug)
+	if (app->level_1->debug)
 	{
 		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 		{

@@ -2,7 +2,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "Player.h"
-#include "Scene.h"
+#include "Level1.h"
 
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
@@ -79,7 +79,7 @@ const DynArray<iPoint>* Enemy::FindPath()
 
 	const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
 
-	if (app->scene->debug)
+	if (app->level_1->debug)
 	{
 		for (uint i = 0; i < path->Count(); ++i)
 		{
@@ -97,14 +97,14 @@ bool Enemy::canChase(int dist)
 
 	tilePos = getTilePosition();
 
-	ptilePos = app->scene->player->getTilePosition();
+	ptilePos = app->level_1->player->getTilePosition();
 
 	if ((abs(ptilePos.x - tilePos.x) + abs(ptilePos.y - tilePos.y)) < dist)
 	{
 		canChase = true;
 	}
 
-	if (canChase && app->scene->player->god_mode == false)
+	if (canChase && app->level_1->player->god_mode == false)
 	{
 		canChase = true;
 	}

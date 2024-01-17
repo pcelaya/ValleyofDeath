@@ -5,7 +5,7 @@
 #include "Audio.h"
 #include "Input.h"
 #include "Render.h"
-#include "Scene.h"
+#include "Level1.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"

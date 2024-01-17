@@ -13,7 +13,7 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
+    <ClCompile Include="Source\Level1.cpp">
       <Filter>Game\Modules\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Item.cpp">
@@ -96,7 +96,7 @@
     <ClInclude Include="Source\Module.h">
       <Filter>Game\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene.h">
+    <ClInclude Include="Source\Level1.h">
       <Filter>Game\Modules\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">

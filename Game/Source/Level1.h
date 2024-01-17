@@ -1,5 +1,5 @@
-#ifndef __SCENE_H__
-#define __SCENE_H__
+#ifndef __LEVEL1_H__
+#define __LEVELÑ1_H__
 
 #include "Module.h"
 #include "Player.h"
@@ -13,14 +13,14 @@ struct limit
 	int right;
 };
 
-class Scene : public Module
+class Level1 : public Module
 {
 public:
 
-	Scene();
+	Level1();
 
 	// Destructor
-	virtual ~Scene();
+	virtual ~Level1();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node config);
@@ -53,4 +53,4 @@ public:
 	Player* player;
 };
 
-#endif // __SCENE_H__
+#endif // __LEVEL1_H__

@@ -17,7 +17,7 @@
 		<fullscreen_window value="flase"/>
 	</window>
 	
-	<scene>
+	<level_1>
 		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
 			<idleAnimation speed="0.1f" loop="true">
 				<animation x="14" y="13" w="21" h="34"/>
@@ -225,7 +225,7 @@
 		<!-- <item x="500" y="90" texturepath="Assets/Textures/goldCoin.png"/>-->
 		<!-- <item x="600" y="200" texturepath="Assets/Textures/goldCoin.png"/>-->
 		<!-- <item x="900" y="90" texturepath="Assets/Textures/goldCoin.png"/>-->
-	</scene>
+	</level_1>
 	<map path="Assets/Maps/" name="Maplevel_1.2.tmx">
 	</map>
 </config>

@@ -4,31 +4,31 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "Scene.h"
+#include "Level1.h"
 #include "Map.h"
 #include "Skeleton.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-Scene::Scene() : Module()
+Level1::Level1() : Module()
 {
-	name.Create("scene");
+	name.Create("level_1");
 }
 
 // Destructor
-Scene::~Scene()
+Level1::~Level1()
 {}
 
 // Called before render is available
-bool Scene::Awake(pugi::xml_node config)
+bool Level1::Awake(pugi::xml_node config)
 {
-	LOG("Loading Scene");
+	LOG("Loading Level 1");
 	bool ret = true;
 
 	app->render->config = config;
 
-	player = (Player*) app->entityManager->CreateEntity(EntityType::PLAYER);
+	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	//Assigns the XML node to a member in player
 	player->config = config.child("player");
 
@@ -64,7 +64,7 @@ bool Scene::Awake(pugi::xml_node config)
 }
 
 // Called before the first frame
-bool Scene::Start()
+bool Level1::Start()
 {
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
@@ -81,15 +81,15 @@ bool Scene::Start()
 }
 
 // Called each loop iteration
-bool Scene::PreUpdate()
+bool Level1::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool Scene::Update(float dt)
+bool Level1::Update(float dt)
 {
-	float camSpeed = 1; 
+	float camSpeed = 1;
 
 	if (!debug && !player->god_mode)
 	{
@@ -108,9 +108,9 @@ bool Scene::Update(float dt)
 			app->render->camera.x += windowW;
 		}
 	}
-	else 
+	else
 	{
-		
+
 		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			app->render->camera.x += (int)ceil(camSpeed * dt);
 
@@ -120,9 +120,9 @@ bool Scene::Update(float dt)
 	}
 
 	// Request to Load or Save game information
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadRequest();
 
 	// Activate or deactivate debug mode
@@ -134,7 +134,7 @@ bool Scene::Update(float dt)
 	{
 		debug = !debug;
 
-		if (!app->scene->player->god_mode)
+		if (!player->god_mode)
 		{
 			if (app->render->camera.x < 0)
 				app->render->camera.x = 0;
@@ -148,20 +148,20 @@ bool Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool Scene::PostUpdate()
+bool Level1::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
 }
 
 // Called before quitting
-bool Scene::CleanUp()
+bool Level1::CleanUp()
 {
-	LOG("Freeing scene");
+	LOG("Freeing Level 1");
 
 	return true;
 }

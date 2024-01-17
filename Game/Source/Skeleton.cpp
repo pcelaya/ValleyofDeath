@@ -1,5 +1,5 @@
 #include "Skeleton.h"
-#include "Scene.h"
+#include "Level1.h"
 #include "Log.h"
 #include "Map.h"
 
@@ -71,7 +71,7 @@ bool Skeleton::Start()
 
 bool Skeleton::Update(float dt)
 {
-	if (abs(app->scene->player->getTilePosition().x - getTilePosition().x) > 100) {
+	if (abs(app->level_1->player->getTilePosition().x - getTilePosition().x) > 100) {
 		velocity.x = 0;
 		velocity.y = 0;
 		pbody->body->SetLinearVelocity(velocity);
@@ -148,7 +148,7 @@ void Skeleton::moveToPlayer(float dt)
 	else if (path->Count() == 1) 
 	{
 		state = AnimSates::ATTACK;
-		if (app->scene->player->position.x < position.x) 
+		if (app->level_1->player->position.x < position.x) 
 			velocity.x = -realVelocity * dt;
 
 		else
@@ -162,7 +162,7 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		if (app->scene->player->state == AnimSates::ATTACK)
+		if (app->level_1->player->state == AnimSates::ATTACK)
 		{
 			hit = true;
 		}
@@ -200,7 +200,7 @@ void Skeleton::moveToPoint(float dt)
 	}
 	else if (path->Count() == 1)
 	{
-		if (app->scene->player->position.x < position.x)
+		if (app->level_1->player->position.x < position.x)
 			velocity.x = -realVelocity * dt;
 
 		else

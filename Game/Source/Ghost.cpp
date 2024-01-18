@@ -93,12 +93,14 @@ bool Ghost::Update(float dt)
 	else
 	{
 		state = AnimSates::DIE;
+
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();
 			state = AnimSates::WALIKING;
-			dead = false;
 		}
+
+		dead = true;
 	}
 
 	Enemy::Update(dt);

@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Ghost.h"
 
 struct SDL_Texture;
 

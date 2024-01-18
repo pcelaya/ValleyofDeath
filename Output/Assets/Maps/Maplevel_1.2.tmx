@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="432" height="38" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="128">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="432" height="38" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="142">
  <tileset firstgid="1" name="dark forest" tilewidth="16" tileheight="16" tilecount="91" columns="13">
   <image source="Maps/logaboga's no man's land v1.0/Files/no man's land v1.0.PNG" width="208" height="112"/>
  </tileset>
@@ -49305,13 +49305,19 @@
   <object id="90" x="2863.5" y="454" width="15.5" height="9.5"/>
   <object id="94" x="3440" y="311.333" width="32" height="8.66667"/>
   <object id="95" x="4833" y="291.5" width="48.5" height="11.5"/>
-  <object id="97" x="1856" y="608" width="64"/>
-  <object id="98" x="2640" y="608" width="528"/>
-  <object id="99" x="3824" y="608" width="416"/>
+  <object id="97" x="1856" y="704" width="64"/>
+  <object id="98" x="2640" y="704" width="528"/>
+  <object id="99" x="3824" y="704" width="416"/>
   <object id="114" x="6912" y="0" height="304"/>
   <object id="118" x="3183.33" y="472" width="34" height="8"/>
   <object id="119" x="3264" y="471.333" width="48" height="8.66667"/>
   <object id="120" x="3375.33" y="471.333" width="64.6667" height="8.66667"/>
+  <object id="136" x="1856" y="608" height="96"/>
+  <object id="137" x="1920" y="608" height="96"/>
+  <object id="138" x="2640" y="608" height="96"/>
+  <object id="139" x="3168" y="608" height="96"/>
+  <object id="140" x="3824" y="608" height="96"/>
+  <object id="141" x="4240" y="608" height="96"/>
  </objectgroup>
  <objectgroup id="6" name="Colliders">
   <properties>

@@ -139,6 +139,7 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F1)  == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		respawn();
+
 	if (god_mode)
 	{
 		velocity = b2Vec2(0, 0);
@@ -230,15 +231,15 @@ bool Player::Update(float dt)
 		}
 	}
 	
-	if (!god_mode) {
+	if (!god_mode) 
+	{
 		pbody->body->SetLinearVelocity(velocity);
 		b2Transform pbodyPos = pbody->body->GetTransform();
-
-
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2;
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 	}
-	else {
+	else 
+	{
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			position.y += -0.5 * dt;
 		}

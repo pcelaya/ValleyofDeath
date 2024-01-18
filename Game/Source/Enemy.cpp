@@ -42,18 +42,20 @@ bool Enemy::Update(float dt)
 	if (dead) 
 	{
 		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(-100), PIXEL_TO_METERS(200));
+		position.x = METERS_TO_PIXELS(pbodyPos.p.x);
+		position.y = METERS_TO_PIXELS(pbodyPos.p.y);
 		pbody->body->SetTransform(diePos, 0);
 	}
 	else 
 	{
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - (currentAnimation->GetCurrentFrame().w / 2);
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - (currentAnimation->GetCurrentFrame().h / 2);
-	}
 
-	if (velocity.x <= 0)
-		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
-	else
-		app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+		if (velocity.x <= 0)
+			app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+		else
+			app->render->DrawTexturePR(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+	}
 
 	currentAnimation->Update();
 

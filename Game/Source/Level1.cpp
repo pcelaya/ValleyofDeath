@@ -6,7 +6,9 @@
 #include "Window.h"
 #include "Level1.h"
 #include "Map.h"
+#include "Ghost.h"
 #include "Skeleton.h"
+#include "Item.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -52,11 +54,11 @@ bool Level1::Awake(pugi::xml_node config)
 
 	//// iterate all items in the scene
 	//// Check https://pugixml.org/docs/quickstart.html#access
-	//for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
-	//{
-	//	Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-	//	item->config = itemNode;
-	//}
+	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
+	{
+		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
+		item->config = itemNode;
+	}
 
 	debug = false;
 
@@ -77,6 +79,9 @@ bool Level1::Start()
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
+	limitCamera.right = app->render->camera.w - 40;
+	limitCamera.left = 40;
+
 	return true;
 }
 
@@ -93,20 +98,21 @@ bool Level1::Update(float dt)
 
 	if (!debug && !player->god_mode)
 	{
-		limitCamera.right = (app->render->camera.x * -1) + app->render->camera.w - 40;
-		limitCamera.left = (app->render->camera.x * -1);
-
 		LOG("leftCamera.left = %d", limitCamera.left);
-		LOG("player.x = %d", player->position.x);
+		LOG("leftCamera.right = %d", limitCamera.right);
+		LOG("Camera.x = %d", app->render->camera.x);
+		LOG("player.x = %d\n", player->position.x + player->texW / 2);
 
 		if (player->position.x + player->texW / 2 > limitCamera.right)
 		{
-			app->render->camera.x -= windowW - 40;
+			app->render->camera.x -= windowW - 80;
+			limitCamera.left = limitCamera.right;
+			limitCamera.right = (app->render->camera.x * -1) + app->render->camera.w - 40;
 		}
-		else if (player->position.x + player->texW / 2 < limitCamera.left && limitCamera.left > windowW - 40)
+		/*else if (player->position.x + player->texW / 2 < limitCamera.left && limitCamera.left > windowW - 40)
 		{
-			app->render->camera.x += windowW;
-		}
+			app->render->camera.x += 2222;
+		}*/
 	}
 	else
 	{

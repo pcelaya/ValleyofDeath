@@ -4,6 +4,7 @@
 #include "App.h"
 #include "Textures.h"
 #include "Level1.h"
+#include "Ghost.h"
 #include "Skeleton.h"
 
 #include "Defs.h"
@@ -88,7 +89,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		entity = new Player();
 		break;
 	case EntityType::ITEM:
-		//entity = new Item();
+		entity = new Item();
 		break;
 	case EntityType::GHOST:
 		entity = new Ghost();

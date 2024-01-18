@@ -220,11 +220,7 @@
 				<final x="378" y="28"/>
 			</patrol>
 		</skeleton>
-		<!-- <item x="256" y="250" texturepath="Assets/Textures/goldCoin.png"/>-->
-		<!-- <item x="400" y="250" texturepath="Assets/Textures/goldCoin.png"/>-->
-		<!-- <item x="500" y="90" texturepath="Assets/Textures/goldCoin.png"/>-->
-		<!-- <item x="600" y="200" texturepath="Assets/Textures/goldCoin.png"/>-->
-		<!-- <item x="900" y="90" texturepath="Assets/Textures/goldCoin.png"/>-->
+		<item x="20" y="300" texturePath="Assets/Textures/goldCoin.png"/>
 	</level_1>
 	<map path="Assets/Maps/" name="Maplevel_1.2.tmx">
 	</map>

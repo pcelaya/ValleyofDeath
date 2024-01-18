@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "Physics.h"
+#include "Level1.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -303,6 +304,9 @@ bool Render::LoadState(pugi::xml_node load)
 	if (app->render->camera.y < 0)
 		camera.y = load.child("camera").attribute("y").as_int();
 
+	app->level_1->limitCamera.left = load.child("limitCamera").attribute("left").as_int();
+	app->level_1->limitCamera.right = load.child("limitCamera").attribute("right").as_int();
+
 	return true;
 }
 
@@ -312,6 +316,10 @@ bool Render::SaveState(pugi::xml_node save)
 	pugi::xml_node camNode = save.parent().child("renderer").append_child("camera");
 	camNode.append_attribute("x").set_value(camera.x);
 	camNode.append_attribute("y").set_value(camera.y);
+
+	camNode = save.parent().child("renderer").append_child("limitCamera");
+	camNode.append_attribute("left").set_value(app->level_1->limitCamera.left);
+	camNode.append_attribute("right").set_value(app->level_1->limitCamera.right);
 
 	return true;
 }

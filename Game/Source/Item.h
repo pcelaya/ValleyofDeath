@@ -30,7 +30,6 @@ private:
 
 	uint texW, texH;
 	SDL_Texture* texture;
-	PhysBody* pbody;
 };
 
 #endif // __ITEM_H__

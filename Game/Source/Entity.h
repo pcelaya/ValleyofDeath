@@ -90,7 +90,8 @@ public:
 	EntityType type;
 	bool active = true;
 	pugi::xml_node config;
-	
+	PhysBody* pbody;
+
 	iPoint tilePos;
 
 	bool renderable = true;

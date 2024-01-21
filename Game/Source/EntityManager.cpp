@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 #include "Player.h"
+#include "Physics.h"
 #include "Item.h"
 #include "App.h"
 #include "Textures.h"
@@ -166,7 +167,15 @@ bool EntityManager::Update(float dt)
 	{
 		pEntity = item->data;
 
-		if (pEntity->active == false) continue;
+		if (pEntity->active == false) {
+			continue;
+		}
+		/*if (pEntity->toDelete) {
+			app->physics->DestroyBody(item->data->pbody->body);
+			pEntity->toDelete = false;
+			DestroyEntity(pEntity);
+		}*/
+
 		ret = item->data->Update(dt);
 	}
 

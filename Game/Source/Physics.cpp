@@ -328,6 +328,11 @@ void Physics::BeginContact(b2Contact* contact)
 		physB->listener->OnCollision(physB, physA);
 }
 
+void Physics::DestroyBody(b2Body* body)
+{
+	world->DestroyBody(body);
+}
+
 //--------------- PhysBody
 
 void PhysBody::GetPosition(int& x, int& y) const

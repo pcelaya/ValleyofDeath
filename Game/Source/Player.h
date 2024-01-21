@@ -49,7 +49,6 @@ public:
 	bool attack;
 
 	// jumping
-	PhysBody* pbody;
 	int maxJumpSteps = 30;
 	int remainJumpSteps = 0;
 	int jumpForceReduce = 0;

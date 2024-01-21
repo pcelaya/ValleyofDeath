@@ -64,6 +64,9 @@
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>Game\Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FadeToBlack.cpp">
+      <Filter>Game\Modules\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -154,6 +157,9 @@
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
     <ClInclude Include="Source\PathFinding.h">
+      <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FadeToBlack.h">
       <Filter>Game\Modules\Heathers</Filter>
     </ClInclude>
   </ItemGroup>

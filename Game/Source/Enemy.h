@@ -44,7 +44,6 @@ protected:
 	SDL_Texture* texture;
 	Animation* currentAnimation = nullptr;
 	AnimSates state;
-	PhysBody* pbody;
 	SDL_Texture* mouseTileTex;
 
 	iPoint initPosition;

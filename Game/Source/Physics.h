@@ -78,6 +78,9 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
+	// Body Destructor
+	void DestroyBody(b2Body* body);
+
 private:
 
 	// Box2D World

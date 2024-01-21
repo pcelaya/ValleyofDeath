@@ -41,6 +41,7 @@ bool Enemy::Update(float dt)
 
 	if (dead) 
 	{
+		toDelete = true;
 		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(-100), PIXEL_TO_METERS(200));
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x);
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y);
@@ -58,13 +59,6 @@ bool Enemy::Update(float dt)
 	}
 
 	currentAnimation->Update();
-
-	if (dead)
-	{
-		toDelete = true;
-		// mirar de borrar texture i memory leaks
-		//app->entityManager->DestroyEntity(this);
-	}
 
 	return true;
 }

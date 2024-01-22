@@ -1,25 +1,19 @@
-#ifndef __LEVEL1_H__
-#define __LEVELÑ1_H__
+#ifndef __SCENE_H__
+#define __SCENE_H__
 
 #include "Module.h"
 #include "Player.h"
 
 struct SDL_Texture;
 
-struct limit
-{
-	int left;
-	int right;
-};
-
-class Level1 : public Module
+class Scene : public Module
 {
 public:
 
-	Level1();
+	Scene();
 
 	// Destructor
-	virtual ~Level1();
+	virtual ~Scene();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node config);
@@ -40,10 +34,9 @@ public:
 	bool CleanUp();
 
 public:
-
 	uint texW, texH;
 	uint windowW, windowH;
-	limit limitCamera;
+	//limit limitCamera;
 
 	// Debug mode
 	bool debug;

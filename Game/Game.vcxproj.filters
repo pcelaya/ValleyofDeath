@@ -67,6 +67,9 @@
     <ClCompile Include="Source\FadeToBlack.cpp">
       <Filter>Game\Modules\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Intro.cpp">
+      <Filter>Game\Modules\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -161,6 +164,12 @@
     </ClInclude>
     <ClInclude Include="Source\FadeToBlack.h">
       <Filter>Game\Modules\Heathers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Game\Modules\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Intro.h">
+      <Filter>Game\Modules\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

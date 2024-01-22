@@ -1,25 +1,18 @@
-#ifndef __LEVEL1_H__
-#define __LEVELÑ1_H__
+#ifndef __INTRO_H__
+#define __INTRO_H__
 
 #include "Module.h"
-#include "Player.h"
 
 struct SDL_Texture;
 
-struct limit
-{
-	int left;
-	int right;
-};
-
-class Level1 : public Module
+class Intro : public Module
 {
 public:
 
-	Level1();
+	Intro();
 
 	// Destructor
-	virtual ~Level1();
+	virtual ~Intro();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node config);
@@ -40,15 +33,12 @@ public:
 	bool CleanUp();
 
 public:
-
+	pugi::xml_node config;
 	uint texW, texH;
 	uint windowW, windowH;
-	limit limitCamera;
 
-	// Debug mode
-	bool debug;
+	SDL_Texture* gameLogo;
 
-	Player* player;
 };
 
-#endif // __LEVEL1_H__
+#endif // __INTRO_H__

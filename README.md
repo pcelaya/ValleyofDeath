@@ -18,12 +18,15 @@ Now with a bigger map.
  
 ## Controls
 
- - A -> move left
- - D -> move right
- - SPACE -> jump
- - Left mouse click --> attack
- - F1 -> reset character
- - F3 -> reset level
+ - A -> Move left
+ - D -> Move right
+ - SPACE -> Jump
+ - Left mouse click --> Attack
+ - F1 -> Reset character
+ - F3 -> Reset level
+ - F4 -> Unload colliders
+ - F5 -> Save request
+ - F6 -> Load Request
  - F9 -> Un/see colliders
  - F10 -> GOD mode
     - W -> Fly up

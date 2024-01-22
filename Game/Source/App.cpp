@@ -4,9 +4,11 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "Intro.h"
 #include "Level1.h"
 #include "Map.h"
 #include "Physics.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -29,14 +31,18 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	win = new Window();
 	input = new Input();
-	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
+	intro = new Intro();
+	
 	physics = new Physics();
-	level_1 = new Level1();
 	map = new Map();
+	level_1 = new Level1();
 	entityManager = new EntityManager();
 
+	fade = new FadeToBlack();
+
+	render = new Render();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -44,11 +50,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
+	
 	AddModule(physics);
-	AddModule(level_1);
 	AddModule(map);
+	AddModule(level_1);
 	AddModule(entityManager);
 	
+	AddModule(fade);
+	AddModule(intro);
 
 	// Render last to swap buffer
 	AddModule(render);

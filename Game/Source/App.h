@@ -18,10 +18,12 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class Intro;
 class Level1;
 class EntityManager;
 class Map;
 class Physics;
+class FadeToBlack;
 
 class App
 {
@@ -92,10 +94,12 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	Intro* intro;
 	Level1* level_1;
 	EntityManager* entityManager;
 	Map* map;
 	Physics* physics;
+	FadeToBlack* fade;
 
 private:
 

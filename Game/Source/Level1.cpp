@@ -13,7 +13,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-Level1::Level1() : Module()
+Level1::Level1() : Scene()
 {
 	name.Create("level_1");
 }
@@ -73,9 +73,6 @@ bool Level1::Start()
 	//Get the size of the window
 	app->win->GetWindowSize(windowW, windowH);
 
-	textPosX = (float)windowW / 2 - (float)texW / 2;
-	textPosY = (float)windowH / 2 - (float)texH / 2;
-
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
@@ -94,6 +91,10 @@ bool Level1::PreUpdate()
 // Called each loop iteration
 bool Level1::Update(float dt)
 {
+	
+	if (!activeScene)
+		return true;
+
 	float camSpeed = 1;
 
 	if (!debug && !player->god_mode)
@@ -125,6 +126,14 @@ bool Level1::Update(float dt)
 
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		//fade
+		// Scene* level_2 = (Scene*) level2
+		//currentstep = TO_BLACK;
+		// maxFadeFrames = 200;
+	}
+	
 	// Request to Load or Save game information
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveRequest();
@@ -149,6 +158,7 @@ bool Level1::Update(float dt)
 				app->render->camera.y = 0;
 		}
 	}
+	
 
 	return true;
 }
@@ -168,6 +178,12 @@ bool Level1::PostUpdate()
 bool Level1::CleanUp()
 {
 	LOG("Freeing Level 1");
+
+	app->map->CleanUp();
+	app->map->active = false;
+	app->entityManager->CleanUp();
+
+	active = false;
 
 	return true;
 }

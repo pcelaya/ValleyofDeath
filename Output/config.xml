@@ -17,7 +17,7 @@
 		<fullscreen_window value="flase"/>
 	</window>
 
-	<intro texturePath="Assets/Textures/Evil_Dead_The_Game_Logo.png"></intro>
+	<intro texturePath="Assets/Textures/Evil_Dead_Studios.png"></intro>
 	
 	<map path="Assets/Maps/" name="Maplevel_1.2.tmx"></map>
 	

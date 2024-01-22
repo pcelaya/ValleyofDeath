@@ -1,18 +1,11 @@
 #ifndef __LEVEL1_H__
 #define __LEVELÑ1_H__
 
-#include "Module.h"
+#include "Scene.h"
 #include "Player.h"
 
-struct SDL_Texture;
 
-struct limit
-{
-	int left;
-	int right;
-};
-
-class Level1 : public Module
+class Level1 : public Scene
 {
 public:
 
@@ -40,11 +33,6 @@ public:
 	bool CleanUp();
 
 public:
-
-	uint texW, texH;
-	uint windowW, windowH;
-	limit limitCamera;
-
 	// Debug mode
 	bool debug;
 

@@ -5,12 +5,16 @@
 #include "Render.h"
 #include "Window.h"
 
+//delete post adding Menu
+#include "Level1.h"
+
 #include "Defs.h"
 #include "Log.h"
 
-Intro::Intro() : Module()
+Intro::Intro() : Scene()
 {
 	name.Create("intro");
+	activeScene = true;
 }
 
 // Destructor
@@ -54,7 +58,15 @@ bool Intro::PreUpdate()
 // Called each loop iteration
 bool Intro::Update(float dt)
 {
-	app->render->DrawTexture(gameLogo, -35, 0, NULL);
+	if (!activeScene)
+		return true;
+
+	app->render->DrawTexture(gameLogo, 0, 0, NULL);
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		app->level_1->activeScene = true;
+		activeScene = false;
+	}
 
 	return true;
 }
@@ -63,7 +75,7 @@ bool Intro::Update(float dt)
 bool Intro::PostUpdate()
 {
 	bool ret = true;
-
+	
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
@@ -74,6 +86,8 @@ bool Intro::PostUpdate()
 bool Intro::CleanUp()
 {
 	LOG("Freeing Level 1");
+
+	active = false;
 
 	return true;
 }

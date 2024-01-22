@@ -1,11 +1,10 @@
 #ifndef __INTRO_H__
 #define __INTRO_H__
 
-#include "Module.h"
+#include "Scene.h"
 
-struct SDL_Texture;
 
-class Intro : public Module
+class Intro : public Scene
 {
 public:
 
@@ -33,10 +32,6 @@ public:
 	bool CleanUp();
 
 public:
-	pugi::xml_node config;
-	uint texW, texH;
-	uint windowW, windowH;
-
 	SDL_Texture* gameLogo;
 
 };

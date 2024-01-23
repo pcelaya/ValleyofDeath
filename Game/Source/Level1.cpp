@@ -62,6 +62,8 @@ bool Level1::Awake(pugi::xml_node config)
 
 	debug = false;
 
+	active = false;
+
 	return ret;
 }
 
@@ -128,10 +130,7 @@ bool Level1::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		//fade
-		// Scene* level_2 = (Scene*) level2
-		//currentstep = TO_BLACK;
-		// maxFadeFrames = 200;
+		//app.fade.fadeblack
 	}
 	
 	// Request to Load or Save game information

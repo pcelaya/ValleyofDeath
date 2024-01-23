@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Level1.h"
 #include "GUIManager.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -13,7 +14,6 @@
 Menu::Menu() : Scene()
 {
 	name.Create("intro");
-	activeScene = true;
 }
 
 // Destructor
@@ -28,6 +28,8 @@ bool Menu::Awake(pugi::xml_node config)
 
 	//app->render->config = config;
 	this->config = config;
+
+	active = false;
 
 	return ret;
 }
@@ -59,14 +61,11 @@ bool Menu::PreUpdate()
 // Called each loop iteration
 bool Menu::Update(float dt)
 {
-	if (!activeScene)
-		return true;
+	app->render->DrawTexture(fondoMenu, 200, 200, NULL);
 
-	app->render->DrawTexture(fondoMenu, 0, 0, NULL);
 	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		app->level_1->activeScene = true;
-		activeScene = false;
+		app->fade->FadeBlack((Module*)app->menu, (Module*)app->level_1, 200);
 	}
 
 	return true;

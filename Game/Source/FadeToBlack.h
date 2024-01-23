@@ -40,6 +40,9 @@ public:
 	// Called every frame
 	bool Update(float dt);
 
+	// Called after Update
+	bool PostUpdate();
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -47,7 +50,7 @@ public:
 	void NextScene();
 
 	//Does the actual Fade
-	void FadeBlack();
+	bool FadeBlack(Module* moduleToDisable, Module* moduleToEnable, float frames);
 
 private:
 	pugi::xml_node config;
@@ -59,10 +62,15 @@ private:
 
 	// A frame count system to handle the fade time and ratio
 	Uint32 frameCount = 0;
-	Uint32 maxFadeFrames = 75;
+	Uint32 maxFadeFrames = 0;
 	Uint32 maxFadeFramesBack = 0;
 	
+	Module* moduleToDisable;
+	Module* moduleToEnable;
+
 	SDL_Rect screenRect;
+
+	uint screen_width, screen_height;
 };
 
 #endif // __ENTITYMANAGER_H__

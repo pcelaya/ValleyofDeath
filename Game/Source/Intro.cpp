@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Menu.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -12,7 +13,6 @@
 Intro::Intro() : Scene()
 {
 	name.Create("intro");
-	activeScene = true;
 }
 
 // Destructor
@@ -56,14 +56,11 @@ bool Intro::PreUpdate()
 // Called each loop iteration
 bool Intro::Update(float dt)
 {
-	if (!activeScene)
-		return true;
-
 	app->render->DrawTexture(gameLogo, 0, 0, NULL);
+
 	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		app->menu->activeScene = true;
-		activeScene = false;
+		app->fade->FadeBlack((Module*) app->intro, (Module*) app->menu, 200);
 	}
 
 	return true;

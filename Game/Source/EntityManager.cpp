@@ -38,8 +38,9 @@ bool EntityManager::Awake(pugi::xml_node config)
 		ret = item->data->Awake();
 	}
 
-	return ret;
+	active = false;
 
+	return ret;
 }
 
 bool EntityManager::Start() {

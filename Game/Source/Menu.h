@@ -1,16 +1,18 @@
-#ifndef __INTRO_H__
-#define __INTRO_H__
+#ifndef __MENU_H__
+#define __MENU_H__
 
 #include "Scene.h"
+#include "GUIControl.h"
+#include "GuiControlButton.h"
 
-class Intro : public Scene
+class Menu : public Scene
 {
 public:
 
-	Intro();
+	Menu();
 
 	// Destructor
-	virtual ~Intro();
+	virtual ~Menu();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node config);
@@ -30,10 +32,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	
+	bool OnGuiMouseClickEvent(GuiControl* control);
 
 public:
-	SDL_Texture* gameLogo;
+	SDL_Texture* fondoMenu;
+
+	GuiControlButton* playButton;
 };
 
 #endif // __INTRO_H__

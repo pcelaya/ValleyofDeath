@@ -5,6 +5,8 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Intro.h"
+#include "Menu.h"
+#include "GUIManager.h"
 #include "Level1.h"
 #include "Map.h"
 #include "Physics.h"
@@ -33,15 +35,17 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input();
 	tex = new Textures();
 	audio = new Audio();
-	intro = new Intro();
 	
+	intro = new Intro();
+	menu = new Menu();
+	guiManager = new GuiManager();
+
 	physics = new Physics();
 	map = new Map();
 	level_1 = new Level1();
 	entityManager = new EntityManager();
 
 	fade = new FadeToBlack();
-
 	render = new Render();
 
 	// Ordered for awake / Start / Update
@@ -57,7 +61,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);
 	
 	AddModule(fade);
+
 	AddModule(intro);
+	AddModule(menu);
+	AddModule(guiManager);
 
 	// Render last to swap buffer
 	AddModule(render);

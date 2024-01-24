@@ -1,0 +1,20 @@
+TODO LIST:
+
+
+-Fer el Menu
+-Fer el Menu in Game
+-Hacer la GUI
+-Buscar Animacions de Almas Pixel
+-Posar Animacions als Ghost
+-Posar el Level2
+-Codear al Boss
+-Arreglar el scrolling
+-Load And Save Items
+-Afegir Win and Lose Screen
+-Ajustar el Salt del player
+-Posar Musica i Sound Effects
+-End Credits
+
+DONE LIST:
+
+-Arreglar els Items

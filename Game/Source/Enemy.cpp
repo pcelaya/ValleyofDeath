@@ -41,7 +41,6 @@ bool Enemy::Update(float dt)
 
 	if (dead) 
 	{
-		toDelete = true;
 		b2Vec2 diePos = b2Vec2(PIXEL_TO_METERS(-100), PIXEL_TO_METERS(200));
 		position.x = METERS_TO_PIXELS(pbodyPos.p.x);
 		position.y = METERS_TO_PIXELS(pbodyPos.p.y);

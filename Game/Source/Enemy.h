@@ -28,11 +28,8 @@ public:
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB);
 
 	const DynArray<iPoint>* FindPath();
-
 	bool canChase(int dist);
-
 	virtual void moveToPlayer(float dt);
-
 	void Patrol();
 
 	// obtain tile position of enemy

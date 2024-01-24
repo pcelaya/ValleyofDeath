@@ -93,10 +93,6 @@ bool Level1::PreUpdate()
 // Called each loop iteration
 bool Level1::Update(float dt)
 {
-	
-	if (!activeScene)
-		return true;
-
 	float camSpeed = 1;
 
 	if (!debug && !player->god_mode)

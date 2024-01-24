@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Point.h"
+#include "Physics.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
@@ -24,10 +25,13 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	// obtain tile position of enemy
+	iPoint getTilePosition();
+
 	bool isPicked = false;
 
 private:
-
+	b2Vec2 velocity;
 	uint texW, texH;
 	SDL_Texture* texture;
 };

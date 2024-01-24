@@ -85,18 +85,16 @@ public:
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {};
 
 public:
-
 	SString name;
 	EntityType type;
 	bool active = true;
 	pugi::xml_node config;
-	PhysBody* pbody;
 
+	PhysBody* pbody;
 	iPoint tilePos;
 
 	bool renderable = true;
 	iPoint position;
-	bool toDelete = false;
 };
 
 #endif // __ENTITY_H__

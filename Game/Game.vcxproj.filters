@@ -70,14 +70,14 @@
     <ClCompile Include="Source\Intro.cpp">
       <Filter>Game\Modules\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUIManager.cpp">
-      <Filter>Game\Modules\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GuiControlButton.cpp">
       <Filter>Game\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Menu.cpp">
       <Filter>Game\Modules\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUIManager.cpp">
+      <Filter>Game\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,14 +183,14 @@
     <ClInclude Include="Source\GUIControl.h">
       <Filter>Game\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GUIManager.h">
-      <Filter>Game\Modules\Heathers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GuiControlButton.h">
       <Filter>Game\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Menu.h">
       <Filter>Game\Modules\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUIManager.h">
+      <Filter>Game\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

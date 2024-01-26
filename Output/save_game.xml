@@ -8,17 +8,17 @@
 	<:anonymous />
 	<level_1 />
 	<entitymanager>
-		<Player x="-183" y="330" />
-		<Enemy x="551" y="25" dead="false" />
-		<Enemy x="1229" y="374" dead="false" />
-		<Enemy x="1667" y="219" dead="false" />
+		<Player x="-222" y="330" />
+		<Enemy x="79" y="22" dead="false" />
+		<Enemy x="1094" y="314" dead="false" />
+		<Enemy x="1424" y="226" dead="false" />
 		<Enemy x="2050" y="100" dead="false" />
 		<Enemy x="2800" y="170" dead="false" />
 		<Enemy x="3500" y="250" dead="false" />
 		<Enemy x="4600" y="160" dead="false" />
 		<Enemy x="6200" y="150" dead="false" />
-		<Enemy x="742" y="376" dead="false" />
-		<Enemy dead="true" />
+		<Enemy x="507" y="376" dead="false" />
+		<Enemy x="857" y="440" dead="false" />
 		<Enemy x="1700" y="465" dead="false" />
 		<Enemy x="2500" y="465" dead="false" />
 		<Enemy x="3050" y="400" dead="false" />
@@ -31,6 +31,7 @@
 	<intro />
 	<menu />
 	<ingame_menu />
+	<settings />
 	<guiManager />
 	<renderer>
 		<camera x="0" y="0" />

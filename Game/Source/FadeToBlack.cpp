@@ -117,15 +117,15 @@ void FadeToBlack::NextScene()
 		app->level_1->CleanUp();
 
 		moduleToEnable->Init();
-		moduleToEnable->Awake(app->render->config);
+		moduleToEnable->Awake(config.parent().child("level_2"));
 		moduleToEnable->Start();
+		app->entityManager->Start();
 		app->AddModule(moduleToEnable);
 
 		if (goBack)
 			typescene = TypeScene::MENU;
 		else
 		{
-			app->map->ChangeLevel("MapLevel_2.0.tmx");
 			typescene = TypeScene::LEVEL_2;
 		}
 		break;

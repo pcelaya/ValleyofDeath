@@ -33,6 +33,10 @@ bool Level1::Awake(pugi::xml_node config)
 
 	app->render->config = config;
 
+	//Get the map name from the config file and assigns the value in the module
+	app->map->name = config.parent().child("map").child("level_1").attribute("name").as_string();
+	app->map->path = config.parent().child("map").attribute("path").as_string();
+
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	//Assigns the XML node to a member in player
 	player->config = config.child("player");
@@ -50,10 +54,6 @@ bool Level1::Awake(pugi::xml_node config)
 		Skeleton* skele = (Skeleton*)app->entityManager->CreateEntity(EntityType::SKELETON);
 		skele->config = enemyNode;
 	}
-
-	//Get the map name from the config file and assigns the value in the module
-	app->map->name = config.parent().child("map").attribute("name").as_string();
-	app->map->path = config.parent().child("map").attribute("path").as_string();
 
 	//// iterate all items in the scene
 	//// Check https://pugixml.org/docs/quickstart.html#access
@@ -182,6 +182,7 @@ bool Level1::CleanUp()
 {
 	LOG("Freeing Level 1");
 
+	app->map->active = false;
 	app->map->CleanUp();
 	app->entityManager->CleanUp();
 

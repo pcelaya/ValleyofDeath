@@ -21,14 +21,15 @@ bool Enemy::Awake()
 	position.y = config.attribute("y").as_int();
 	initPosition = position;
 
-	Patrolinit = { config.child("patrol").child("init").attribute("x").as_int(), config.child("patrol").child("init").attribute("y").as_int()};
+	Patrolinit = { config.child("patrol").child("init").attribute("x").as_int(), config.child("patrol").child("init").attribute("y").as_int() };
 	Patrolfinal = { config.child("patrol").child("final").attribute("x").as_int(), config.child("patrol").child("final").attribute("y").as_int() };
-	
+
 	return true;
 }
 
 bool Enemy::Start()
 {
+	
 	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").attribute("pathTile").as_string());
 	dead = false;
 	hit = dead;

@@ -46,10 +46,6 @@ bool Level2::Awake(pugi::xml_node config)
 		skele->config = enemyNode;
 	}
 
-	//Get the map name from the config file and assigns the value in the module
-	app->map->name = config.parent().child("map").attribute("name").as_string();
-	app->map->path = config.parent().child("map").attribute("path").as_string();
-
 	//// iterate all items in the scene
 	//// Check https://pugixml.org/docs/quickstart.html#access
 	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
@@ -60,6 +56,7 @@ bool Level2::Awake(pugi::xml_node config)
 
 	debug = false;
 	active = false;
+	this->config = config;
 
 	return ret;
 }
@@ -67,6 +64,11 @@ bool Level2::Awake(pugi::xml_node config)
 // Called before the first frame
 bool Level2::Start()
 {
+	//Get the map name from the config file and assigns the value in the module
+	app->map->name = config.parent().child("map").child("level_2").attribute("name").as_string();
+	app->map->path = config.parent().child("map").attribute("path").as_string();
+	app->map->ChangeLevel("MapLevel_2.0.tmx");
+
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
 	//Get the size of the window
@@ -165,7 +167,7 @@ bool Level2::PostUpdate()
 // Called before quitting
 bool Level2::CleanUp()
 {
-	LOG("Freeing Level 1");
+	LOG("Freeing Level 2");
 
 	app->map->CleanUp();
 	app->entityManager->CleanUp();

@@ -2,6 +2,7 @@ TODO LIST:
 
 -Settings
 -Hacer la GUI
+-Arreglar els fps
 -Buscar Animacions de Almas Pixel
 -Posar Animacions als Ghost
 -Codear al Boss

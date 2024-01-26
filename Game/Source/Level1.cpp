@@ -63,6 +63,9 @@ bool Level1::Awake(pugi::xml_node config)
 		item->config = itemNode;
 	}
 
+	boss = (Boss*)app->entityManager->CreateEntity(EntityType::BOSS);
+	boss->config = config.child("boss");
+
 	debug = false;
 
 	active = false;
@@ -73,7 +76,7 @@ bool Level1::Awake(pugi::xml_node config)
 // Called before the first frame
 bool Level1::Start()
 {
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/lvl1_theme.ogg");
 
 	//Get the size of the window
 	app->win->GetWindowSize(windowW, windowH);

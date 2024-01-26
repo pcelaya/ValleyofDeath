@@ -13,6 +13,7 @@ enum class EntityType
 	ENEMY,
 	GHOST,
 	SKELETON,
+	BOSS,
 	UNKNOWN
 };
 

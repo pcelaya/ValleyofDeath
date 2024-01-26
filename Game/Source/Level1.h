@@ -1,8 +1,9 @@
 #ifndef __LEVEL1_H__
-#define __LEVELÑ1_H__
+#define __LEVEL1_H__
 
 #include "Scene.h"
 #include "Player.h"
+#include "Boss.h"
 
 
 class Level1 : public Scene
@@ -37,6 +38,7 @@ public:
 	bool debug;
 
 	Player* player;
+	Boss* boss;
 };
 
 #endif // __LEVEL1_H__

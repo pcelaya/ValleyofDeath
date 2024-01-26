@@ -8,6 +8,7 @@
 #include "Settings.h"
 #include "GUIManager.h"
 #include "FadeToBlack.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -38,7 +39,7 @@ bool Menu::Awake(pugi::xml_node config)
 // Called before the first frame
 bool Menu::Start()
 {
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/menu_theme.ogg");
 
 	fondoMenu = app->tex->Load(config.attribute("texturePath").as_string());
 

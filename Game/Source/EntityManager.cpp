@@ -99,6 +99,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::SKELETON:
 		entity = new Skeleton();
 		break;
+	case EntityType::BOSS:
+		entity = new Boss();
+		break;
 
 	default:
 		break;

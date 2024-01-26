@@ -88,6 +88,9 @@
     <ClCompile Include="Source\Level2.cpp">
       <Filter>Game\Modules\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Boss.cpp">
+      <Filter>Game\Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="Source\Level2.h">
       <Filter>Game\Modules\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Boss.h">
+      <Filter>Game\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

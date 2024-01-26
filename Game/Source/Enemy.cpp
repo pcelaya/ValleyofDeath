@@ -29,7 +29,6 @@ bool Enemy::Awake()
 
 bool Enemy::Start()
 {
-	
 	mouseTileTex = app->tex->Load(config.parent().parent().child("renderer").attribute("pathTile").as_string());
 	dead = false;
 	hit = dead;

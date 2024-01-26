@@ -74,6 +74,27 @@
 				<animation x="446" y="232" w="34" h="40"/>
 			</attackAnimation>
 		</player>
+		<boss  x="550" y="400" eRange="20" followVel="0.15" patrolVel="0.1" texturePath="">
+			<idleAnimation speed="0.1f" loop="true">
+				<animation x="0" y="0" w="48" h="48"/>
+			</idleAnimation>
+			<walkAnimation speed="0.1f" loop="true">
+				<animation/>
+			</walkAnimation>
+			<dieAnimation speed="0.15f" loop="false">
+				<animation/>
+			</dieAnimation>
+			<jumpAnimation speed="0.1f" loop="false">
+				<animation/>
+			</jumpAnimation>
+			<attackAnimation speed="0.25f" loop="false">
+				<animation/>
+			</attackAnimation>
+			<patrol>
+				<init x="20" y="24"/>
+				<final x="49" y="24"/>
+			</patrol>
+		</boss>
 		<flyingEnemy eRange="20" followVel="0.15" patrolVel="0.1" texturePath="Assets/Textures/FlyingEnemy.png">
 			<flyAnimation speed="0.08f" loop="true">
 				<animation x="8" y="3" w="29" h="38"/>

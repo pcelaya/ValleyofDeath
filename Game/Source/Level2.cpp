@@ -64,6 +64,8 @@ bool Level2::Awake(pugi::xml_node config)
 // Called before the first frame
 bool Level2::Start()
 {
+	app->audio->PlayMusic("Assets/Audio/Music/lvl2_theme.ogg");
+
 	//Get the map name from the config file and assigns the value in the module
 	app->map->name = config.parent().child("map").child("level_2").attribute("name").as_string();
 	app->map->path = config.parent().child("map").attribute("path").as_string();

@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Menu.h"
 #include "FadeToBlack.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -34,7 +35,7 @@ bool Intro::Awake(pugi::xml_node config)
 // Called before the first frame
 bool Intro::Start()
 {
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/menu_theme.ogg");
 
 	gameLogo = app->tex->Load(config.attribute("studioPath").as_string());
 	introBackground = app->tex->Load(config.attribute("backintroPath").as_string());

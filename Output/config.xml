@@ -74,7 +74,7 @@
 				<animation x="446" y="232" w="34" h="40"/>
 			</attackAnimation>
 		</player>
-		<boss  x="550" y="400" eRange="20" followVel="0.15" patrolVel="0.1" texturePath="">
+		<boss  x="550" y="400" eRange="20" followVel="0.15" patrolVel="0.1" texturePath="Assets/Textures/bossanimation.png">
 			<idleAnimation speed="0.1f" loop="true">
 				<animation x="3" y="2" w="48" h="48"/>
 			</idleAnimation>
@@ -141,7 +141,6 @@
 				<animation x="2401" y="1" w="37" h="42"/>
 				<animation x="2448" y="4" w="37" h="42"/>
 			</dieAnimation>
-
 			<patrol>
 				<init x="20" y="24"/>
 				<final x="49" y="24"/>
@@ -248,12 +247,6 @@
 				<animation x="631" y="168" w="24" h="40"/>
 			</attackAnimation>
 		</groundEnemy>
-		<skeleton x="550" y="400" >
-			<patrol>
-				<init x="20" y="24"/>
-				<final x="49" y="24"/>
-			</patrol>
-		</skeleton>
 		<skeleton x="900" y="465" >
 			<patrol>
 				<init x="54" y="28"/>

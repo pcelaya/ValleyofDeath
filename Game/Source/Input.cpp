@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Window.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -128,6 +129,12 @@ bool Input::PreUpdate()
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
 		}
+	}
+
+	if (GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		app->audio->ChangeMusicVolume(0);
+		app->audio->ChangeFxVolume(0);
 	}
 
 	return true;

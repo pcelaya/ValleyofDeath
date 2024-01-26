@@ -65,7 +65,7 @@ bool Boss::Start()
 
 	app->tex->GetSize(texture, texW, texH);
 	currentAnimation = &idleAnimation;
-	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w -5, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x, position.y, currentAnimation->GetCurrentFrame().w -25, bodyType::DYNAMIC);
 
 	//This makes the Physics module to call the OnCollision method
 	pbody->listener = this;

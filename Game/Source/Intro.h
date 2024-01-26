@@ -34,6 +34,9 @@ public:
 
 public:
 	SDL_Texture* gameLogo;
+	SDL_Texture* introBackground;
+
+	SDL_Texture* titlepageBackground;
 };
 
 #endif // __INTRO_H__

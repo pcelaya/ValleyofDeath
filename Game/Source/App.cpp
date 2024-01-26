@@ -6,8 +6,11 @@
 #include "Audio.h"
 #include "Intro.h"
 #include "Menu.h"
+#include "InGameMenu.h"
+#include "Settings.h"
 #include "GUIManager.h"
 #include "Level1.h"
+#include "Level2.h"
 #include "Map.h"
 #include "Physics.h"
 #include "FadeToBlack.h"
@@ -30,7 +33,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	frames = 0;
 
 	// L3: DONE 1: Add the EntityManager Module to App
-
 	win = new Window();
 	input = new Input();
 	tex = new Textures();
@@ -38,11 +40,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	intro = new Intro();
 	menu = new Menu();
+	ingame_menu = new InGameMenu();
+	settings = new Settings();
 	guiManager = new GuiManager();
 
 	physics = new Physics();
 	map = new Map();
 	level_1 = new Level1();
+	level_2 = new Level2();
 	entityManager = new EntityManager();
 
 	fade = new FadeToBlack();
@@ -58,12 +63,15 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(map);
 	AddModule(level_1);
+	//AddModule(level_2);
 	AddModule(entityManager);
 	
 	AddModule(fade);
 
 	AddModule(intro);
 	AddModule(menu);
+	AddModule(ingame_menu);
+	AddModule(settings);
 	AddModule(guiManager);
 
 	// Render last to swap buffer
@@ -142,7 +150,9 @@ bool App::Start()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		if (item->data->active)
+			ret = item->data->Start();
+
 		item = item->next;
 	}
 

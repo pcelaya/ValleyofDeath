@@ -2,14 +2,23 @@
 #include "Render.h"
 #include "App.h"
 #include "Audio.h"
+#include "Textures.h"
 
-GuiControlButton::GuiControlButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiControlButton::GuiControlButton(uint32 id, SDL_Rect bounds, SDL_Rect section, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
+
+	this->tex = section;
+
+	this->buttonX = bounds.x;
+	this->buttonY = bounds.y;
+
 	this->text = text;
 
 	canClick = true;
 	drawBasic = false;
+
+	gui_Buttons = app->tex->Load("Assets/Textures/gui_Buttons.png");
 }
 
 GuiControlButton::~GuiControlButton()
@@ -37,27 +46,30 @@ bool GuiControlButton::Update(float dt)
 		}
 		else 
 			state = GuiControlState::NORMAL;
-
-		//L15: DONE 4: Draw the button according the GuiControl State
-		switch (state)
-		{
-		case GuiControlState::DISABLED:
-			app->render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
-			break;
-		case GuiControlState::NORMAL:
-			app->render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
-			break;
-		case GuiControlState::FOCUSED:
-			app->render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
-			break;
-		case GuiControlState::PRESSED:
-			app->render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
-			break;
-		}
-
-		app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h);
-
 	}
+
+	tex2 = tex;
+	tex2.x += 800;
+
+	switch (state)
+	{
+	case GuiControlState::DISABLED:
+		app->render->DrawTexture(gui_Buttons, buttonX, buttonY, &tex2);
+		break;
+	case GuiControlState::NORMAL:
+		app->render->DrawTexture(gui_Buttons, buttonX, buttonY, &tex);
+		app->render->DrawTextGUI(text.GetString(), buttonX +45, buttonY+10, bounds.w - 100, bounds.h - 30);
+		break;
+	case GuiControlState::FOCUSED:
+		app->render->DrawTexture(gui_Buttons, buttonX, buttonY, &tex2);
+		app->render->DrawTextGUI(text.GetString(), buttonX +45, buttonY + 10, bounds.w - 100, bounds.h - 30);
+		break;
+	case GuiControlState::PRESSED:
+		app->render->DrawTexture(gui_Buttons, buttonX, buttonY, &tex2);
+		app->render->DrawTextGUI(text.GetString(), buttonX +45, buttonY + 10, bounds.w - 100, bounds.h - 30);
+		break;
+	}
+
 
 	return false;
 }

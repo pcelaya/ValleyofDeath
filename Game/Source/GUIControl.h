@@ -83,6 +83,8 @@ public:
 
 	SString text;           // Control text (if required)
 	SDL_Rect bounds;        // Position and size
+	SDL_Rect tex;			// Wich button texture
+	SDL_Rect tex2;			// Complementary button texture
 	SDL_Color color;        // Tint color
 
 	SDL_Texture* texture;   // Texture atlas reference

@@ -17,9 +17,14 @@
 		<fullscreen_window value="flase"/>
 	</window>
 
-	<intro texturePath="Assets/Textures/Evil_Dead_Studios.png"/>
-	<menu texturePath="Assets/Textures/MenuBackground.jpg"/>
-	<map path="Assets/Maps/" name="Maplevel_1.2.tmx"></map>
+	<intro studioPath="Assets/Textures/Evil_Dead_Studios_Logo.png" backintroPath="Assets/Textures/introBackground.jpg" backtitlePath="Assets/Texture/TitlePageBackground.png"/>
+	<menu texturePath="Assets/Textures/MenuBackground.jpg" guiButtonPath="Assets/Textures/gui_Buttons.png"/>
+	<ingame_menu texturePath="Assets/Textures/ingame_menu.png"/>
+	<settings texturePath="Assets/Textures/settings_menu.png"/>
+	<map path="Assets/Maps/" name="Maplevel_1.2.tmx">
+		<level_1 name="Maplevel_1.2.tmx"/>
+		<level_2 name="Maplevel_2.0.tmx"/>
+	</map>
 	
 	<level_1>
 		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">

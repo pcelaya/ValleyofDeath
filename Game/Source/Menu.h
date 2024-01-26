@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "GUIControl.h"
 #include "GuiControlButton.h"
+#include "List.h"
 
 class Menu : public Scene
 {
@@ -37,7 +38,14 @@ public:
 public:
 	SDL_Texture* fondoMenu;
 
-	GuiControlButton* playButton;
+	GuiControlButton* newGameButton;
+	GuiControlButton* continueButton;
+	GuiControlButton* settingsButton;
+
+	GuiControlButton* exitButton;
+	bool isExiting;
+
+	List<GuiControl*> menuGUI;
 };
 
 #endif // __INTRO_H__

@@ -1,14 +1,12 @@
 TODO LIST:
 
-
--Fer el Menu
--Fer el Menu in Game
+-Settings
 -Hacer la GUI
 -Buscar Animacions de Almas Pixel
 -Posar Animacions als Ghost
--Posar el Level2
 -Codear al Boss
 -Arreglar el scrolling
+-Arreglar el Exit
 -Load And Save Items
 -Afegir Win and Lose Screen
 -Ajustar el Salt del player
@@ -18,3 +16,6 @@ TODO LIST:
 DONE LIST:
 
 -Arreglar els Items
+-Fer el Menu
+-Fer Menu InGame
+-Posar el Level2

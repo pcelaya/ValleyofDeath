@@ -16,14 +16,12 @@ class Scene : public Module
 {
 public:
 
-	Scene() : activeScene(false) {}
+	Scene() {}
 
 	// Destructor
 	virtual ~Scene() {}
 
 public:
-	bool activeScene;
-
 	pugi::xml_node config;
 	uint texW, texH;
 	uint windowW, windowH;

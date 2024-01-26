@@ -95,7 +95,8 @@ struct MapData
     List<TileSet*> tilesets;
 
     // L06: DONE 2: Add a list/array of layers to the map
-    List<MapLayer*> layers;
+    List<MapLayer*> layers; 
+    List<PhysBody*> colliders;
 };
 
 class Map : public Module
@@ -142,6 +143,8 @@ public:
     // Get height of the map
     int GetMapHeight() { return mapData.height * mapData.tileheight; }
     int GetMapWidth() { return mapData.width * mapData.tilewidth; }
+
+    void ChangeLevel(SString newMapName);
 
 public:
     SString name;

@@ -6,9 +6,12 @@
 #include "Window.h"
 #include "Level1.h"
 #include "Map.h"
+#include "InGameMenu.h"
+#include "Settings.h"
 #include "Ghost.h"
 #include "Skeleton.h"
 #include "Item.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -81,6 +84,11 @@ bool Level1::Start()
 	limitCamera.right = app->render->camera.w - 40;
 	limitCamera.left = 40;
 
+	app->map->Start();
+	app->entityManager->Start();
+	app->ingame_menu->Start();
+	app->settings->Start();
+
 	return true;
 }
 
@@ -126,7 +134,7 @@ bool Level1::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		//app.fade.fadeblack
+		app->fade->FadeBlack((Module*) app->level_1, (Module*)app->level_2, 10);
 	}
 	
 	// Request to Load or Save game information
@@ -164,7 +172,7 @@ bool Level1::PostUpdate()
 	bool ret = true;
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+		app->ingame_menu->called = true;
 
 	return ret;
 }
@@ -175,7 +183,6 @@ bool Level1::CleanUp()
 	LOG("Freeing Level 1");
 
 	app->map->CleanUp();
-	app->map->active = false;
 	app->entityManager->CleanUp();
 
 	active = false;

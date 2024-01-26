@@ -2,7 +2,9 @@
 #include "App.h"
 #include "Intro.h"
 #include "Menu.h"
+#include "InGameMenu.h"
 #include "Level1.h"
+#include "Settings.h"
 #include "Map.h"
 #include "Window.h"
 
@@ -67,8 +69,7 @@ bool FadeToBlack::Update(float dt)
 bool FadeToBlack::PostUpdate()
 {
 	if (currentStep == Fade_Step::NO) return true;      
-	float fadeRatio = (float)frameCount / (float)maxFadeFrames;      
-	// Render the black square with alpha on the screen     
+	float fadeRatio = (float)frameCount / (float)maxFadeFrames;         
 	
 	SDL_SetRenderDrawColor(app->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));     
 	SDL_RenderFillRect(app->render->renderer, &screenRect);      
@@ -78,6 +79,8 @@ bool FadeToBlack::PostUpdate()
 
 bool FadeToBlack::CleanUp()
 {
+	active = false;
+	
 	return true;
 }
 
@@ -86,27 +89,53 @@ void FadeToBlack::NextScene()
 	switch (typescene)
 	{
 	case TypeScene::INTRO:
-		moduleToDisable->CleanUp();
-		moduleToEnable->Init();
-		moduleToEnable->Start();
+		app->intro->CleanUp();
+
+		app->menu->Init();
+		app->settings->Init();
+
+		app->menu->Start();
+
 		typescene = TypeScene::MENU;
 		break;
 
 	case TypeScene::MENU:
 		app->menu->CleanUp();
-		moduleToEnable->Init();
+
+		app->level_1->Init();
 		app->map->Init();
-		moduleToEnable->Start();
-		app->map->Start();
 		app->entityManager->Init();
-		app->entityManager->Start();
+		app->ingame_menu->Init();
+		app->settings->Init();
+
+		app->level_1->Start();
+
 		typescene = TypeScene::LEVEL_1;
 		break;
 
 	case TypeScene::LEVEL_1:
 		app->level_1->CleanUp();
-		app->intro->Init();
-		app->intro->Start();
+
+		moduleToEnable->Init();
+		moduleToEnable->Awake(app->render->config);
+		moduleToEnable->Start();
+		app->AddModule(moduleToEnable);
+
+		if (goBack)
+			typescene = TypeScene::MENU;
+		else
+		{
+			app->map->ChangeLevel("MapLevel_2.0.tmx");
+			typescene = TypeScene::LEVEL_2;
+		}
+		break;
+
+	case TypeScene::LEVEL_2:
+		moduleToDisable->CleanUp();
+
+		moduleToEnable->Init();
+		moduleToEnable->Start();
+
 		typescene = TypeScene::END;
 		break;
 
@@ -118,9 +147,11 @@ void FadeToBlack::NextScene()
 	}
 }
 
-bool FadeToBlack::FadeBlack(Module* toDisable, Module* toEnable, float frames)
+bool FadeToBlack::FadeBlack(Module* toDisable, Module* toEnable, float frames, bool goBack)
 {
 	bool ret = false;
+
+	this->goBack = goBack;
 
 	if (currentStep == Fade_Step::NO)
 	{

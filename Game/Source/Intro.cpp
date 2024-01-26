@@ -36,7 +36,9 @@ bool Intro::Start()
 {
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
-	gameLogo = app->tex->Load(config.attribute("texturePath").as_string());
+	gameLogo = app->tex->Load(config.attribute("studioPath").as_string());
+	introBackground = app->tex->Load(config.attribute("backintroPath").as_string());
+	titlepageBackground = app->tex->Load(config.attribute("backtitlePath").as_string());
 
 	//Get the size of the window
 	app->win->GetWindowSize(windowW, windowH);
@@ -56,11 +58,15 @@ bool Intro::PreUpdate()
 // Called each loop iteration
 bool Intro::Update(float dt)
 {
+	app->render->DrawTexture(introBackground, 0, 0, NULL);
 	app->render->DrawTexture(gameLogo, 0, 0, NULL);
+
+	//app->render->DrawTextTitle(config.parent().first_child().first_child().child_value(), 0, 0, 1000, 250);
+	//app->render->DrawTexture(titlepageBackground, 0, 0, NULL);
 
 	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		app->fade->FadeBlack((Module*) app->intro, (Module*) app->menu, 200);
+		app->fade->FadeBlack((Module*) app->intro, (Module*) app->menu, 10);
 	}
 
 	return true;

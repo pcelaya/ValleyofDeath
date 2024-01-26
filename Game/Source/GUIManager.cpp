@@ -16,7 +16,6 @@ bool GuiManager::Start() { 	return true; }
 
 bool GuiManager::Update(float dt)
 {
-
 	ListItem<GuiControl*>* control = guiControlsList.start;
 
 	while (control != nullptr)
@@ -42,7 +41,7 @@ bool GuiManager::CleanUp()
 	return false;
 }
 
-GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
+GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, SDL_Rect section, Module* observer, SDL_Rect sliderBounds)
 {
 	GuiControl* guiControl = nullptr;
 
@@ -50,7 +49,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	switch (type)
 	{
 	case GuiControlType::BUTTON:
-		guiControl = new GuiControlButton(id, bounds, text);
+		guiControl = new GuiControlButton(id, bounds, section, text);
 		break;
 	case GuiControlType::TOGGLE:
 		break;
@@ -81,4 +80,14 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	guiControlsList.Add(guiControl);
 
 	return guiControl;
+}
+
+void GuiManager::DestroyGuiControl(GuiControl* guiCtrl)
+{
+	ListItem<GuiControl*>* item;
+
+	for (item = guiControlsList.start; item != NULL; item = item->next)
+	{
+		if (item->data == guiCtrl) guiControlsList.Del(item);
+	}
 }

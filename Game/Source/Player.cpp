@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
+#include "InGameMenu.h"
 
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -231,26 +232,29 @@ bool Player::Update(float dt)
 		}
 	}
 	
-	if (!god_mode) 
+	if (!app->ingame_menu->called)
 	{
-		pbody->body->SetLinearVelocity(velocity);
-		b2Transform pbodyPos = pbody->body->GetTransform();
-		position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2;
-		position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
-	}
-	else 
-	{
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			position.y += -0.5 * dt;
+		if (!god_mode)
+		{
+			pbody->body->SetLinearVelocity(velocity);
+			b2Transform pbodyPos = pbody->body->GetTransform();
+			position.x = METERS_TO_PIXELS(pbodyPos.p.x) - texW / 2;
+			position.y = METERS_TO_PIXELS(pbodyPos.p.y) - texH / 2;
 		}
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			position.y += 0.5 * dt;
-		}
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			position.x += -0.5 * dt;
-		}
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			position.x += 0.5 * dt;
+		else
+		{
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				position.y += -0.5 * dt;
+			}
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				position.y += 0.5 * dt;
+			}
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				position.x += -0.5 * dt;
+			}
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				position.x += 0.5 * dt;
+			}
 		}
 	}
 
@@ -273,6 +277,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 	b2ContactEdge* contact = pbody->body->GetContactList();
 	b2Vec2 contactPonts = contact->contact->GetManifold()->localNormal;
+	
 
 	switch (physB->ctype)
 	{
@@ -290,10 +295,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
-
-		app->entityManager->DestroyEntity(physB->listener);
-		app->audio->PlayFx(pickCoinFxId);
-
 		break;
 
 	case ColliderType::DEADLY:

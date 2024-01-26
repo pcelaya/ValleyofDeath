@@ -26,11 +26,13 @@ bool Map::Awake(pugi::xml_node config)
     LOG("Loading Map Parser");
     bool ret = true;
 
+    active = false;
+
     return ret;
 }
 
-bool Map::Start() {
-
+bool Map::Start() 
+{
     //Calls the functon to load the map, make sure that the filename is assigned
     SString mapPath = path;
     mapPath += name;
@@ -139,6 +141,7 @@ bool Map::CleanUp()
     
     while (tileset != NULL) 
     {
+        app->tex->UnLoad(tileset->data->texture);
         RELEASE(tileset->data);
         tileset = tileset->next;
     }
@@ -154,6 +157,17 @@ bool Map::CleanUp()
         RELEASE(layerItem->data->tiles);
         RELEASE(layerItem->data);
         layerItem = layerItem->next;
+    }
+
+    mapData.layers.Clear();
+
+    ListItem<PhysBody*>* collisions;
+    collisions = mapData.colliders.start;
+
+    while (collisions != NULL) {
+        app->physics->DestroyBody(collisions->data->body);
+        RELEASE(collisions->data);
+        collisions = collisions->next;
     }
 
     return true;
@@ -246,6 +260,7 @@ bool Map::Load(SString mapFileName)
             int h = layerNode.attribute("height").as_int();
             PhysBody* c1 = app->physics->CreateRectangle(x + w / 2, y + h / 2, w, h, STATIC);
             c1->ctype = ColliderType::PLATFORM;
+            mapData.colliders.Add(c1);
         }
 
         for (pugi::xml_node layerNode = mapFileXML.child("map").child("objectgroup").child("object"); layerNode != NULL; layerNode = layerNode.next_sibling("object"))
@@ -256,6 +271,7 @@ bool Map::Load(SString mapFileName)
             int h = layerNode.attribute("height").as_int();
             PhysBody* c1 = app->physics->CreateRectangle(x + w / 2, y + h / 2, w, h, STATIC);
             c1->ctype = ColliderType::DEADLY;
+            mapData.colliders.Add(c1);
         }
 
           //LOG all the data loaded iterate all tilesetsand LOG everything
@@ -402,4 +418,20 @@ void Map::CreateNavigationMap(int& width, int& height, uchar** buffer) const
     width = mapData.width;
     height = mapData.height;
 
+}
+
+void Map::ChangeLevel(SString newMapName)
+{
+    SString newPath = path;
+    newPath += newMapName;
+    Load(newPath);
+
+    //Initialize pathfinding 
+    pathfinding = new PathFinding();
+
+    //Initialize the navigation map
+    uchar* navigationMap = NULL;
+    CreateNavigationMap(mapData.width, mapData.height, &navigationMap);
+    pathfinding->SetNavigationMap((uint)mapData.width, (uint)mapData.height, navigationMap);
+    RELEASE_ARRAY(navigationMap);
 }

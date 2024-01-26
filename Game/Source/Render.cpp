@@ -60,8 +60,8 @@ bool Render::Awake(pugi::xml_node config)
 	TTF_Init();
 
 	//load a font into memory
-	font = TTF_OpenFont("Assets/Fonts/arial/arial.ttf", 25);
-
+	gui_font = TTF_OpenFont("Assets/Fonts/dark-empire/DarkEmpire-d9ZaX.ttf", 1076);
+	title_font = TTF_OpenFont("Assets/Fonts/grim-reaper/GrimReaper.ttf", 72);
 	return ret;
 }
 
@@ -281,10 +281,29 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	return ret;
 }
 
-bool Render::DrawText(const char* text, int posX, int posY, int w, int h) const
+bool Render::DrawTextGUI(const char* text, int posX, int posY, int w, int h) const
 {
 	SDL_Color color = { 255, 255, 255 };
-	SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
+	SDL_Surface* surface = TTF_RenderText_Solid(gui_font, text, color);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+	SDL_Rect dstrect = { posX, posY, w, h };
+
+	SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(surface);
+
+	return true;
+}
+
+bool Render::DrawTextTitle(const char* text, int posX, int posY, int w, int h) const
+{
+	SDL_Color color = { 255, 255, 255 };
+	SDL_Surface* surface = TTF_RenderText_Solid(title_font, text, color);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
 	int texW = 0;

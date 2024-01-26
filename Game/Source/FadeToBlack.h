@@ -50,15 +50,18 @@ public:
 	void NextScene();
 
 	//Does the actual Fade
-	bool FadeBlack(Module* moduleToDisable, Module* moduleToEnable, float frames);
+	bool FadeBlack(Module* moduleToDisable, Module* moduleToEnable, float frames, bool goBack = false);
+
+	TypeScene typescene;
 
 private:
 	pugi::xml_node config;
 
+	bool goBack;
+
 	// To fade the window between scenes
 	bool fadetoblack;
 	Fade_Step currentStep = Fade_Step::NO;
-	TypeScene typescene;
 
 	// A frame count system to handle the fade time and ratio
 	Uint32 frameCount = 0;

@@ -2,11 +2,11 @@
 
 ## Description
 
-In this game you encanate Death himself in his daily job of recolecting the souls of the dead.
+In this game you encanate Death himself and fight the undead while collecting the souls of the dead.
 
 ## Key Features
 
- - Colect Souls
+ - Collect Souls
  - Jump
  - Complete Levels
  - Path finding

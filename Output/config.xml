@@ -22,7 +22,7 @@
 	<ingame_menu texturePath="Assets/Textures/ingame_menu.png"/>
 	<settings texturePath="Assets/Textures/settings_menu.png"/>
 	<map path="Assets/Maps/">
-		<level_1 name="Maplevel_1.2.tmx"/>
+		<level_1 name="Map.tmx"/>
 		<level_2 name="Maplevel_2.0.tmx"/>
 	</map>
 	

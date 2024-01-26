@@ -76,20 +76,72 @@
 		</player>
 		<boss  x="550" y="400" eRange="20" followVel="0.15" patrolVel="0.1" texturePath="">
 			<idleAnimation speed="0.1f" loop="true">
-				<animation x="0" y="0" w="48" h="48"/>
+				<animation x="3" y="2" w="48" h="48"/>
 			</idleAnimation>
+
+			<wakingAnimation speed="0.1f" loop="false">
+				<animation x="58" y="4" w="29" h="41"/>
+				<animation x="103" y="4" w="33" h="42"/>
+				<animation x="148" y="4" w="41" h="42"/>
+				<animation x="195" y="4" w="37" h="42"/>
+				<animation x="242" y="4" w="37" h="42"/>
+				<animation x="292" y="4" w="37" h="42"/>
+			</wakingAnimation>
 			<walkAnimation speed="0.1f" loop="true">
-				<animation/>
+				<animation x="339" y="4" w="37" h="42"/>
+				<animation x="386" y="4" w="37" h="42"/>
+				<animation x="434" y="4" w="37" h="42"/>
+				<animation x="483" y="4" w="37" h="42"/>
+				<animation x="532" y="4" w="37" h="42"/>
+				<animation x="578" y="4" w="37" h="42"/>
+				<animation x="628" y="4" w="37" h="42"/>
 			</walkAnimation>
-			<dieAnimation speed="0.15f" loop="false">
-				<animation/>
-			</dieAnimation>
-			<jumpAnimation speed="0.1f" loop="false">
-				<animation/>
-			</jumpAnimation>
+			
+			
 			<attackAnimation speed="0.25f" loop="false">
-				<animation/>
+				<animation x="677" y="4" w="37" h="42"/>
+				<animation x="721" y="4" w="37" h="42"/>
+				<animation x="772" y="4" w="37" h="42"/>
+				<animation x="817" y="4" w="45" h="42"/>
+				<animation x="865" y="4" w="45" h="42"/>
+				<animation x="915" y="4" w="45" h="42"/>
+				<animation x="960" y="4" w="45" h="42"/>
+				<animation x="1007" y="4" w="37" h="42"/>
+				<animation x="1054" y="4" w="45" h="42"/>
+				<animation x="1104" y="4" w="45" h="42"/>
+				<animation x="1152" y="4" w="45" h="42"/>
+				<animation x="1199" y="4" w="45" h="42"/>
+				<animation x="1246" y="4" w="45" h="42"/>
+				<animation x="1295" y="4" w="45" h="42"/>
+				<animation x="1343" y="4" w="45" h="42"/>
+				<animation x="1393" y="4" w="45" h="42"/>
+				<animation x="1440" y="4" w="45" h="42"/>
 			</attackAnimation>
+
+			<dieAnimation speed="0.15f" loop="false">
+				<animation x="1493" y="4" w="37" h="42"/>
+				<animation x="1540" y="4" w="37" h="42"/>
+				<animation x="1585" y="4" w="37" h="42"/>
+				<animation x="1635" y="4" w="37" h="42"/>
+				<animation x="1683" y="4" w="37" h="42"/>
+				<animation x="1729" y="4" w="37" h="42"/>
+				<animation x="1779" y="4" w="37" h="42"/>
+				<animation x="1826" y="4" w="37" h="42"/>
+				<animation x="1876" y="4" w="37" h="42"/>
+				<animation x="1923" y="4" w="37" h="42"/>
+				<animation x="1970" y="4" w="37" h="42"/>
+				<animation x="2019" y="4" w="37" h="42"/>
+				<animation x="2067" y="4" w="37" h="42"/>
+				<animation x="2114" y="4" w="37" h="42"/>
+				<animation x="2163" y="4" w="37" h="42"/>
+				<animation x="2212" y="4" w="37" h="42"/>
+				<animation x="2259" y="4" w="37" h="42"/>
+				<animation x="2305" y="1" w="37" h="42"/>
+				<animation x="2351" y="1" w="37" h="42"/>
+				<animation x="2401" y="1" w="37" h="42"/>
+				<animation x="2448" y="4" w="37" h="42"/>
+			</dieAnimation>
+
 			<patrol>
 				<init x="20" y="24"/>
 				<final x="49" y="24"/>

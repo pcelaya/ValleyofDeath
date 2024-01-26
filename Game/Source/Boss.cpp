@@ -2,6 +2,7 @@
 #include "Level1.h"
 #include "Log.h"
 #include "Map.h"
+#include "Audio.h"
 
 
 Boss::Boss() : Enemy() {}
@@ -42,6 +43,14 @@ bool Boss::Awake()
 	}
 	attackAnimation.speed = parentConfig.child("attackAnimation").attribute("speed").as_float();
 	attackAnimation.loop = parentConfig.child("attackAnimation").attribute("loop").as_bool();
+	
+	// Initialize Waking Animation
+	for (pugi::xml_node animnNode = parentConfig.child("wakingAnimation").child("animation"); animnNode; animnNode = animnNode.next_sibling("animation"))
+	{
+		attackAnimation.PushBack({ animnNode.attribute("x").as_int(), animnNode.attribute("y").as_int(), animnNode.attribute("w").as_int(), animnNode.attribute("h").as_int() });
+	}
+	attackAnimation.speed = parentConfig.child("wakingAnimation").attribute("speed").as_float();
+	attackAnimation.loop = parentConfig.child("wakingAnimation").attribute("loop").as_bool();
 
 
 	return true;
@@ -49,6 +58,8 @@ bool Boss::Awake()
 
 bool Boss::Start()
 {
+	fx = app->audio->LoadFx("Assets/Audio/Fx/Boss_attack.ogg");
+
 	texture = app->tex->Load(texturePath);
 	state = AnimSates::IDLE;
 
@@ -119,6 +130,8 @@ bool Boss::Update(float dt)
 	else
 	{
 		state = AnimSates::DIE;
+		app->audio->PlayFx(fx);
+
 		if (dieAnimation.HasFinished()) 
 		{
 			state = AnimSates::IDLE;

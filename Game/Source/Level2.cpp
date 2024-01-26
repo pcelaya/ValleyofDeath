@@ -71,8 +71,6 @@ bool Level2::Start()
 	app->map->path = config.parent().child("map").attribute("path").as_string();
 	app->map->ChangeLevel("MapLevel_2.0.tmx");
 
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
-
 	//Get the size of the window
 	app->win->GetWindowSize(windowW, windowH);
 

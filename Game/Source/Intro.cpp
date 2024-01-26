@@ -36,6 +36,7 @@ bool Intro::Awake(pugi::xml_node config)
 bool Intro::Start()
 {
 	app->audio->PlayMusic("Assets/Audio/Music/menu_theme.ogg");
+	app->audio->ChangeMusicVolume(0.008);
 
 	gameLogo = app->tex->Load(config.attribute("studioPath").as_string());
 	introBackground = app->tex->Load(config.attribute("backintroPath").as_string());

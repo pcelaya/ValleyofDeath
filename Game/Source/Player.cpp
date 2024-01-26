@@ -89,6 +89,9 @@ bool Player::Start() {
 
 	//initialize audio effect
 	pickCoinFxId = app->audio->LoadFx(config.attribute("coinfxpath").as_string());
+	fx1 = app->audio->LoadFx("Assets/Audio/Fx/Reaper_attack.ogg");
+	fx2 = app->audio->LoadFx("Assets/Audio/Fx/Reaper_Jump.ogg");
+	fx3 = app->audio->LoadFx("Assets/Audio/Fx/Death_reaper.ogg");
 
 	dead = false;
 	flip = false;
@@ -150,6 +153,8 @@ bool Player::Update(float dt)
 	if (dead)
 	{
 		state = AnimSates::DIE;
+		app->audio->PlayFx(fx3);
+
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();
@@ -187,6 +192,7 @@ bool Player::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 			if (jumps > 0) {
 				state = AnimSates::JUMP;
+				app->audio->PlayFx(fx2);
 				jumps--;
 				remainJumpSteps = maxJumpSteps;
 				jumpForceReduce = 1;
@@ -201,6 +207,8 @@ bool Player::Update(float dt)
 		if (attack)
 		{
 			state = AnimSates::ATTACK;
+			app->audio->PlayFx(fx1);
+
 			if (attackAnimation.HasFinished())
 			{
 				attackAnimation.Reset();

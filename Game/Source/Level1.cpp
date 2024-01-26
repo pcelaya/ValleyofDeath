@@ -77,6 +77,7 @@ bool Level1::Awake(pugi::xml_node config)
 bool Level1::Start()
 {
 	app->audio->PlayMusic("Assets/Audio/Music/lvl1_theme.ogg");
+	app->audio->ChangeMusicVolume(0.008);
 
 	//Get the size of the window
 	app->win->GetWindowSize(windowW, windowH);

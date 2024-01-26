@@ -29,6 +29,9 @@ public:
 	// Load and Saves Ghosts atributtes
 	bool LoadEntity(pugi::xml_node& load);
 	bool SaveEntity(pugi::xml_node& save);
+
+private:
+	int fx;
 };
 
 #endif // __GHOST_H__

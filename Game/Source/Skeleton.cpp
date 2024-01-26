@@ -2,6 +2,7 @@
 #include "Level1.h"
 #include "Log.h"
 #include "Map.h"
+#include "Audio.h"
 
 
 Skeleton::Skeleton() : Enemy() {}
@@ -49,6 +50,9 @@ bool Skeleton::Awake()
 
 bool Skeleton::Start()
 {
+	fx = app->audio->LoadFx("Assets/Audio/Fx/skeleton_death_sound");
+	fx2	 = app->audio->LoadFx("Assets/Audio/Fx/skeleton_attack");
+
 	texture = app->tex->Load(texturePath);
 	state = AnimSates::IDLE;
 
@@ -119,6 +123,7 @@ bool Skeleton::Update(float dt)
 	else
 	{
 		state = AnimSates::DIE;
+		app->audio->PlayFx(fx);
 		if (dieAnimation.HasFinished()) 
 		{
 			state = AnimSates::IDLE;
@@ -148,6 +153,7 @@ void Skeleton::moveToPlayer(float dt)
 	else if (path->Count() == 1) 
 	{
 		state = AnimSates::ATTACK;
+		app->audio->PlayFx(fx2);
 		if (app->level_1->player->position.x < position.x) 
 			velocity.x = -realVelocity * dt;
 

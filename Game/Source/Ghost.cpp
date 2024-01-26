@@ -2,6 +2,7 @@
 #include "Level1.h"
 #include "Log.h"
 #include "Map.h"
+#include "Audio.h"
 
 
 Ghost::Ghost() : Enemy() {}
@@ -33,6 +34,8 @@ bool Ghost::Awake()
 
 bool Ghost::Start()
 {
+	fx = app->audio->LoadFx("Assets/Audio/Fx/Death_reaper.ogg");
+
 	texture = app->tex->Load(texturePath);
 	state = AnimSates::WALIKING;
 
@@ -93,7 +96,7 @@ bool Ghost::Update(float dt)
 	else
 	{
 		state = AnimSates::DIE;
-
+		app->audio->PlayFx(fx);
 		if (dieAnimation.HasFinished())
 		{
 			dieAnimation.Reset();

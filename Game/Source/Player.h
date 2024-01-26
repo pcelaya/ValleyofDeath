@@ -63,8 +63,7 @@ public:
 	Animation attackAnimation;
 
 	//Audio fx
-	int pickCoinFxId;
-	int endLevel;
+	int fx1, fx2, fx3, pickCoinFxId;
 };
 
 #endif // __PLAYER_H__

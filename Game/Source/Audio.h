@@ -3,7 +3,7 @@
 
 #include "Module.h"
 
-#define DEFAULT_MUSIC_FADE_TIME 2.0f
+#define DEFAULT_MUSIC_FADE_TIME 1.0f
 
 struct _Mix_Music;
 struct Mix_Chunk;
@@ -31,6 +31,10 @@ public:
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
+
+	void ChangeMusicVolume(float percent);
+
+	void ChangeFxVolume(float percent);
 
 private:
 

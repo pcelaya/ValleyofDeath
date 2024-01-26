@@ -113,32 +113,6 @@ void FadeToBlack::NextScene()
 		typescene = TypeScene::LEVEL_1;
 		break;
 
-	case TypeScene::LEVEL_1:
-		app->level_1->CleanUp();
-
-		moduleToEnable->Init();
-		moduleToEnable->Awake(config.parent().child("level_2"));
-		moduleToEnable->Start();
-		app->entityManager->Start();
-		app->AddModule(moduleToEnable);
-
-		if (goBack)
-			typescene = TypeScene::MENU;
-		else
-		{
-			typescene = TypeScene::LEVEL_2;
-		}
-		break;
-
-	case TypeScene::LEVEL_2:
-		moduleToDisable->CleanUp();
-
-		moduleToEnable->Init();
-		moduleToEnable->Start();
-
-		typescene = TypeScene::END;
-		break;
-
 	case TypeScene::NONE:
 		break;
 

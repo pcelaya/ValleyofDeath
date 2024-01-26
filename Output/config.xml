@@ -27,7 +27,7 @@
 	</map>
 	
 	<level_1>
-		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg">
+		<player x="20" y="465" speed="0.2f" texturePath="Assets/Textures/playerAnimation.png" coinfxpath="Assets/Audio/Fx/soul_pickup.ogg">
 			<idleAnimation speed="0.1f" loop="true">
 				<animation x="14" y="13" w="21" h="34"/>
 				<animation x="45" y="13" w="21" h="34"/>
